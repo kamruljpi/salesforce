@@ -78,23 +78,25 @@ class ExameenManagement extends Controller
     public function examStatus(Request $req){
 
         foreach ($req->exam_status as $applicant_no => $resStatus){
+            if($resStatus != 'exam') {
                 ApplicantTraining::where('application_no', $applicant_no)->update(['training_status' => $resStatus]);
-                if($resStatus == 'Pass'){
-                    ApplicantTraining::where('application_no', $applicant_no)->update(['application_status' => 'Approved']);
-                }else if($resStatus == 'Fail'){
-                    ApplicantTraining::where('application_no', $applicant_no)->update(['application_status' => 'InProgress']);
-                }
-                
+//                if ($resStatus == 'Pass') {
+//                    ApplicantTraining::where('application_no', $applicant_no)->update(['application_status' => 'Approved']);
+//                } else if ($resStatus == 'Fail') {
+//                    ApplicantTraining::where('application_no', $applicant_no)->update(['application_status' => 'InProgress']);
+//                }
 
-            $applicantDetails = ApplicantTraining::where('application_no', $applicant_no)->first();
-            $mailPerInfo = [
-                'email' => $applicantDetails->email,
-                'name' => $applicantDetails->first_name.' '.$applicantDetails->middle_name.' '.$applicantDetails->last_name,
-                'subject' => 'Application Rejecttion',
-                'mobile_no' => $applicantDetails->mobile_no,
-                'application_number' => mt_rand(100000, 999999),
-            ];        
-            // SendingEmail::Send('emails.ifa_registration', $mailPerInfo);
+
+                $applicantDetails = ApplicantTraining::where('application_no', $applicant_no)->first();
+                $mailPerInfo = [
+                    'email' => $applicantDetails->email,
+                    'name' => $applicantDetails->first_name . ' ' . $applicantDetails->middle_name . ' ' . $applicantDetails->last_name,
+                    'subject' => 'Application Rejecttion',
+                    'mobile_no' => $applicantDetails->mobile_no,
+                    'application_number' => mt_rand(100000, 999999),
+                ];
+                // SendingEmail::Send('emails.ifa_registration', $mailPerInfo);
+            }
         }
 
         

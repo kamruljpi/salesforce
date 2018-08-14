@@ -177,6 +177,7 @@ return [
 'mxp_menu_interested' => 'Interested',
 'mxp_menu_pitched' => 'Pitched',
 'mxp_menu_exam_name' => 'Exam Name',
-'mxp_menu_bulk_upload_list' => ' IFA Bulk Upload List',
+'mxp_menu_bulk_upload_list' => 'IFA Bulk Upload List',
+'mxp_menu_examine_pass_list' => 'Pass Examines',
 
 ];

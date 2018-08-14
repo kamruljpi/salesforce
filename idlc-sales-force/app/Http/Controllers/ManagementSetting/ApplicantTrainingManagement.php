@@ -90,16 +90,17 @@ class ApplicantTrainingManagement extends Controller
         $trainees = ApprovedTrainee::with('trainee')->where('training_schedule_id', $req->schedule_id)->get();
         $schedule = TrainingSchedule::with('trainingName')->where('id', $req->schedule_id)->first();
 
+//        $this->print_me($trainees);
 
         return view('management_setting.training_schedule.trainee_list', compact('trainees', 'schedule'));
     }
 
     public function traineeRemove(Request $req){
         ApprovedTrainee::where('applicant_no', $req->application_no)->where('training_schedule_id', $req->schedule_id)->delete();
-        ApplicantTraining::where('application_no', $req->application_no)->update(['training_status' => 'Cancle']);
+        ApplicantTraining::where('application_no', $req->application_no)->update(['training_status' => 'Pass', 'application_status' => 'Approved']);
 
-        \Session::flash('exam_status','Trainee removed successfully.');
-        \Session::flash('alert-class','alert-danger');
+        \Session::flash('exam_status','Trainee approved successfully.');
+        \Session::flash('alert-class','alert-success');
 
         return redirect()->back();
     }
@@ -124,34 +125,36 @@ class ApplicantTrainingManagement extends Controller
 
         foreach ($req->training_status as $applicant_no => $resStatus){
 
-            $status = true;
+            if($resStatus != 'exam'){
+                $status = true;
 
 //            if ($resStatus == 'TrainingFail')
 //                ApprovedTrainee::where('training_schedule_id', $req->schedule_id)->where('applicant_no', $applicant_no)->update(['training_status' => 'fail']);
 //            else
                 ApprovedTrainee::where('training_schedule_id', $req->schedule_id)->where('applicant_no', $applicant_no)->update(['training_status' => $resStatus]);
 
-            $trainingScheduleList = ApprovedTrainee::where('applicant_no', $applicant_no);
+                $trainingScheduleList = ApprovedTrainee::where('applicant_no', $applicant_no);
 
-            foreach ($trainingScheduleList as $tarine){
-                if($tarine->training_status != 'TrainingPass'){
-                    $status = false;
-                    break;
+                foreach ($trainingScheduleList as $tarine){
+                    if($tarine->training_status != 'TrainingPass'){
+                        $status = false;
+                        break;
+                    }
                 }
-            }
 
-        if($status){
-            ApplicantTraining::where('application_no', $applicant_no)->update(['training_status' => $resStatus]);
+                if($status){
+                    ApplicantTraining::where('application_no', $applicant_no)->update(['training_status' => $resStatus]);
 
-                $applicantDetails = ApplicantTraining::where('application_no', $applicant_no)->first();
-                $mailPerInfo = [
-                    'email' => $applicantDetails->email,
-                    'name' => $applicantDetails->first_name.' '.$applicantDetails->middle_name.' '.$applicantDetails->last_name,
-                    'subject' => 'Application Rejecttion',
-                    'mobile_no' => $applicantDetails->mobile_no,
-                    'application_number' => mt_rand(100000, 999999),
-                ];        
-                // SendingEmail::Send('emails.ifa_registration', $mailPerInfo);
+                    $applicantDetails = ApplicantTraining::where('application_no', $applicant_no)->first();
+                    $mailPerInfo = [
+                        'email' => $applicantDetails->email,
+                        'name' => $applicantDetails->first_name.' '.$applicantDetails->middle_name.' '.$applicantDetails->last_name,
+                        'subject' => 'Application Rejecttion',
+                        'mobile_no' => $applicantDetails->mobile_no,
+                        'application_number' => mt_rand(100000, 999999),
+                    ];
+                    // SendingEmail::Send('emails.ifa_registration', $mailPerInfo);
+                }
             }
         }
 

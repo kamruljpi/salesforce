@@ -24,15 +24,22 @@ $('select[name=training_name]').on('change', function(){
         success: function(result){
             console.log(result);
 
+            if(result.length > 0){
+                $('#selecetAllTraineDisplay').css("display", "block");
+                $('#select_all_trainee_applicant').prop('checked', false);
+            }
+            else
+                $('#selecetAllTraineDisplay').css("display", "none");
+
             $.each( result, function( key, value ) {
                 console.log(value);
                 if(value.pass_trainee != null){
                     $('#trainee_list tr:last').after('<tr>' +
                                 '<td>'+(key+1)+'</td>'+
-                                '<td>'+value.pass_trainee.first_name+'</td>'+
-                                '<td>'+value.pass_trainee.mobile_no+'</td>'+
-                                '<td>'+value.pass_trainee.email+'</td>'+
-                                '<td>'+value.pass_trainee.pre_addr_ps_id+'</td>'+
+                                '<td>'+((value.pass_trainee.first_name == null)? '':value.pass_trainee.first_name)+' '+((value.pass_trainee.middle_name == null)? '':value.pass_trainee.middle_name)+' '+((value.pass_trainee.last_name == null)? '':value.pass_trainee.last_name)+'</td>'+
+                                '<td>'+((value.pass_trainee.mobile_no == null)? '':value.pass_trainee.mobile_no)+'</td>'+
+                                '<td>'+((value.pass_trainee.email == null)? '':value.pass_trainee.email)+'</td>'+
+                                '<td>'+((value.pass_trainee.pre_addr_ps_id == null)? '':value.pass_trainee.pre_addr_ps_id)+'</td>'+
                                 '<td>' +
                                     '<input class="trainint_applicant_no" type="checkbox" value="1" name="exam_status['+value.pass_trainee.application_no+']">' +
                                     '<input type="hidden" name="applicant_no[]" value="'+value.pass_trainee.application_no+'">'+
@@ -67,7 +74,12 @@ $('#all_exameen_pass').on('click', function(){
 });
 
 $('#select_all_trainee_applicant').on('click', function(){
-    $('.trainint_applicant_no').prop('checked', true);
+    if($("#select_all_trainee_applicant").prop('checked') == true){
+        $('.trainint_applicant_no').prop('checked', true);
+    }
+    else if($("#select_all_trainee_applicant").prop('checked') == false){
+        $('.trainint_applicant_no').prop('checked', false);
+    }
 });
 
 

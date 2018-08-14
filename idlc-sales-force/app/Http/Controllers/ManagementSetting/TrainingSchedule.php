@@ -64,8 +64,8 @@ class TrainingSchedule extends Controller
         $trainingSch->training_schedule_name = '0';
         $trainingSch->start_date = $allInput['start_date'];
         $trainingSch->end_date = $allInput['end_date'];
-        $trainingSch->start_time = $allInput['start_time'];
-        $trainingSch->end_time = $allInput['end_time'];
+//        $trainingSch->start_time = $allInput['start_time'];
+//        $trainingSch->end_time = $allInput['end_time'];
         $trainingSch->is_active = 0;
         $trainingSch->is_delete = 0;
         $trainingSch->is_complete = 0;
@@ -99,8 +99,8 @@ class TrainingSchedule extends Controller
         $trainingSch->training_schedule_name = '0';
         $trainingSch->start_date = $allInput['start_date'];
         $trainingSch->end_date = $allInput['end_date'];
-        $trainingSch->start_time = $allInput['start_time'];
-        $trainingSch->end_time = $allInput['end_time'];
+//        $trainingSch->start_time = $allInput['start_time'];
+//        $trainingSch->end_time = $allInput['end_time'];
         $trainingSch->is_active = 0;
         $trainingSch->is_delete = 0;
         $trainingSch->is_complete = 0;

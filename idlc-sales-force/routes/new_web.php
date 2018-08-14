@@ -84,6 +84,21 @@ Route::group(['middleware' => 'auth'], function () {
             'as' => 'exam_name_update_action',
             'uses' => 'ManagementSetting\ExamNameController@updateExamName'
         ]);
+
+        // pass Examine **************
+
+        Route::get('pass/examine/list/',[
+            'as' => 'pass_examine_list_view',
+            'uses' => 'ManagementSetting\ExamineAprvdController@getPassedExamines'
+        ]);
+        Route::get('pass/examine/approve/{application_no?}',[
+            'as' => 'approved_pass_examine',
+            'uses' => 'ManagementSetting\ExamineAprvdController@approvedPassExamine'
+        ]);
+        Route::get('pass/examine/reject/{application_no?}',[
+            'as' => 'reject_pass_examine',
+            'uses' => 'ManagementSetting\ExamineAprvdController@rejectPassExamine'
+        ]);
     });
 	
 Route::get('schedule/{schedule_id?}/trainee/request', 'ManagementSetting\ApplicantTrainingManagement@scheduledPassTraineeList')->name('scheduled_trainee-list_only_view');

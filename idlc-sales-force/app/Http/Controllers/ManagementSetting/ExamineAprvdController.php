@@ -38,7 +38,3 @@ class ExamineAprvdController extends Controller
         return redirect()->back();
     }
 }
-
-
-git commit idlc-sales-force/database/migrations/2018_08_14_121142_add_pass_examine_data_to_menu_tbl.php -m "new added"
-git commit idlc-sales-force/resources/views/management_setting/examine_aprvd/ -m "new added"

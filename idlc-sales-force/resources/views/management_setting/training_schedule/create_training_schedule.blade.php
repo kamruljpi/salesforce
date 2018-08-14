@@ -47,10 +47,11 @@
 
                         <div class="form-group add_input{{ $errors->has('start_dat') ? ' has-error' : ''}}">
                             <label class="col-md-4 control-label">
-                                <span class="pull-right">Start date</span>
+                                <span class="pull-right">Start Date Time</span>
                             </label>
                             <div class="col-md-6">
-                                <input type="date" name="start_date" class="form-control" value="{{ old('start_date')}}" id="start_date" data-date="" data-date-format="DD MMMM YYYY">
+                                {{--<input type="date" name="start_date" class="form-control" value="{{ old('start_date')}}" id="start_date" data-date="" data-date-format="DD MMMM YYYY">--}}
+                                <input type="text" name="start_date" class="form-control" value="{{ old('start_date')}}" id="start_date"{{-- data-date="" data-date-format="DD MMMM YYYY"--}}>
                                 @if($errors->has('start_dat'))
                                     <span class="help-block">
                                         {{ $errors->first('start_dat')}}
@@ -61,10 +62,11 @@
 
                         <div class="form-group add_input{{ $errors->has('end_dat') ? ' has-error' : ''}}">
                             <label class="col-md-4 control-label">
-                                <span class="pull-right">End date</span>
+                                <span class="pull-right">End Date Time</span>
                             </label>
                             <div class="col-md-6">
-                                <input type="date" name="end_date" class="form-control" value="{{ old('end_date')}}" id="end_date" value="20-12-2017">
+                                {{--<input type="date" name="end_date" class="form-control" value="{{ old('end_date')}}" id="end_date" value="20-12-2017">--}}
+                                <input type="text" name="end_date" class="form-control" value="{{ old('end_date')}}" id="end_date"{{-- value="20-12-2017"--}}>
                                 @if($errors->has('end_dat'))
                                     <span class="help-block">
                                         {{ $errors->first('end_dat')}}
@@ -73,33 +75,33 @@
                             </div>
                         </div>
 
-                        <div class="form-group add_input{{ $errors->has('start_time') ? ' has-error' : ''}}">
-                            <label class="col-md-4 control-label">
-                                <span class="pull-right">Start Time</span>
-                            </label>
-                            <div class="col-md-6">
-                                <input type="time" name="start_time" class="form-control" value="{{ old('start_time')}}" id="start_time">
-                                @if($errors->has('start_time'))
-                                    <span class="help-block">
-                                        {{ $errors->first('start_time')}}
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+                        {{--<div class="form-group add_input{{ $errors->has('start_time') ? ' has-error' : ''}}">--}}
+                            {{--<label class="col-md-4 control-label">--}}
+                                {{--<span class="pull-right">Start Time</span>--}}
+                            {{--</label>--}}
+                            {{--<div class="col-md-6">--}}
+                                {{--<input type="time" name="start_time" class="form-control" value="{{ old('start_time')}}" id="start_time">--}}
+                                {{--@if($errors->has('start_time'))--}}
+                                    {{--<span class="help-block">--}}
+                                        {{--{{ $errors->first('start_time')}}--}}
+                                    {{--</span>--}}
+                                {{--@endif--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
 
-                        <div class="form-group add_input{{ $errors->has('end_time') ? ' has-error' : ''}}">
-                            <label class="col-md-4 control-label">
-                                <span class="pull-right">End Time</span>
-                            </label>
-                            <div class="col-md-6">
-                                <input type="time" name="end_time" class="form-control" value="{{ old('end_time')}}" id="end_time">
-                                @if($errors->has('end_time'))
-                                    <span class="help-block">
-                                        {{ $errors->first('end_time')}}
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+                        {{--<div class="form-group add_input{{ $errors->has('end_time') ? ' has-error' : ''}}">--}}
+                            {{--<label class="col-md-4 control-label">--}}
+                                {{--<span class="pull-right">End Time</span>--}}
+                            {{--</label>--}}
+                            {{--<div class="col-md-6">--}}
+                                {{--<input type="time" name="end_time" class="form-control" value="{{ old('end_time')}}" id="end_time">--}}
+                                {{--@if($errors->has('end_time'))--}}
+                                    {{--<span class="help-block">--}}
+                                        {{--{{ $errors->first('end_time')}}--}}
+                                    {{--</span>--}}
+                                {{--@endif--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
 
 
                         <table class="table table-bordered table-striped" id="tblSearch">
@@ -120,7 +122,7 @@
                                 <tr>
                                     <td>{{ $i }}</td>
                                     <td>
-                                        {{ $applicant->first_name}} {{ $applicant->last_name}}
+                                        {{ $applicant->first_name}} {{ $applicant->middle_name}} {{ $applicant->last_name}}
                                         <input type="hidden" name="applicant_no[]" value="{{ $applicant->application_no }}">
                                     </td>
                                     <td>{{ $applicant->mobile_no}}</td>
@@ -185,5 +187,12 @@
           </div>
 
         </div>
+        </div>
   </div>
+@endsection
+@section("LoadScript")
+    <script type="text/javascript">
+        $("#start_date").datetimepicker();
+        $("#end_date").datetimepicker();
+    </script>
 @endsection

@@ -77,11 +77,26 @@
             @if(isset($trainee->trainee))
                 <tr>
                     <td>{{$i}}</td>
-                    <td>{{ $trainee->trainee->first_name }} {{ $trainee->trainee->last_name }}</td>
+                    <td>{{ $trainee->trainee->first_name }} {{ $trainee->trainee->middle_name }} {{ $trainee->trainee->last_name }}</td>
                     <td>{{ $trainee->trainee->mobile_no }}</td>
                     <td>{{ $trainee->trainee->email }}</td>
                     <td>{{ $trainee->trainee->thana }}</td>
-                    <td>
+                    <td >
+                        @if($trainee->trainee->training_status == 'InExam')
+                            <label class="radio-inline">In Exam</label>
+                            <input type="hidden" name="training_status[{{ $trainee->trainee->application_no }}]" value="exam">
+                        @elseif($trainee->trainee->training_status == 'Pass' || $trainee->trainee->training_status == 'Fail')
+                            <label class="radio-inline">{{ $trainee->trainee->training_status }} in Exam</label>
+                            <input type="hidden" name="training_status[{{ $trainee->trainee->application_no }}]" value="exam">
+                        @else
+                            <label class="radio-inline">
+                                <input type="radio" class="training_pass_status" name="training_status[{{ $trainee->trainee->application_no }}]" value="TrainingPass"
+                                       @if($trainee->training_status == 'TrainingPass')checked @endif>Complete
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" class="training_fail_status" name="training_status[{{ $trainee->trainee->application_no }}]" value="TrainingFail" @if($trainee->training_status == 'TrainingFail')checked @endif>Incomplete
+                            </label>
+                        @endif
                         {{--<label class="radio-inline">--}}
                             {{--<input type="radio" class="training_pass_status" name="training_status[{{ $trainee->trainee->application_no }}]" value="TrainingPass" --}}
                             {{--@if($trainee->trainee->training_status == 'TrainingingPass' || $trainee->trainee->training_status == 'Pass' || $trainee->trainee->training_status == 'Fail')checked @endif>Complete--}}
@@ -89,13 +104,7 @@
                         {{--<label class="radio-inline">--}}
                             {{--<input type="radio" class="training_fail_status" name="training_status[{{ $trainee->trainee->application_no }}]" value="TrainingFail" @if($trainee->trainee->training_status == 'TrainingFail')checked @endif>Incomplete--}}
                         {{--</label>--}}
-                        <label class="radio-inline">
-                            <input type="radio" class="training_pass_status" name="training_status[{{ $trainee->trainee->application_no }}]" value="TrainingPass"
-                            @if($trainee->training_status == 'TrainingPass')checked @endif>Complete
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" class="training_fail_status" name="training_status[{{ $trainee->trainee->application_no }}]" value="TrainingFail" @if($trainee->training_status == 'TrainingFail')checked @endif>Incomplete
-                        </label>
+
                     </td>
                     <td><a href="{{ route('trainee_remove_action', [$schedule->id, $trainee->trainee->application_no]) }}">Not Required</a></td>
                 </tr>

@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
-@section('page_heading','Create Training Schedule')
+@section('page_heading','Update Training Schedule')
 @section('section')
     <div class=" col-sm-12 col-sm-offset-0 main_body">
 
@@ -39,39 +39,41 @@
 
                         <div class="form-group add_input{{ $errors->has('start_date') ? ' has-error' : ''}}">
                             <label class="col-md-4 control-label">
-                                <span class="pull-right">Start date</span>
+                                <span class="pull-right">Start Date Time</span>
                             </label>
                             <div class="col-md-6">
-                                <input type="date" name="start_date" class="form-control" value="{{ $trainingSchedule->start_date }}">
+                                {{--<input type="date" name="start_date" class="form-control" value="{{ $trainingSchedule->start_date }}">--}}
+                                <input type="text" name="start_date" id="start_date" class="form-control" value="{{ $trainingSchedule->start_date }}">
                             </div>
                         </div>
 
                         <div class="form-group add_input{{ $errors->has('end_date') ? ' has-error' : ''}}">
                             <label class="col-md-4 control-label">
-                                <span class="pull-right">End date</span>
+                                <span class="pull-right">End Date Time</span>
                             </label>
                             <div class="col-md-6">
-                                <input type="date" name="end_date" class="form-control" value="{{ $trainingSchedule->end_date }}">
+                                {{--<input type="date" name="end_date" class="form-control" value="{{ $trainingSchedule->end_date }}">--}}
+                                <input type="text" name="end_date" id="end_date" class="form-control" value="{{ $trainingSchedule->end_date }}">
                             </div>
                         </div>
 
-                        <div class="form-group add_input{{ $errors->has('start_time') ? ' has-error' : ''}}">
-                            <label class="col-md-4 control-label">
-                                <span class="pull-right">Start Time</span>
-                            </label>
-                            <div class="col-md-6">
-                                <input type="time" name="start_time" class="form-control" value="{{ $trainingSchedule->start_time }}">
-                            </div>
-                        </div>
+                        {{--<div class="form-group add_input{{ $errors->has('start_time') ? ' has-error' : ''}}">--}}
+                            {{--<label class="col-md-4 control-label">--}}
+                                {{--<span class="pull-right">Start Time</span>--}}
+                            {{--</label>--}}
+                            {{--<div class="col-md-6">--}}
+                                {{--<input type="time" name="start_time" class="form-control" value="{{ $trainingSchedule->start_time }}">--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
 
-                        <div class="form-group add_input{{ $errors->has('end_time') ? ' has-error' : ''}}">
-                            <label class="col-md-4 control-label">
-                                <span class="pull-right">End Time</span>
-                            </label>
-                            <div class="col-md-6">
-                                <input type="time" name="end_time" class="form-control" value="{{ $trainingSchedule->end_time}}">
-                            </div>
-                        </div>
+                        {{--<div class="form-group add_input{{ $errors->has('end_time') ? ' has-error' : ''}}">--}}
+                            {{--<label class="col-md-4 control-label">--}}
+                                {{--<span class="pull-right">End Time</span>--}}
+                            {{--</label>--}}
+                            {{--<div class="col-md-6">--}}
+                                {{--<input type="time" name="end_time" class="form-control" value="{{ $trainingSchedule->end_time}}">--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
 
 
 
@@ -87,5 +89,12 @@
 
             </div>
         </div>
+        </div>
     </div>
+@endsection
+@section("LoadScript")
+    <script type="text/javascript">
+        $("#start_date").datetimepicker();
+        $("#end_date").datetimepicker();
+    </script>
 @endsection
