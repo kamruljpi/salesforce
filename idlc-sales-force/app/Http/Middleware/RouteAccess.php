@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Support\Facades\DB;
+
+class RouteAccess
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+
+        $routeName = $request->route()->getName();
+        $company_id='';
+        if(NULL == $request->session()->get('user_role_id') && $request->session()->get('user_type') != "super_admin"){
+            return redirect('unauthorized');
+        }
+        $company_id=session()->get('company_id');
+
+        if(env('DB_CONNECTION', 'sqlsrv') == 'sqlsrv'){
+            $routePermission = DB::select('exec get_permission '.$request->session()->get('user_role_id').', '.$routeName.','.$company_id);
+        }elseif(env('DB_CONNECTION', 'sqlsrv') == 'mysql'){
+            $routePermission = DB::select('call get_permission ('.$request->session()->get('user_role_id').', "'.$routeName.'",'.$company_id.')');
+        }
+
+        
+        
+        $access = 0;
+        foreach ($routePermission as $value) {
+            $access = $value->cnt;
+        }
+        
+
+        if($request->session()->get('user_type') == "super_admin"){
+            return $next($request);
+        }else if($access == 0){
+            // return redirect('/dashboard');
+            return redirect('unauthorized');
+        }   
+
+
+        return $next($request);
+    }
+}

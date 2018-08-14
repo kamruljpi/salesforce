@@ -1,0 +1,31 @@
+**SalesForce**
+
+1: IN Applicantion Report Page need to press search button if there is more page. Select2 kit only show one page data.
+
+2: IN Applicant Details Page Image not loading.
+
+3: IN Add Trainee Page there is no Header.
+
+4: IN Add Trainee Page training status didn't checked after update.
+
+5: IN Create Exam Schedule Page Header should be Create Exam Schedule.
+
+6: IN Create Exam Schedule Page Trainees Thana showing null.
+
+7: Exam Date validation needed. 
+
+8: IN Applicant Details page radio button not disabled. 
+
+9: IN Applicant Details page exam status not changing accordingly.
+
+10: Date Formate 24H.
+
+11: Date Duration can be set past dates (Training / Exams) .
+
+**AML**
+
+1: Image not uploading in AML Registration.(Testing)
+
+2: Undefined Message in AML registration Save popup.
+
+

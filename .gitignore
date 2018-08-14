@@ -1,0 +1,7 @@
+/bootstrap/cache
+/storage/logs
+/storage/framework/cache
+/storage/framework/views
+/storage/framework/sessions
+.env
+.idea
