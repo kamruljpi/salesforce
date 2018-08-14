@@ -26,23 +26,6 @@
 	<script type="text/javascript">
 		var baseUrl = "/SalesForce"
 	</script>
-	<script type="text/javascript">
-
-		<?php
-		$routeList = \Illuminate\Support\Facades\Route::getRoutes();
-
-		    foreach ($routeList as $value)
-		    {
-		    	if($value->getName()){
-			        ?>
-						var <?php echo $value->getName(); ?> = "<?php echo $value->uri();?>";
-			        <?php
-		        }
-		    }
-		?>
-		var abcdefghijkl = config.routes;
-	</script>
-
 	@yield('scriptvars')
 </head>
 <body>
