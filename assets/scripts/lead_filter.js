@@ -39,7 +39,7 @@ var leadCreateListFilterSearch = (function(){
 
 				$.ajax({
 		          type: "GET",
-		          url: "/SalesForce/lead/list/Filter/Value",
+		          url: baseURL+"/lead/list/Filter/Value",
 		          data: data,
 		          datatype: 'json',
 		          cache: false,
@@ -82,7 +82,7 @@ var leadCreateListFilterSearch = (function(){
 
 				$.ajax({
 		          type: "GET",
-		          url: "/SalesForce/lead/list/Filter/Value",
+		          url: baseURL+"/lead/list/Filter/Value",
 		          data: data,
 		          datatype: 'json',
 		          cache: false,
@@ -222,7 +222,7 @@ var leadCreateListReset = (function(){
 
 				$.ajax({
 		          type: "GET",
-		          url: "/SalesForce/lead/list/all/value",
+		          url: baseURL+"/lead/list/all/value",
 		          datatype: 'json',
 		          cache: false,
 		          async: false,
@@ -260,7 +260,7 @@ var ifaRegisterHideField = (function(){
 			var itemoptions = {
 
 		    url: function(phrase) {
-		      return "/SalesForce/get/ifaRegistervalue";
+		      return baseURL+"/get/ifaRegistervalue";
 		    },
 
 		    getValue: function(element) {
