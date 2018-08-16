@@ -43,7 +43,7 @@ var ifaManagementFilterSearch = (function(){
 		          async: false,
 		          success: function(result) {
 		          	var data = JSON.parse(result);
-		          	console.log(data);
+		          	// console.log(data);
 		          	addRowIfa(data,0);
 		          },
 		          error:function(result){
@@ -65,7 +65,6 @@ var ifaManagementFilterSearch = (function(){
 					formDateValues  :formDateValue,
 					toDateValues    :toDateValue
 				};
-				console.log(data);
 				var sss = {
 					a:inputValidate(menuValue,'error_1'),
 					b:inputValidate(sortbyValue,'error_2'),
@@ -171,11 +170,12 @@ function addRowIfa(results, start)
 }
 
 function dateFormater(value){
-	var data = '';
+	var data = [];
 	if(value){
 		var date =  new Date(value);
+			var month_ = 1 + date.getMonth();
 			data =  ('0'+date.getDate()).substr(-2,2)+
-					'-'+('0'+date.getMonth()).substr(-2,2)+
+					'-'+('0'+month_).substr(-2,2)+
 					'-'+('0'+date.getFullYear()).substr(-4,4);
 		return data;
 	}else{
@@ -249,10 +249,7 @@ var ifaManagementReset = (function(){
 	}
 })();
 
-$(document).ready(function(){
-	ifaManagementFilterSearch.init();
-	ifaManagementReset.init();
-});
+
 
 $('#selectOrganizationOption').on('change', function (ev) {
 
@@ -381,3 +378,9 @@ function readURL(input) {
 // $('.modal .alert-danger').show();
 // $('#unique_input_error').modal('show');
 // $('.validation_error_msg').append("Only allowed Nine Digit.");
+
+
+$(document).ready(function(){
+	ifaManagementFilterSearch.init();
+	ifaManagementReset.init();
+});
