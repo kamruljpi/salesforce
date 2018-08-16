@@ -18,7 +18,7 @@ Route::any('branchs/getBranch','BranchController@getBranch');
 
 Route::group(['middleware' => 'auth'], function () {
 	Route::group(['middleware' => 'routeAccess'], function () {
-
+		
 		Route::get('submitted/application', [
 				'as' => 'submitted_application_view',
 				'uses' => 'ifa\SubmittedApplication@viewSubmittedList'
@@ -74,10 +74,15 @@ Route::group(['middleware' => 'auth'], function () {
 				'as' => 'update_nid_list_view',
 				'uses' => 'ifa\UpdateNid@viewupdateNid'
 			]);
-		Route::any('ifa/updates/nids', [
+		Route::any('ifa/updates/nid', [
 				'as' => 'update_nid_action_update',
 				'uses' => 'ifa\UpdateNid@update'
 			]);
+		Route::any('ifa/rejected/nid', [
+				'as' => 'update_nid_action_reject',
+				'uses' => 'ifa\UpdateNid@rejected'
+			]);
+		
 
 		/** bulk upload**/
 		Route::get('ifa/bulk/upload', [

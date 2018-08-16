@@ -22,38 +22,62 @@ var update_nid_request = (function(){
 	return {
 		init: function(){
 			$('#sent_update_request').on('click',function(){
-				var national_id = $.trim($('#national_id_card_no').val());
-				var application_no = $.trim($('#application_no_').val());
-				var update_national_id = $.trim($('#update_national_id_card_no').val());
-				var data ={
-					oldnid : national_id,
-					ifaid 	:application_no,
-					newnid  :update_national_id,
-				};
+				var national_id_card_no = $('#update_national_id_card_no').val();
+			    var valid_nid_len = [10,13,17];
+			    var nid_len = national_id_card_no.length;
+			    if(national_id_card_no == '' && national_id_card_no.length > 0) {
+			    	$('#update_nid_value_').addClass('has-error');
+			           $('.validation_error_msg').empty();
+			           $('.alert-danger').hide();
+			           $('.modal .alert-danger').show();
+			           $('#unique_input_error').modal('show');
+			           $('.validation_error_msg').append("You can not leave with empty Value.");
+			    }else if($.inArray(nid_len, valid_nid_len) == -1 && national_id_card_no.length > 0)
+			    {
+			    	$('#update_nid_value_').addClass('has-error');
+			        $('.validation_error_msg').empty();
+			        $('.alert-danger').hide();
+			        $('.modal .alert-danger').show();
+			        $('#unique_input_error').modal('show');
+			        $('.validation_error_msg').append("Only allowed 10,13,17 digit.");
+			    }else if(!$.isNumeric(national_id_card_no) && national_id_card_no.length > 0)
+			    {
+			    	$('#update_nid_value_').addClass('has-error');
+			        $('.validation_error_msg').empty();
+			        $('.alert-danger').hide();
+			        $('.modal .alert-danger').show();
+			        $('#unique_input_error').modal('show');
+			        $('.validation_error_msg').append("Only Number is allowed.");
+			    }else{
+			    	$('#update_nid_value_').removeClass('has-error');
+	    			var national_id = $('#national_id_card_no').val();
+	    			var application_no = $('#application_no_').val();
+	    			var update_national_id = $('#update_national_id_card_no').val();
+	    			var data ={
+	    				oldnid : national_id,
+	    				ifaid 	:application_no,
+	    				newnid  :update_national_id,
+	    			};
+
+	    			$.ajax({
+	    	          type: "GET",
+	    	          url: "/SalesForce/update/nid",
+	    	          data: data,
+	    	          datatype: 'json',
+	    	          cache: false,
+	    	          async: false,
+	    	          success: function(result) {
+	    	          	var data = JSON.parse(result);
+	    	          	$('.set_hide_body').empty();
+	    	          	$('.set_open_body').removeClass('hidden');
+	    	          },
+	    	          error:function(result){
+	    	            alert("Some thing is Wrong");
+	    	          }
+	    	          });
+			    }
+
 				
-				if(update_national_id == ''){
-					$('#update_nid_value_').addClass('has-error');
-					return false;
-				}else{
-					$('#update_nid_value_').removeClass('has-error');
-				}
-				$.ajax({
-		          type: "GET",
-		          url: "/SalesForce/update/nid",
-		          data: data,
-		          datatype: 'json',
-		          cache: false,
-		          async: false,
-		          success: function(result) {
-		          	var data = JSON.parse(result);
-		          	console.log(data);
-		          	$('.set_hide_body').empty();
-		          	$('.set_open_body').removeClass('hidden');
-		          },
-		          error:function(result){
-		            alert("Some thing is Wrong");
-		          }
-		          });
 			});
 		}
 	}

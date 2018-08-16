@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ifa;
 
 use App\Http\Controllers\Message\UpdateNidAction;
+use App\Model\ManagementSetting\ApplicantTraining;
 use App\Model\IfaManagement\UpdateNidModel;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -38,10 +39,23 @@ class UpdateNid extends Controller
 	}
 
 	public function update(Request $request){
-		echo "string";
-		die();
-		$data = $request->all();
 
-		$this->print_me($data);
+		// $data = $request->all();
+
+		$update = ApplicantTraining::find($request->id);
+		$update->national_id_card_no = $request->new_nid;
+		$update->update();
+
+		// $this->print_me($data);
+		return redirect()->route('update_nid_list_view');
+		
+	}
+
+	public function rejected(Request $request){
+
+		$data = $request->all();
+		return redirect()->route('update_nid_list_view');
+		// $this->print_me($data);
+
 	}
 }
