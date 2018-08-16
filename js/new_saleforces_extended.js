@@ -18,7 +18,7 @@ $('select[name=training_name]').on('change', function(){
 
     $.ajax({
         type: 'GET',
-        url: '/SalesForce/schedule/'+training_id+'/trainee/request',
+        url: baseURL+'/schedule/'+training_id+'/trainee/request',
         cache: false,
         async: false,
         success: function(result){
