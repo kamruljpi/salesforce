@@ -6,12 +6,12 @@ var leadCreateListFilterSearch = (function(){
 			var menuValue 	= '';
 			var sortbyValue = '';
 				
-			$('#selectSortbyValue').on('change',function(){
-				sortbyValue = $.trim($("#selectSortbyValue").find(":selected").val());
+			$('#selectLeadSortbyValue').on('change',function(){
+				sortbyValue = $.trim($("#selectLeadSortbyValue").find(":selected").val());
 			});
 
-			$('#selectMenuOption').on('change',function(e){
-				menuValue = $.trim($("#selectMenuOption").find(":selected").val());
+			$('#selectLeadMenuOption').on('change',function(e){
+				menuValue = $.trim($("#selectLeadMenuOption").find(":selected").val());
 
 				e.preventDefault();
 				$('.pagination_body').addClass('hidden');
@@ -152,20 +152,20 @@ function addRowLead(results, start)
 	    {	
 	    	
 	        $('#lead_list_tbody').append('<tr class="lead_list_tbody"><td>'+sl+
-	            '</td><td>'+ emptyCheck(rows[i].id_create_lead) +
-	            '</td><td>'+ emptyCheck(rows[i].personal_name) +
-	            '</td><td>'+ emptyCheck(rows[i].contact_no) +
-	            '</td><td>'+ emptyCheck(rows[i].area) +
-	            '</td><td>'+ emptyCheck(rows[i].follow_up_date) +
+	            '</td><td>'+ leadEmptyCheck(rows[i].id_create_lead) +
+	            '</td><td>'+ leadEmptyCheck(rows[i].personal_name) +
+	            '</td><td>'+ leadEmptyCheck(rows[i].contact_no) +
+	            '</td><td>'+ leadEmptyCheck(rows[i].area) +
+	            '</td><td>'+ leadEmptyCheck(rows[i].follow_up_date) +
 	            '</td><td>'+ rows[i].lead_assign+
-	            '</td><td>'+ emptyCheck(rows[i].name) +
+	            '</td><td>'+ leadEmptyCheck(rows[i].name) +
 	            '</td><td><table><tr><td><a href="/SalesForce/edit/lead/'+rows[i].id_create_lead+'" class="btn btn-primary">Edit</a></td><td><a href="/SalesForce/view/lead/'+rows[i].id_create_lead+'" class="btn btn-success">View</a></td></tr></table></td></tr>');
 	           
 	        sl++;
 	    }
 	}
 
-    setPagination(results, position);
+    setLeadPagination(results, position);
 
     $('.pagination li').on('click',(function () {
         var begin = $(this).attr("data-page");
@@ -174,13 +174,13 @@ function addRowLead(results, start)
 
 }
 
-function emptyCheck(value){
+function leadEmptyCheck(value){
 	return ((value == null ) ? "" : value) ;
 }
 
 
 
-function setPagination(results, position) {
+function setLeadPagination(results, position) {
     var pageNum = Math.ceil(results.length/15);
     var previous = (position-1);
     var next = (position+1);
@@ -210,8 +210,8 @@ var leadCreateListReset = (function(){
 		init: function(){
 			$('#reset_btn').on('click',function () {
 				$('.pagination_body').addClass('hidden');
-				$('#selectMenuOption').val("");
-				$('#selectSortbyValue').val("");
+				$('#selectLeadMenuOption').val("");
+				$('#selectLeadSortbyValue').val("");
 				$('#formDate').val("");
 				$('#toDate').val("");
 

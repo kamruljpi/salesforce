@@ -54,9 +54,13 @@ class PartiallyCompleted extends Controller
 
     public function nidVaidate(Request $req){
 
-        
-        if($req->status == 'Valid'){ $appStatus = 'InProgress'; }
-        else if($req->status == 'InValid'){ $appStatus = 'Rejected'; }
+        $this->print_me($req->status);
+        if($req->status == 'Valid'){
+            $appStatus = 'InProgress'; 
+        }
+        else if($req->status == 'InValid'){
+            $appStatus = 'Rejected'; 
+        }
 
         ApplicantTraining::where('application_no', $req->application_no)->update(['nid_validation_status' => $req->status, 'application_status' => $appStatus]);
 
@@ -74,26 +78,28 @@ class PartiallyCompleted extends Controller
     }
 
     public function getIfaAllValue(Request $request){
-    	return json_encode(IfaRegistration::get());
+        return json_encode(DB::table('tbl_ifa_registrations')->orderBy('application_no','DESC')->get());
+    	// return json_encode(IfaRegistration::get());
 
 
     }
     public function getIfaFilterValue(Request $request){
-
+        // return json_encode($request->all());
 		$object = new IfaRegistration();
+        $data = [];
         if(!empty($request->sortbyValues) && empty($request->selectedOptionValues) && empty($request->formDateValues) && empty($request->toDateValues)){
-            $data = $object->orderBy('application_no',$request->sortbyValues)                    
+            $data = DB::table('tbl_ifa_registrations')->orderBy('application_no',$request->sortbyValues)
                     ->get();
         }
 	 	else if(!empty($request->selectedOptionValues) && empty($request->formDateValues) && empty($request->toDateValues))
         {
-            $data = $object->where('application_status',$request->selectedOptionValues)
+            $data = DB::table('tbl_ifa_registrations')->where('application_status',$request->selectedOptionValues)
                     ->orderBy('application_no',(!empty($request->sortbyValues) ? $request->sortbyValues : "ASC"))
                     ->get();
                 
         }else if(!empty($request->selectedOptionValues) && !empty($request->formDateValues) && empty($request->toDateValues)){
 
-            $data = $object->whereDate('created_at','>=',date($request->formDateValues))
+            $data = DB::table('tbl_ifa_registrations')->whereDate('created_at','>=',date($request->formDateValues))
                     ->whereDate('created_at','<=',Carbon::now()->format('Ymd'))
                     ->where('application_status',$request->selectedOptionValues)
                     ->orderBy('application_no',(!empty($request->sortbyValues) ? $request->sortbyValues : "ASC"))
@@ -101,13 +107,13 @@ class PartiallyCompleted extends Controller
 
         }else if(empty($request->selectedOptionValues) && !empty($request->formDateValues) && !empty($request->toDateValues)){
 
-            $data = $object->whereDate('created_at','>=',date($request->formDateValues))
+            $data = DB::table('tbl_ifa_registrations')->whereDate('created_at','>=',date($request->formDateValues))
                     ->whereDate('created_at','<=',date($request->toDateValues))
                     ->orderBy('application_no',(!empty($request->sortbyValues) ? $request->sortbyValues : "ASC"))
                     ->get();
         }else{
 
-    	 	$data = $object->whereDate('created_at','>=',date($request->formDateValues))
+    	 	$data = DB::table('tbl_ifa_registrations')->whereDate('created_at','>=',date($request->formDateValues))
     	 			->whereDate('created_at','<=',date($request->toDateValues))
     	 			->where('application_status',$request->selectedOptionValues)
     	 			->orderBy('application_no',(!empty($request->sortbyValues) ? $request->sortbyValues : "ASC"))

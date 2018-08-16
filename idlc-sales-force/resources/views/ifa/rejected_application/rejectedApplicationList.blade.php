@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
-@section('page_heading','Rejected Application')
+@section('page_heading','IFA bulk Upload')
 @section('section')
-<div class="col-sm-12">
+<!-- <div class="col-sm-12">
 	<div class="col-sm-12">
 		<div class="col-sm-2"></div>
 		<div class="col-sm-10">
@@ -44,5 +44,5 @@
             @endforeach
         </tbody>
     </table>
-</div>
+</div> -->
 @endsection

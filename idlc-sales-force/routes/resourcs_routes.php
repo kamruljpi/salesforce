@@ -18,7 +18,7 @@ Route::any('branchs/getBranch','BranchController@getBranch');
 
 Route::group(['middleware' => 'auth'], function () {
 	Route::group(['middleware' => 'routeAccess'], function () {
-
+		
 		Route::get('submitted/application', [
 				'as' => 'submitted_application_view',
 				'uses' => 'ifa\SubmittedApplication@viewSubmittedList'
@@ -69,6 +69,26 @@ Route::group(['middleware' => 'auth'], function () {
 				'as' => 'ifa_inactive_list_view',
 				'uses' => 'ifa\Status\InactiveController@viewInactive'
 			]);
+		/** nid update routes**/
+		Route::get('ifa/nid/update', [
+				'as' => 'update_nid_list_view',
+				'uses' => 'ifa\UpdateNid@viewupdateNid'
+			]);
+		Route::any('ifa/updates/nid', [
+				'as' => 'update_nid_action_update',
+				'uses' => 'ifa\UpdateNid@update'
+			]);
+		Route::any('ifa/rejected/nid', [
+				'as' => 'update_nid_action_reject',
+				'uses' => 'ifa\UpdateNid@rejected'
+			]);
+		
+
+		/** bulk upload**/
+		Route::get('ifa/bulk/upload', [
+				'as' => 'ifa_bulk_upload',
+				'uses' => 'ifa\RejectedApplication@viewRejectedApplication'
+			]);
 
 });
 
@@ -78,6 +98,7 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('/getMenuFilterValue','ifa\PartiallyCompleted@getIfaFilterValue');
         Route::get('/searchByOrg', 'SalesAgent\BulkUploadController@bulkSearchByOrg');
         Route::get('/setImgTOSystem', 'SalesAgent\BulkUploadController@setImageToSystem');
+        Route::get('/update/nid', 'ifa\UpdateNid@storeNid');
 
 	
 });
