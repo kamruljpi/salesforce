@@ -9,7 +9,7 @@ $(document).ready(function(){
 
       $.ajax({
           type: "GET",
-          url: "/language",
+          url: baseURL+"/language",
           data: {locale: locale, _token: _token},
           datatype: 'json',
           cache: false,
@@ -32,7 +32,7 @@ $(document).ready(function(){
  function load_data(query)
  {
   $.ajax({
-   url:"/search_trans_key",
+   url:baseURL+"/search_trans_key",
    type:"GET",
    data:"value="+query,
    success:function(data)
@@ -68,7 +68,7 @@ function getPermission(role_id){
   var roleId =role_id.value;
 
   $.ajax({
-      url:"/super-admin/permissions",
+      url:baseURL+"/super-admin/permissions",
       type:"GET",
       data:"roleId="+roleId,
       cache: false,
@@ -136,7 +136,7 @@ $('#companyId').change(function(){
     $("#roleId option").remove();
 
   $.ajax({
-      url:"/super-admin/getrolelist",
+      url:baseURL+"/super-admin/getrolelist",
       type:"GET",
       data: {comId: comId, _token: _token},
       datatype: 'json',
@@ -194,7 +194,7 @@ $(document).ready(function(){
  {
   // alert(query);
   $.ajax({
-   url:"/search_purchased_client",
+   url:baseURL+"/search_purchased_client",
    type:"GET",
    data:"value="+query,
    success:function(data)
@@ -227,7 +227,7 @@ $(document).ready(function(){
  function load_data(query)
  {
   $.ajax({
-   url:"/search_purchased_invoice",
+   url:baseURL+"/search_purchased_invoice",
    type:"GET",
    data:"value="+query,
    success:function(data)
@@ -272,7 +272,7 @@ $('#product_group').change(function(){
     $("#product option").remove();
 
     $.ajax({
-        url:"/product/get_product_group",
+        url:baseURL+"/product/get_product_group",
         type:"GET",
         data:'product_group_id='+product_group_id,
         datatype: 'string',
@@ -397,7 +397,7 @@ $('#product_group_sale').change(function(){
 
 
     $.ajax({
-        url:"/product/get_product_group_sale",
+        url:baseURL+"/product/get_product_group_sale",
         type:"GET",
         data:'product_group_id='+product_group_id,
         datatype: 'string',
@@ -504,7 +504,7 @@ $('.sale_data_add').click(function(){
 
           //sajib quantity will be not deduct from db until sale submit
            $.ajax({
-              url:"/pro_deduction",
+              url:baseURL+"/pro_deduction",
               type:"GET",
               data:"product_id="+pro_id+"&product_quantity="+quantity+"&bonus="+bonus,
               datatype: 'string',
@@ -607,7 +607,7 @@ $("#generate_invoice_btn").click(function(){
     
     var last_sale_id = 0;
     $.ajax({
-        url:"/product/get_last_sale_id",
+        url:baseURL+"/product/get_last_sale_id",
         type:"GET",
         datatype: 'string',
         cache: false,
@@ -648,7 +648,7 @@ if(bonus==""){
   bonus=0;
 }
   $.ajax({
-        url:"/product/check_amount",
+        url:baseURL+"/product/check_amount",
         type:"GET",
         data:"pro_id="+pro_id,
         datatype: 'string',
@@ -732,7 +732,7 @@ $('.search_available_q').click( function(){
      }
      else{
        $.ajax({
-          url:"/create_urgent_client_action",
+          url:baseURL+"/create_urgent_client_action",
           type:"POST",
           data: $("#create_urgent_client_post").serialize(),
           success:function(clients)
@@ -754,7 +754,7 @@ $("a[name=lc_purchase_summary_btn]").on("click", function (ev) {
     ev.preventDefault();
     var lc_purchase_product_id = $(this).attr("data-index");
     $.ajax({
-      url:"purchase/summary",
+      url:baseURL+"purchase/summary",
       type:"GET",
       data:"lc_purchase_product_id="+lc_purchase_product_id,
       success:function(result)
@@ -774,7 +774,7 @@ $("a[name=lc_purchase_table_update_btn]").on("click", function (ev) {
     ev.preventDefault();
     var lc_purchase_product_id = $(this).attr("data-index");
     $.ajax({
-      url:"purchase/table_update",
+      url:baseURL+"purchase/table_update",
       type:"GET",
       data:"lc_purchase_product_id="+lc_purchase_product_id,
       success:function(result)
