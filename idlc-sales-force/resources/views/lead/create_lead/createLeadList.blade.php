@@ -5,7 +5,7 @@
     <div class="col-sm-10">
         <div class="form-group col-sm-3" id="error_1">
             <label class="col-sm-8 control-label">Lead Status</label>
-                <select class="form-control" id="selectMenuOption">
+                <select class="form-control" id="selectLeadMenuOption">
                     <option value=""> Choose a option</option>
                     <option value="highly_interested"> Highly Interested</option>
                     <option value="might_invest"> Might Invest</option>
@@ -21,7 +21,7 @@
 
         <div class="form-group col-sm-3 " id="error_2">
             <label class="col-sm-8 control-label">Order By </label>
-                <select class="form-control" id="selectSortbyValue">
+                <select class="form-control" id="selectLeadSortbyValue">
                     <option value="">--Select--</option>
                     <option value="ASC">ASC</option>
                     <option value="DESC">DESC</option>
