@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
-@section('page_heading','Application Report')
+@section('page_heading','Application Processing')
 @section('section')
 <style type="text/css"></style>
 <div class="row top-body">
