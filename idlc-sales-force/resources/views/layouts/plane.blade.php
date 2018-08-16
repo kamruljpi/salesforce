@@ -50,6 +50,7 @@
 	<script src="{{ asset('assets/scripts/frontend.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('assets/scripts/jquery.easy-autocomplete.min.js') }}"></script>
 	<script src="{{ asset('assets/scripts/ifa_filter.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('assets/scripts/ifa/apllicantion_details_view.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('assets/scripts/training_schedule_create.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('assets/scripts/lead_filter.js') }}" type="text/javascript"></script>
 	<script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
