@@ -11,6 +11,12 @@
                         <i class="fa fa-arrow-left"></i> Back</a>
                 </div>
             </div>
+            <div class="col-sm-4 col-sm-offset-5">
+                <br>
+                <div style="text-align: right; font-size: 110%" class="col-sm-9"><b>Select / De-select All</b></div>
+                <div class="col-sm-3" style="align-content: left"><input type="checkbox"  id="select_all_trainee_applicant"></div>
+                {{--<input class="trainint_applicant_no" type="checkbox" value="1" name="">--}}
+            </div>
         </div>
         <div class="col-sm-10 col-sm-offset-1">
             <div class="panel panel-default add_body">
@@ -38,7 +44,7 @@
                                 <tr>
                                     <td>{{ $i }}</td>
                                     <td>
-                                        {{ $applicant->first_name}} {{ $applicant->last_name}}
+                                        {{ $applicant->first_name}} {{ $applicant->middle_name}} {{ $applicant->last_name}}
                                         <input type="hidden" name="applicant_no[]" value="{{ $applicant->application_no }}">
                                     </td>
                                     <td>{{ $applicant->mobile_no}}</td>
@@ -56,9 +62,9 @@
                             </tbody>
                         </table>
                         <div class="form-group add_input">
-                            <div class="col-md-2 col-md-offset-10" style=" padding-bottom: 10px; padding-right: 0px; ">
-                                <a style="width: 100%;" id="select_all_trainee_applicant" href="javascript:void(0)" class="btn btn-primary">Select All</a>
-                            </div>
+                            {{--<div class="col-md-2 col-md-offset-10" style=" padding-bottom: 10px; padding-right: 0px; ">--}}
+                                {{--<a style="width: 100%;" id="select_all_trainee_applicant" href="javascript:void(0)" class="btn btn-primary">Select All</a>--}}
+                            {{--</div>--}}
                             <div class="col-md-2 col-md-offset-10" style="padding-right: 0px;">
                                 <button type="submit" class="btn btn-primary" style="width:100%">Add
                                 </button>

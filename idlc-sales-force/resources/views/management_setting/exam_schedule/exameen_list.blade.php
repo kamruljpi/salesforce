@@ -81,12 +81,24 @@
                         <td>{{ $exameen->exameen->email }}</td>
                         <td>{{ $exameen->exameen->pre_addr_ps_id }}</td>
                         <td>
-                            <label class="radio-inline">
-                                <input type="radio" class="exameen_pass_status" name="exam_status[{{ $exameen->exameen->application_no }}]" value="Pass" @if($exameen->exameen->training_status == 'Pass')checked @endif>Pass
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" class="exameen_fail_status" name="exam_status[{{ $exameen->exameen->application_no }}]" value="Fail" @if($exameen->exameen->training_status == 'Fail')checked @endif>Fail
-                            </label>
+                            @if($exameen->exameen->training_status == 'Pass')
+                                <label class="radio-inline">Pass in Exam</label>
+                                <input type="hidden" name="exam_status[{{ $exameen->exameen->application_no }}]" value="exam">
+                            @else
+                                <label class="radio-inline">
+                                    <input type="radio" class="exameen_pass_status" name="exam_status[{{ $exameen->exameen->application_no }}]" value="Pass" @if($exameen->exameen->training_status == 'Pass')checked @endif>Pass
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" class="exameen_fail_status" name="exam_status[{{ $exameen->exameen->application_no }}]" value="Fail" @if($exameen->exameen->training_status == 'Fail')checked @endif>Fail
+                                </label>
+                            @endif
+
+                            {{--<label class="radio-inline">--}}
+                                {{--<input type="radio" class="exameen_pass_status" name="exam_status[{{ $exameen->exameen->application_no }}]" value="Pass" @if($exameen->exameen->training_status == 'Pass')checked @endif>Pass--}}
+                            {{--</label>--}}
+                            {{--<label class="radio-inline">--}}
+                                {{--<input type="radio" class="exameen_fail_status" name="exam_status[{{ $exameen->exameen->application_no }}]" value="Fail" @if($exameen->exameen->training_status == 'Fail')checked @endif>Fail--}}
+                            {{--</label>--}}
                         </td>
                         <td><a href="{{ route('exameen_remove_action', [$schedule->id, $exameen->exameen->application_no]) }}">Remove</a></td>
                     </tr>

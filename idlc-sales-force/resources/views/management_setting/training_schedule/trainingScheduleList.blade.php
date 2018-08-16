@@ -35,10 +35,10 @@
                 <th class="">Serial</th>
                 <th class="">Training Name</th>
                 {{--<th class="">Schedule Name</th>--}}
-                <th class="">Start Date</th>
-                <th class="">End Sate</th>
-                <th class="">Start Time</th>
-                <th class="">End Time</th>
+                <th class="">Start Date Time</th>
+                <th class="">End Date TIme</th>
+                {{--<th class="">Start Time</th>--}}
+                {{--<th class="">End Time</th>--}}
                 <th class="">List</th>
                 <th class="">Action</th>
             </tr>
@@ -53,21 +53,21 @@
                     <!-- <td>{{ $sche->start_date }}</td> -->
                     <td>
                         @if(!empty($sche->start_date))
-                        {{Carbon\Carbon::parse($sche->start_date)->format('d-m-Y')}}
+                        {{Carbon\Carbon::parse($sche->start_date)->format('m/d/Y g:i A')}}
                         @else
                         {{ $sche->start_date }}
                         @endif
                     </td>
                     <td>
                         @if(!empty($sche->end_date))
-                        {{Carbon\Carbon::parse($sche->end_date)->format('d-m-Y')}}
+                        {{Carbon\Carbon::parse($sche->end_date)->format('m/d/Y g:i A')}}
                         @else
                         {{ $sche->end_date }}
                         @endif
                     </td>
                     <!-- <td>{{ $sche->end_date }}</td> -->
-                    <td>{{ $sche->start_time }}</td>
-                    <td>{{ $sche->end_time }}</td>
+                    {{--<td>{{ $sche->start_time }}</td>--}}
+                    {{--<td>{{ $sche->end_time }}</td>--}}
                     <td><a href="{{ route('schedule_trainee_view', $sche->id) }}">Trainees</a></td>
                     <td><a href="{{ route('update_training_schedule_view', $sche->id) }}">Update</a></td>
                 </tr>
