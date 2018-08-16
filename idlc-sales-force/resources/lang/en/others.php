@@ -155,7 +155,7 @@ return [
 'mxp_menu_lc_purchase' => 'LC Purchase',
 'mxp_view_btn' => 'view result',
 'mxp_menu_ifa' => 'IFA Management',
-'mxp_menu_partially_completed_application' => 'Application Report',
+'mxp_menu_partially_completed_application' => 'Application Processing',
 'mxp_menu_lead' => 'Lead',
 'mxp_menu_salesforce_management' => 'Sales Force',
 'mxp_menu_management_settings' => 'Management Setting',
@@ -177,7 +177,9 @@ return [
 'mxp_menu_interested' => 'Interested',
 'mxp_menu_pitched' => 'Pitched',
 'mxp_menu_exam_name' => 'Exam Name',
-'mxp_menu_bulk_upload_list' => 'IFA Bulk Upload List',
 'mxp_menu_examine_pass_list' => 'Pass Examines',
+'mxp_menu_bulk_upload_list' => ' IFA Bulk Upload List',
+'mxp_menu_update_nid_list_view' => ' Update NID',
+'mxp_menu_ifa_bulk_upload' => ' ifa Bulk upload',
 
 ];
