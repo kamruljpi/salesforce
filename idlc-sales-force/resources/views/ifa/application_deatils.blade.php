@@ -26,19 +26,19 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label for="first_name">First Name  </label>
-                                        <input disabled="true" type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name" value="{{ !isset($application_details->first_name) ?: $application_details->first_name  }}">
+                                        <input disabled="true" type="text" class="form-control" id="first_name" name="first_name" value="{{ !isset($application_details->first_name) ?: $application_details->first_name  }}">
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label for="middle_name">Middle Name</label>
-                                        <input disabled="true" type="text" class="form-control" id="middle_name" name="middle_name" placeholder="Middle Name" value="{{ !isset($application_details->middle_name) ? '' : $application_details->middle_name  }}">
+                                        <input disabled="true" type="text" class="form-control" id="middle_name" name="middle_name" value="{{ !isset($application_details->middle_name) ? '' : $application_details->middle_name  }}">
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label for="last_name">Last Name  </label>
-                                        <input disabled="true" type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name" value="{{ !isset($application_details->last_name) ?: $application_details->last_name  }}">
+                                        <input disabled="true" type="text" class="form-control" id="last_name" name="last_name" value="{{ !isset($application_details->last_name) ?: $application_details->last_name  }}">
                                     </div>
                                 </div>
                             </div>
@@ -64,7 +64,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="father_name">Father's Name</label>
-                                        <input disabled="true" type="text" class="form-control" id="father_name" name="father_name" placeholder="Father's Name" value="{{ !isset($application_details->father_name) ? '' : $application_details->father_name  }}">
+                                        <input disabled="true" type="text" class="form-control" id="father_name" name="father_name" value="{{ !isset($application_details->father_name) ? '' : $application_details->father_name  }}">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -89,7 +89,7 @@
                                     </div>
                                     <div class="form-group others_nationality_flag_yes" style="display: none;">
                                         <label for="others_nationality">Others Nationality</label>
-                                        <input disabled="true" type="text" class="form-control" id="others_nationality" name="others_nationality" placeholder="Others Nationality" value="{{ $application_details->others_nationality }}">
+                                        <input disabled="true" type="text" class="form-control" id="others_nationality" name="others_nationality" value="{{ $application_details->others_nationality }}">
                                     </div>
                                 </div>
 
@@ -113,7 +113,7 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label for="date_of_birth">Date of Birth  </label>
-                                        <input disabled="true" type="text" class="form-control" id="date_of_birth" name="date_of_birth" placeholder="Date of Birth" data-provide="datepicker" value="{{ !isset($application_details->date_of_birth) ?: $application_details->date_of_birth  }}">
+                                        <input disabled="true" type="text" class="form-control" id="date_of_birth" name="date_of_birth" data-provide="datepicker" value="{{ !isset($application_details->date_of_birth) ?: (Carbon\Carbon::parse($application_details->date_of_birth)->format('d-m-Y')) }}">
                                     </div>
                                 </div>
 
@@ -133,7 +133,7 @@
                                 <div class="col-sm-3">
                                     <div class="form-group others_user_type_flag_yes" style="display: none;">
                                         <label for="others_user_type">Others User Type</label>
-                                        <input disabled="true" type="text" class="form-control" id="others_user_type" name="others_user_type" placeholder="Others User Type" value="{{ $application_details->others_user_type }}">
+                                        <input disabled="true" type="text" class="form-control" id="others_user_type" name="others_user_type" value="{{ $application_details->others_user_type }}">
                                     </div>
                                 </div>
 
@@ -145,7 +145,7 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label for="national_id_card_no">National ID Card No.  </label>
-                                        <input style="width: 90% !important; float: left;" disabled="true" type="text" class="form-control" id="national_id_card_no" name="national_id_card_no" placeholder="National ID Card No." value="{{ !isset($application_details->national_id_card_no) ?: $application_details->national_id_card_no  }}">
+                                        <input style="width: 90% !important; float: left;" disabled="true" type="text" class="form-control" id="national_id_card_no" name="national_id_card_no" value="{{ !isset($application_details->national_id_card_no) ?: $application_details->national_id_card_no  }}">
                                         @if($application_details->nid_validation_status == 'Valid')
                                             <span style="padding-left: 10px; float:left; color: #5cb85c; font-size: 30px;" class="glyphicon glyphicon-ok-circle"></span>
                                         @elseif($application_details->nid_validation_status == 'InValid')
@@ -170,7 +170,7 @@
                                 </div>
                             </div>
 
-                            <div class="row hidden update_nid_h">
+                            <div class="row update_nid_h">
                                 <div class="set_hide_body">
                                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                                     <input type="hidden" name="application_no_" value="{{$application_details->application_no}}" id="application_no_">
@@ -257,7 +257,7 @@
                                                 <div class="col-sm-3">
                                                     <div class="form-group">
                                                         <label for="present_address_po">Thana</label>
-                                                        <input disabled="true" type="text" class="form-control" id="present_address_po" name="present_address_po" placeholder="Thana" value="{{ $application_details->pre_addr_ps_id }}">
+                                                        <input disabled="true" type="text" class="form-control" id="present_address_po" name="present_address_po"  value="{{ $application_details->pre_addr_ps_id }}">
                                                         {{-- <select disabled="true"" class="form-control thana_id" id="present_address_po" name="present_address_po">
                                                             <option value="0">Select any</option>
                                                         </select> --}}
@@ -269,19 +269,19 @@
                                                 <div class="col-sm-4">
                                                     <div class="form-group">
                                                         <label for="present_address_road_no">Road No.</label>
-                                                        <input disabled="true" type="text" class="form-control" id="present_address_road_no" name="present_address_road_no" placeholder="Road No." value="{{ !isset($application_details->pre_addr_road_no) ? '' : $application_details->pre_addr_road_no  }}">
+                                                        <input disabled="true" type="text" class="form-control" id="present_address_road_no" name="present_address_road_no" value="{{ !isset($application_details->pre_addr_road_no) ? '' : $application_details->pre_addr_road_no  }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-4">
                                                     <div class="form-group">
                                                         <label for="present_address_house_no">House No.</label>
-                                                        <input disabled="true" type="text" class="form-control" id="present_address_house_no" name="present_address_house_no" placeholder="House No." value="{{ !isset($application_details->pre_addr_house_no) ? '' : $application_details->pre_addr_house_no  }}">
+                                                        <input disabled="true" type="text" class="form-control" id="present_address_house_no" name="present_address_house_no" value="{{ !isset($application_details->pre_addr_house_no) ? '' : $application_details->pre_addr_house_no  }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-4">
                                                     <div class="form-group">
                                                         <label for="present_address_flat_no">Flat No.</label>
-                                                        <input disabled="true" type="text" class="form-control" id="present_address_flat_no" name="present_address_flat_no" placeholder="Flat No." value="{{ !isset($application_details->pre_addr_flat_no) ? '' : $application_details->pre_addr_flat_no  }}">
+                                                        <input disabled="true" type="text" class="form-control" id="present_address_flat_no" name="present_address_flat_no" value="{{ !isset($application_details->pre_addr_flat_no) ? '' : $application_details->pre_addr_flat_no  }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -346,7 +346,7 @@
                                                     <div class="col-sm-3">
                                                         <div class="form-group is_same_as_present_address_flag_yes">
                                                             <label for="permanent_address_po">Thana</label>
-                                                            <input disabled="true" type="text" class="form-control" id="permanent_address_po" name="permanent_address_po" value="{{ $application_details->per_addr_ps_id }}" placeholder="Thana">
+                                                            <input disabled="true" type="text" class="form-control" id="permanent_address_po" name="permanent_address_po" value="{{ $application_details->per_addr_ps_id }}" >
                                                             {{-- <select disabled="true"" class="form-control thana_id" id="permanent_address_po" name="permanent_address_po">
                                                                 <option value="0">Select any</option>
                                                             </select> --}}
@@ -358,19 +358,19 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group is_same_as_present_address_flag_yes">
                                                             <label for="permanent_address_road_no">Road No.</label>
-                                                            <input disabled="true" type="text" class="form-control" id="permanent_address_road_no" name="permanent_address_road_no" placeholder="Road No." value="{{ !isset($application_details->per_addr_road_no) ? '' : $application_details->per_addr_road_no  }}">
+                                                            <input disabled="true" type="text" class="form-control" id="permanent_address_road_no" name="permanent_address_road_no" value="{{ !isset($application_details->per_addr_road_no) ? '' : $application_details->per_addr_road_no  }}">
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group is_same_as_present_address_flag_yes">
                                                             <label for="permanent_address_house_no">House No.</label>
-                                                            <input disabled="true" type="text" class="form-control" id="permanent_address_house_no" name="permanent_address_house_no" placeholder="House No." value="{{ !isset($application_details->per_addr_house_no) ? '' : $application_details->per_addr_house_no  }}">
+                                                            <input disabled="true" type="text" class="form-control" id="permanent_address_house_no" name="permanent_address_house_no" value="{{ !isset($application_details->per_addr_house_no) ? '' : $application_details->per_addr_house_no  }}">
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group is_same_as_present_address_flag_yes">
                                                             <label for="permanent_address_flat_no">Flat No.</label>
-                                                            <input disabled="true" type="text" class="form-control" id="permanent_address_flat_no" name="permanent_address_flat_no" placeholder="Flat No." value="{{ !isset($application_details->per_addr_flat_no) ? '' : $application_details->per_addr_flat_no  }}">
+                                                            <input disabled="true" type="text" class="form-control" id="permanent_address_flat_no" name="permanent_address_flat_no" value="{{ !isset($application_details->per_addr_flat_no) ? '' : $application_details->per_addr_flat_no  }}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -401,13 +401,13 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="latest_degree">Latest Degree</label>
-                                <input disabled="true" type="text" class="form-control" id="latest_degree" name="latest_degree" placeholder="Latest Degree" value="{{ !isset($application_details->latest_degree) ? '' : $application_details->latest_degree  }}">
+                                <input disabled="true" type="text" class="form-control" id="latest_degree" name="latest_degree" value="{{ !isset($application_details->latest_degree) ? '' : $application_details->latest_degree  }}">
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="last_educational_institution">Last Educational Institution</label>
-                                <input disabled="true" type="text" class="form-control" id="last_educational_institution" name="last_educational_institution" placeholder="Last Educational Institution" value="{{ !isset($application_details->last_educational_institution) ? '' : $application_details->last_educational_institution  }}">
+                                <input disabled="true" type="text" class="form-control" id="last_educational_institution" name="last_educational_institution" value="{{ !isset($application_details->last_educational_institution) ? '' : $application_details->last_educational_institution  }}">
                             </div>
                         </div>
                     </div>
@@ -427,20 +427,20 @@
                             @if($application_details->is_job_holder == 1)
                                 <div class="form-group " >
                                     <label for="organization_name">Organization Name</label>
-                                    <input disabled="true" type="text" class="form-control" id="organization_name" name="organization_name" placeholder="Organization Name" value="{{ !isset($application_details->organization_name) ? '' : $application_details->organization_name  }}">
+                                    <input disabled="true" type="text" class="form-control" id="organization_name" name="organization_name" value="{{ !isset($application_details->organization_name) ? '' : $application_details->organization_name  }}">
                                 </div>
 
                                 <div class="form-group " >
                                     <label for="job_holder_department">Department</label>
-                                    <input disabled="true" type="text" class="form-control" id="job_holder_department" name="job_holder_department" placeholder="Job Holder Department" value="{{ !isset($application_details->job_holder_department) ? '' : $application_details->job_holder_department  }}">
+                                    <input disabled="true" type="text" class="form-control" id="job_holder_department" name="job_holder_department" value="{{ !isset($application_details->job_holder_department) ? '' : $application_details->job_holder_department  }}">
                                 </div>
                                 <div class="form-group " >
                                     <label for="designation">Designation</label>
-                                    <input disabled="true" type="text" class="form-control" id="designation" name="designation" placeholder="Designation"  value="{{ !isset($application_details->designation) ? '' : $application_details->designation  }}">
+                                    <input disabled="true" type="text" class="form-control" id="designation" name="designation" value="{{ !isset($application_details->designation) ? '' : $application_details->designation  }}">
                                 </div>
                                 <div class="form-group " >
                                     <label for="employee_id_no">Employee ID No.</label>
-                                    <input disabled="true" type="text" class="form-control" id="employee_id_no" name="employee_id_no" placeholder="Employee ID No." value="{{ !isset($application_details->employee_id_no) ? '' : $application_details->employee_id_no  }}">
+                                    <input disabled="true" type="text" class="form-control" id="employee_id_no" name="employee_id_no" value="{{ !isset($application_details->employee_id_no) ? '' : $application_details->employee_id_no  }}">
                                 </div>
                             @endif
 
@@ -459,15 +459,15 @@
                             @if($application_details->is_student== 1)
                                 <div class="form-group " >
                                     <label for="institution_name">Institution Name</label>
-                                    <input disabled="true" type="text" class="form-control" id="institution_name" name="institution_name" placeholder="Institution Name" value="{{ !isset($application_details->institution_name) ? '' : $application_details->institution_name  }}">
+                                    <input disabled="true" type="text" class="form-control" id="institution_name" name="institution_name" value="{{ !isset($application_details->institution_name) ? '' : $application_details->institution_name  }}">
                                 </div>
                                 <div class="form-group " >
                                     <label for="student_department">Department</label>
-                                    <input disabled="true" type="text" class="form-control" id="student_department" name="student_department" placeholder="Student's Department" value="{{ !isset($application_details->student_department) ? '' : $application_details->student_department  }}">
+                                    <input disabled="true" type="text" class="form-control" id="student_department" name="student_department" value="{{ !isset($application_details->student_department) ? '' : $application_details->student_department  }}">
                                 </div>
                                 <div class="form-group " >
                                     <label for="student_id_card_no">Student ID Card No.</label>
-                                    <input disabled="true" type="text" class="form-control" id="student_id_card_no" name="student_id_card_no" placeholder="Student ID Card No." value="{{ !isset($application_details->student_id_card_no) ? '' : $application_details->student_id_card_no  }}">
+                                    <input disabled="true" type="text" class="form-control" id="student_id_card_no" name="student_id_card_no" value="{{ !isset($application_details->student_id_card_no) ? '' : $application_details->student_id_card_no  }}">
                                 </div>
                             @endif
                         </div>
@@ -526,7 +526,7 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="account_no">A/C No.</label>
-                                    <input disabled="true" type="text" class="form-control" id="account_no" name="account_no" placeholder="A/C No." value="{{ !isset($application_details->bank_account_no) ? '' : $application_details->bank_account_no  }}">
+                                    <input disabled="true" type="text" class="form-control" id="account_no" name="account_no" value="{{ !isset($application_details->bank_account_no) ? '' : $application_details->bank_account_no  }}">
                                 </div>
                             </div>
                         </div>
@@ -552,7 +552,7 @@
                                     <label for="bKash_mobile_no">bKash Mobile No.</label>
                                     <div class="input-group">
                                         <span class="input-group-addon" id="basic-addon2">+88 01</span>
-                                        <input disabled="true" type="number" class="form-control" id="bKash_mobile_no" name="bKash_mobile_no" placeholder="bKash Mobile No." aria-describedby="basic-addon2" value="{{ !isset($application_details->bKash_mobile_no) ? '' : $application_details->bKash_mobile_no  }}">
+                                        <input disabled="true" type="number" class="form-control" id="bKash_mobile_no" name="bKash_mobile_no" aria-describedby="basic-addon2" value="{{ !isset($application_details->bKash_mobile_no) ? '' : $application_details->bKash_mobile_no  }}">
                                     </div>
                                 </div>
                             </div>
