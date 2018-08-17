@@ -14,7 +14,7 @@ class AddRejectRemarksFieldIfaRegisterTable extends Migration
     public function up()
     {
         Schema::table('tbl_ifa_registrations', function (Blueprint $table) {
-            $table->string('rejection_remarks_id');
+            $table->string('rejection_remarks_id')->nullable();
         });
     }
 
