@@ -164,7 +164,8 @@
 
                                 <div class="col-sm-3 uploaded_picture_preview_div">
                                     <div style="padding-top: 25px">
-                                        <img id="uploaded_picture_preview" src="{{ asset('idlc_aml_images/ifa_registrations/' . $application_details->application_no . $application_details->image_ext) }}" alt="Uploaded Picture Preview" width="185" />
+                                        <img id="uploaded_picture_preview" 
+                                        src=" ../../../aml/ifa/public/idlc_aml_images/ifa_registrations/{{ $application_details->application_no .'.'. $application_details->image_ext }}" alt="Uploaded Picture Preview" width="185" />
                                     </div>
                                 </div>
                             </div>
@@ -664,15 +665,17 @@
     @if($application_details->application_status == 'Submitted')
     
         <div class="panel-body">
+            <form action="{{ route('applicant_nid_validate_action', [$application_details->application_no, 'InValid'] ) }}" method="post">
+                {{csrf_field()}}
             <div class="col-sm-4">
                 <div class="form-group error_reject_ifa">
                     <label class="col-sm-8">Rejection remarks</label>
                     <div class="col-sm-12">
-                        <select class="form-control" id="rejection_remarks">
+                        <select class="form-control" id="rejection_remarks" name="rejection_remarks">
                             <option value="">Choose a option</option>
-                            <option value="1">Fake email address</option>
-                            <option value="2">All ready use NID no</option>
-                            <option value="3">Invalid details</option>
+                            @foreach($rejectionRemarksValue as $remarks_value)
+                            <option value="{{$remarks_value->id}}">{{$remarks_value->remarks}}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -680,11 +683,12 @@
             <div class="col-sm-4">
                 <label class="col-sm-4"></label>
                 <div style="padding-top: 25px;">
-                    <a href="{{ route('applicant_nid_validate_action', [$application_details->application_no, 'InValid'] ) }}" style="width: 100%; margin-right: 5%;" class="btn btn-danger" id="reject_ifa">
+                    <button style="width: 100%; margin-right: 5%;" class="btn btn-danger" id="reject_ifa">
                     Reject
-                    </a>
+                    </button>
                 </div>
             </div>
+            </form>
 
             <div class="col-sm-4">
                 <label class="col-sm-4"></label>
