@@ -27,11 +27,11 @@ class LeadSearchController extends Controller
     public function getIfaValue(Request $request){
 
         $results = array();
-        $orderDetails = DB::select("SELECT application_no,first_name FROM tbl_ifa_registrations where application_status = 'Approved' order by application_no DESC ");
+        $orderDetails = DB::select("SELECT application_no,first_name,middle_name,last_name FROM tbl_ifa_registrations where application_status = 'Approved' order by application_no DESC ");
 
         if(isset($orderDetails) && !empty($orderDetails)){
             foreach ($orderDetails as $orderKey => $orderValue) {
-                $results[]['name'] = $orderValue->application_no.'-'.$orderValue->first_name;
+                $results[]['name'] = $orderValue->application_no.' - '.$orderValue->first_name.' '.$orderValue->middle_name.' '.$orderValue->last_name;
                 // $results[]['application_no'] = $orderValue->application_no;
             }
         }
@@ -86,7 +86,7 @@ class LeadSearchController extends Controller
     }
 
     private function searchByAscDsc($value = [],$object){
-    	$data = $object->select('tbl_create_lead.*')
+    	$data = DB::table('tbl_create_lead')->select('tbl_create_lead.*')
                     ->orderBy('id_create_lead',$value['sortbyValues'])          
                     ->get();
         return $data;
@@ -94,7 +94,7 @@ class LeadSearchController extends Controller
 
     private function searchByFirstOption($value = [],$object){
 
-    	$data = $object->select('tbl_create_lead.*')
+    	$data = DB::table('tbl_create_lead')->select('tbl_create_lead.*')
             		->where('interest_label',$value['selectedOptionValues'])
             		->orWhere('lead_assign',$value['selectedOptionValues'])
                     ->orderBy('id_create_lead',(!empty($value['sortbyValues']) ? $value['sortbyValues'] : "ASC"))
@@ -103,7 +103,7 @@ class LeadSearchController extends Controller
     }
 
     private function searchByFristAndFrom($value = [],$object){
-    	$data = $object->select('tbl_create_lead.*')
+    	$data = DB::table('tbl_create_lead')->select('tbl_create_lead.*')
             		->whereDate('created_at','>=',date($value['formDateValues']))
                     ->whereDate('created_at','<=',Carbon::now()->format('Ymd'))
                     ->where('interest_label',$value['selectedOptionValues'])
@@ -113,7 +113,7 @@ class LeadSearchController extends Controller
     }
 
     private function searchByFromCurrentDate($value = [],$object){
-    	$data = $object->select('tbl_create_lead.*')
+    	$data = DB::table('tbl_create_lead')->select('tbl_create_lead.*')
             		->whereDate('created_at','>=',date($value['formDateValues']))
                     ->whereDate('created_at','<=',Carbon::now()->format('Ymd'))
                     ->orderBy('id_create_lead',(!empty($value['sortbyValues']) ? $value['sortbyValues'] : "ASC"))
@@ -122,7 +122,7 @@ class LeadSearchController extends Controller
     }
 
     private function searchByFromAndTo($value = [],$object){
-    	$data = $object->select('tbl_create_lead.*')
+    	$data = DB::table('tbl_create_lead')->select('tbl_create_lead.*')
             		->whereDate('created_at','>=',date($value['formDateValues']))
                     ->whereDate('created_at','<=',date($value['toDateValues']))
                     ->orderBy('id_create_lead',(!empty($value['sortbyValues']) ? $value['sortbyValues'] : "ASC"))
@@ -132,7 +132,7 @@ class LeadSearchController extends Controller
     }
 
     private function searchByALl($value = [],$object){
-    	$data = $object->select('tbl_create_lead.*')
+    	$data = DB::table('tbl_create_lead')->select('tbl_create_lead.*')
             		->whereDate('created_at','>=',date($value['formDateValues']))
                     ->whereDate('created_at','<=',date($value['toDateValues']))
                     ->where('interest_label',$value['selectedOptionValues'])
