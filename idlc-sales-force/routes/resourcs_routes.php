@@ -86,9 +86,9 @@ Route::group(['middleware' => 'auth'], function () {
 
 		/** bulk upload**/
 		Route::get('ifa/bulk/upload', [
-				'as' => 'ifa_bulk_upload',
-				'uses' => 'ifa\RejectedApplication@viewRejectedApplication'
-			]);
+			'as' => 'ifa_bulk_upload',
+			'uses' => 'ifa\RejectedApplication@viewRejectedApplication'
+		]);
 
 });
 
