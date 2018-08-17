@@ -93,7 +93,7 @@ var update_nid_request = (function(){
 
 	    			$.ajax({
 	    	          type: "GET",
-	    	          url: "/SalesForce/update/nid",
+	    	          url: baseURL+"/update/nid",
 	    	          data: data,
 	    	          datatype: 'json',
 	    	          cache: false,
