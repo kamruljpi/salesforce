@@ -31,7 +31,7 @@ return [
 
     'lifetime' => 120,
 
-    'expire_on_close' => false,
+    'expire_on_close' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -177,3 +177,9 @@ return [
     'http_only' => true,
 
 ];
+
+
+git commit idlc-sales-force/resources/views/management_setting/exam_schedule/exameen_list.blade.php -m "modified"
+git commit idlc-sales-force/routes/resourcs_routes.php -m "modified"
+git commit js/custom.js -m "modified"
+git commit js/new_saleforces_extended.js -m "modified"
