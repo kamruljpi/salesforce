@@ -99,6 +99,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/searchByOrg', 'SalesAgent\BulkUploadController@bulkSearchByOrg');
         Route::get('/setImgTOSystem', 'SalesAgent\BulkUploadController@setImageToSystem');
         Route::get('/update/nid', 'ifa\UpdateNid@storeNid');
+        Route::get('/get/update/nid/value', 'ifa\UpdateNid@getNidValue');
 
 	
 });
