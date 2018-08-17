@@ -46,8 +46,11 @@ var ifaManagementFilterSearch = (function(){
 		          	// console.log(data);
 		          	addRowIfa(data,0);
 		          },
-		          error:function(result){
-		            alert("Some thing is Wrong");
+		          error:function(jqXHR, textStatus, errorThrown){
+		          	if(jqXHR.status == 401)
+		            	location.reload();
+		          	else
+                        alert("Some thing is Wrong");
 		          }
 		          });
 			});
@@ -88,9 +91,15 @@ var ifaManagementFilterSearch = (function(){
 		          	console.log(data);
 		          	addRowIfa(data,0);
 		          },
-		          error:function(result){
-		            alert("Some thing is Wrong");
-		          }
+                    error:function(jqXHR, textStatus, errorThrown){
+                        if(jqXHR.status == 401)
+                            location.reload();
+                        else
+                            alert("Some thing is Wrong");
+                    }
+		          // error:function(result){
+		          //   alert("Some thing is Wrong");
+		          // }
 		          });
 			});
 		}
@@ -240,9 +249,15 @@ var ifaManagementReset = (function(){
 		          	var data = JSON.parse(result);
 		          	addRowIfa(data,0)		          	
 		          },
-		          error:function(result){
-		            alert("Some thing is Wrong");
-		          }
+                    error:function(jqXHR, textStatus, errorThrown){
+                        if(jqXHR.status == 401)
+                            location.reload();
+                        else
+                            alert("Some thing is Wrong");
+                    }
+		          // error:function(result){
+		          //   alert("Some thing is Wrong");
+		          // }
 		          });
 			});
 		}
@@ -267,9 +282,15 @@ $('#selectOrganizationOption').on('change', function (ev) {
             // var data = JSON.parse(result);
             addRowBulkList(result, 0)
         },
-        error:function(result){
-            alert("Some thing is Wrong");
+        error:function(jqXHR, textStatus, errorThrown){
+            if(jqXHR.status == 401)
+                location.reload();
+            else
+                alert("Some thing is Wrong");
         }
+        // error:function(result){
+        //     alert("Some thing is Wrong");
+        // }
     });
 });
 
@@ -352,9 +373,15 @@ function addRowBulkList(results, start)
                 // var data = JSON.parse(result);
                 // addRowBulkList(result, 0)
             },
-            error:function(result){
-                alert("Some thing is Wrong");
+            error:function(jqXHR, textStatus, errorThrown){
+                if(jqXHR.status == 401)
+                    location.reload();
+                else
+                    alert("Some thing is Wrong");
             }
+            // error:function(result){
+            //     alert("Some thing is Wrong");
+            // }
         });
         location.reload();
     });
