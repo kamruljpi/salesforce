@@ -16,6 +16,6 @@ class RejectedApplication extends Controller
     						->where('application_status',5)
                             // ->orderBy('id_organization','DESC')
                             ->paginate(25);
-    	return view('ifa.rejected_application.rejectedApplicationList',compact('getListValue'));
+    	return view('ifa.ifa_bulk_upload.bulk_upload_view');
     }
 }
