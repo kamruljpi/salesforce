@@ -37,19 +37,29 @@
                     <td>{{$value->national_id_card_no}}</td>
                     <td>{{$value->new_nid}}</td>
                     <td>
-                        <form action="{{route('update_nid_action_update')}}" method="post">
-                            {{ csrf_field() }}
-                        <input type="hidden" name="id" value="{{$value->application_no}}">
-                        <input type="hidden" name="new_nid" value="{{$value->new_nid}}">
-                            
-                        <button type="submit" class="btn btn-default">Approved</button>
-                        </form>
-                        <form action="{{route('update_nid_action_reject')}}" method="post">
-                            {{ csrf_field() }}
-                        <input type="hidden" name="id" value="{{$value->id}}">
-                            
-                        <button type="submit" class="btn btn-default">Rejected</button>
-                        </form>
+                        <table>
+                            <tr>
+                                <td>
+                                    <form action="{{route('update_nid_action_update')}}" method="post">
+                                        {{ csrf_field() }}
+                                        <input type="hidden" name="id" value="{{$value->application_no}}">
+                                        <input type="hidden" name="nid_id" value="{{$value->id}}">
+                                        <input type="hidden" name="new_nid" value="{{$value->new_nid}}">
+                                        
+                                        <button type="submit" class="btn btn-default">Approved</button>
+                                    </form>
+                                </td>
+
+                                <td style="padding-left: 5px;">
+                                    <form action="{{route('update_nid_action_reject')}}" method="post">
+                                        {{ csrf_field() }}
+                                        <input type="hidden" name="nid_id" value="{{$value->id}}">
+                                        
+                                        <button type="submit" class="btn btn-default">Rejected</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </table>                        
                     </td>
                 </tr>
             @endforeach
