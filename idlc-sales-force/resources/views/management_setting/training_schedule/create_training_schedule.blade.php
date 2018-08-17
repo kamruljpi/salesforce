@@ -103,6 +103,12 @@
                             {{--</div>--}}
                         {{--</div>--}}
 
+<div class="col-sm-5 col-sm-offset-7">
+                <br>
+                <div class="col-sm-10" style="text-align: right; font-size: 110%;"><b>Select / De-select All</b></div>
+                <div class="col-sm-1" style="align-content: left"><input id="select_all_trainee_applicant" type="checkbox"></div>
+                
+            </div>
 
                         <table class="table table-bordered table-striped" id="tblSearch">
                             <thead>
@@ -140,10 +146,7 @@
                             </tbody>
                         </table>
                         <div class="form-group add_input">
-                            <div class="col-md-2 col-md-offset-10" style=" padding-bottom: 10px; padding-right: 0px; ">
-                                <a style="width: 100%;" id="select_all_trainee_applicant" href="javascript:void(0)" class="btn btn-primary">Select All</a>
-                            </div>
-                            <div class="col-md-2 col-md-offset-10" style="padding-right: 0px;">
+                                                        <div class="col-md-2 col-md-offset-10" style="padding-right: 0px;">
                                 <button type="submit" class="btn btn-primary" style="width:100%" id="schedule_submit">Submit
                                 </button>
                             </div>
