@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\ifa;
 
-use App\ApprovedTrainee;
+use App\Model\ManagementSetting\ApplicantTraining;
+use App\Model\IfaManagement\RejectionRemarksModel;
 use App\Http\Controllers\Message\ActionMessage;
 use App\Model\IfaManagement\IfaRegistration;
 use App\Model\IfaManagement\FilterOption;
 use App\Http\Controllers\Controller;
-use App\Model\ManagementSetting\ApplicantTraining;
+use App\Mylibs\SendingEmail;
 use Illuminate\Http\Request;
+use App\ApprovedTrainee;
 use Carbon\Carbon;
 use Validator;
 use Auth;
 use DB;
-use App\Mylibs\SendingEmail;
 
 class PartiallyCompleted extends Controller
 {
@@ -47,22 +48,28 @@ class PartiallyCompleted extends Controller
                                     ->join('tbl_exam_names as exn','exs.exam_name_id','exn.id_exam_name')
                                     ->where('aex.applicant_no',$req->application_no)
                                     ->get();
-                                    
-        // $this->print_me($applicantExamDetails);
-        return view('ifa.application_deatils',compact('application_details', 'applicantTrainingDetails','applicantExamDetails'));
+        $rejectionRemarksValue = RejectionRemarksModel::get();
+        return view('ifa.application_deatils',compact('application_details', 'applicantTrainingDetails','applicantExamDetails','rejectionRemarksValue'));
     }
 
     public function nidVaidate(Request $req){
 
-        $this->print_me($req->status);
+        // $this->print_me($req->all());
         if($req->status == 'Valid'){
-            $appStatus = 'InProgress'; 
+            $appStatus = 'InProgress';
+            $rejection_remarks_id = $req->rejection_remarks;
         }
         else if($req->status == 'InValid'){
-            $appStatus = 'Rejected'; 
-        }
+            $appStatus = 'Rejected';
+            $rejection_remarks_id = $req->rejection_remarks;
+        }else{}
 
-        ApplicantTraining::where('application_no', $req->application_no)->update(['nid_validation_status' => $req->status, 'application_status' => $appStatus]);
+        ApplicantTraining::where('application_no', $req->application_no)
+                           ->update([
+                            'nid_validation_status' => $req->status,
+                            'application_status'    => $appStatus,
+                            'rejection_remarks_id'  => $rejection_remarks_id
+                        ]);
 
         $applicantDetails = ApplicantTraining::where('application_no', $req->application_no)->first();
         $mailPerInfo = [
@@ -79,7 +86,6 @@ class PartiallyCompleted extends Controller
 
     public function getIfaAllValue(Request $request){
         return json_encode(DB::table('tbl_ifa_registrations')->orderBy('application_no','DESC')->get());
-    	// return json_encode(IfaRegistration::get());
 
 
     }
