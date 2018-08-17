@@ -49,8 +49,11 @@ var leadCreateListFilterSearch = (function(){
 		          	console.log(data);
 		          	addRowLead(data,0);
 		          },
-		          error:function(result){
-		            alert("Some thing is Wrong");
+		          error:function(jqXHR, textStatus, errorThrown){
+                      if(jqXHR.status == 401)
+                          location.reload();
+                      else
+                          alert("Some thing is Wrong");
 		          }
 		          });
 			});
@@ -91,8 +94,11 @@ var leadCreateListFilterSearch = (function(){
 		          	var data = JSON.parse(result);
 		          	addRowLead(data,0);
 		          },
-		          error:function(result){
-		            alert("Some thing is Wrong");
+		          error:function(jqXHR, textStatus, errorThrown){
+                      if(jqXHR.status == 401)
+                          location.reload();
+                      else
+                          alert("Some thing is Wrong");
 		          }
 		          });
 			});
@@ -230,8 +236,11 @@ var leadCreateListReset = (function(){
 		          	var data = JSON.parse(result);
 		          	addRowLead(data,0)		          	
 		          },
-		          error:function(result){
-		            alert("Some thing is Wrong");
+		          error:function(jqXHR, textStatus, errorThrown){
+                      if(jqXHR.status == 401)
+                          location.reload();
+                      else
+                          alert("Some thing is Wrong");
 		          }
 		          });
 			});
