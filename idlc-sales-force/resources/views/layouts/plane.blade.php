@@ -12,8 +12,9 @@
 	<meta content="" name="description"/>
 	<meta content="" name="author"/>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<link rel="stylesheet" href="{{ asset("assets/stylesheets/styles.css") }}" />
-	<link rel="stylesheet" href="{{ asset("css/admin.css") }}" />
+	<link rel="stylesheet" href="{{ asset('assets/stylesheets/styles.css') }}" />
+	<link rel="stylesheet" href="{{ asset('assets/stylesheets/bootstrap-datepicker.css') }}" />
+	<link rel="stylesheet" href="{{ asset('css/admin.css') }}" />
 
 		<!-- for select2 -->
 	<link href="{{ asset('assets/customByMxp/css/select2.min.css') }}" rel="stylesheet" />
@@ -24,7 +25,7 @@
 	<link rel="stylesheet" href="{{ asset('assets/scripts/easy-autocomplete.themes.min.css') }}" />
 
 	<script type="text/javascript">
-		var baseUrl = "/SalesForce"
+		var baseURL = '{{ url("/") }}';
 	</script>
 	@yield('scriptvars')
 </head>
@@ -50,6 +51,7 @@
 	<script src="{{ asset('assets/scripts/frontend.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('assets/scripts/jquery.easy-autocomplete.min.js') }}"></script>
 	<script src="{{ asset('assets/scripts/ifa_filter.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('assets/scripts/bootstrap-datepicker.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('assets/scripts/ifa/apllicantion_details_view.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('assets/scripts/training_schedule_create.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('assets/scripts/lead_filter.js') }}" type="text/javascript"></script>

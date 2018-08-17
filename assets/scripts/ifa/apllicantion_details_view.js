@@ -4,14 +4,42 @@ var open_update_nid_field = (function(){
 	return {
 		init: function(){
 			var clicks = true;
-			$('#update_nid').click(function(){
-			    clicks = $(this).data('clicks');
-			    if(clicks){
-					$('.update_nid_h').removeClass('hidden');
+			$('#update_nid').on('click',function(){
+
+				clicks = $(this).data('clicks');
+
+      		    if(clicks){
+      				$('.update_nid_h').removeClass('hidden');
+					var national_ids = $('#national_id_card_no').val();
+					var application_nos = $('#application_no_').val();
+
+					var datass = {
+		    				oldnid : national_ids,
+		    				ifaid 	:application_nos
+		    			};
+
+					$.ajax({
+			          type: "GET",
+			          url: baseURL+"/get/update/nid/value",
+			          data: datass,
+			          datatype: 'json',
+			          cache: false,
+			          async: false,
+			          success: function(result) {
+			          	var data = JSON.parse(result);
+			          	if(data.length >= 1){
+			          		$('.set_hide_body').empty();
+			          		$('.set_open_body').removeClass('hidden');
+			          	}		          	
+			          },
+			          error:function(result){
+			            alert("Some thing is Wrong");
+			          }
+			          });
 				}else{
-					$('.update_nid_h').addClass('hidden');
-				}		
-				$(this).data("clicks", !clicks);
+	          		$('.update_nid_h').addClass('hidden');
+      			}			
+      			$(this).data("clicks", !clicks);		        		    
 			});
 		}
 	}
@@ -23,6 +51,10 @@ var update_nid_request = (function(){
 		init: function(){
 			$('#sent_update_request').on('click',function(){
 				var national_id_card_no = $('#update_national_id_card_no').val();
+				if(national_id_card_no == ''){
+					$('#update_nid_value_').addClass('has-error');
+					return false
+				}
 			    var valid_nid_len = [10,13,17];
 			    var nid_len = national_id_card_no.length;
 			    if(national_id_card_no == '' && national_id_card_no.length > 0) {
@@ -61,7 +93,7 @@ var update_nid_request = (function(){
 
 	    			$.ajax({
 	    	          type: "GET",
-	    	          url: "/SalesForce/update/nid",
+	    	          url: baseURL+"/update/nid",
 	    	          data: data,
 	    	          datatype: 'json',
 	    	          cache: false,

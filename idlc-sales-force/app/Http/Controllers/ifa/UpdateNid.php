@@ -19,7 +19,6 @@ class UpdateNid extends Controller
 						->join('tbl_ifa_registrations as tir','tnu.application_no','tir.application_no')
 						->where('status',-1)
 						->get();
-						// $this->print_me($getList);
 		return view('ifa.nid_update.list_upade_page',compact('getList'));
 	}
 	public function storeNid(Request $request){
@@ -27,7 +26,7 @@ class UpdateNid extends Controller
 		$store->user_id 		= Auth::user()->user_id;
 		$store->application_no 	= $request->ifaid;
 		$store->old_nid 		= $request->oldnid;
-		$store->new_nid 		= $request->oldnid;
+		$store->new_nid 		= $request->newnid;
 		$store->status 			= UpdateNidAction::STORE_UPDATE_NID;
 
 		$checkStore = $store->save();
@@ -38,24 +37,37 @@ class UpdateNid extends Controller
 		return json_encode('ssssss');
 	}
 
-	public function update(Request $request){
+	public function getNidValue(Request $request){
+		$data = DB::table('tbl_nid_update')
+					->where([
+						['application_no',$request->ifaid],
+						['old_nid',$request->oldnid],
+						['status',-1]
+					])
+					->get();
 
-		// $data = $request->all();
+		return json_encode($data);
+	}
+
+	public function update(Request $request){
 
 		$update = ApplicantTraining::find($request->id);
 		$update->national_id_card_no = $request->new_nid;
 		$update->update();
 
-		// $this->print_me($data);
+		$upadateValue = UpdateNidModel::find($request->nid_id);
+		$upadateValue->user_id 		= Auth::user()->user_id;
+		$upadateValue->status       = UpdateNidAction::APPROVED;
+		$upadateValue->update();
+
 		return redirect()->route('update_nid_list_view');
-		
 	}
 
 	public function rejected(Request $request){
-
-		$data = $request->all();
+		$upadateValue = UpdateNidModel::find($request->nid_id);
+		$upadateValue->status = UpdateNidAction::REJECTED;
+		$upadateValue->update();
 		return redirect()->route('update_nid_list_view');
-		// $this->print_me($data);
 
 	}
 }

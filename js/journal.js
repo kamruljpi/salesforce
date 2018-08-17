@@ -57,7 +57,7 @@ $("#journal_post_top select[name=company_id]").change(function(){
  //     });
 
 	$.ajax({
-	      url:"/get_user_by_com_id/"+$("#journal_post_top select[name=company_id]").val(),
+	      url:baseURL+"/get_user_by_com_id/"+$("#journal_post_top select[name=company_id]").val(),
 	      type:"GET",
 	      cache: false,
 	      async: false,

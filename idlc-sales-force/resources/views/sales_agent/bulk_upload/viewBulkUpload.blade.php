@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
-@section('page_heading','')
+@section('page_heading','Lead bulk upload')
 @section('section')
 <div class="row">
 	<div class="col-sm-12">
@@ -15,7 +15,7 @@
 		@endif
 	</div>
 </div>
-<div class="col-sm-8 col-sm-offset-2">
+<!-- <div class="col-sm-8 col-sm-offset-2">
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h3>
@@ -66,7 +66,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
 <div class="col-sm-8 col-sm-offset-2">
 	<div class="panel panel-default">
 		<div class="panel-heading">

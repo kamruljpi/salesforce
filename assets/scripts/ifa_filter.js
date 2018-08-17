@@ -36,7 +36,7 @@ var ifaManagementFilterSearch = (function(){
 				}
 				$.ajax({
 		          type: "GET",
-		          url: "/SalesForce/getMenuFilterValue",
+		          url: baseURL+"/getMenuFilterValue",
 		          data: data,
 		          datatype: 'json',
 		          cache: false,
@@ -78,7 +78,7 @@ var ifaManagementFilterSearch = (function(){
 				}
 				$.ajax({
 		          type: "GET",
-		          url: "/SalesForce/getMenuFilterValue",
+		          url: baseURL+"/getMenuFilterValue",
 		          data: data,
 		          datatype: 'json',
 		          cache: false,
@@ -232,7 +232,7 @@ var ifaManagementReset = (function(){
 
 				$.ajax({
 		          type: "GET",
-		          url: "/SalesForce/ifa/management/all/value",
+		          url: baseURL+"/ifa/management/all/value",
 		          datatype: 'json',
 		          cache: false,
 		          async: false,
@@ -259,7 +259,7 @@ $('#selectOrganizationOption').on('change', function (ev) {
 
     $.ajax({
         type: "GET",
-        url: "/SalesForce/searchByOrg",
+        url: baseURL+"/searchByOrg",
         data:"orgId="+orgId,
         cache: false,
         async: false,
@@ -340,7 +340,7 @@ function addRowBulkList(results, start)
 
         $.ajax({
             type: "GET",
-            url: "/SalesForce/setImgTOSystem",
+            url: baseURL+"/setImgTOSystem",
             data:{
                 upload_picture: imageName,
                 application_no: applicantid

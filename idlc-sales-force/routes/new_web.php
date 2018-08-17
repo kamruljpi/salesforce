@@ -52,7 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
         //Application Details nid validation
-        Route::get('applicant/{application_no?}/nid/validate/{status?}', [
+        Route::any('applicant/{application_no?}/nid/validate/{status?}', [
             'as' => 'applicant_nid_validate_action',
             'uses' => 'ifa\PartiallyCompleted@nidVaidate'
         ]);
