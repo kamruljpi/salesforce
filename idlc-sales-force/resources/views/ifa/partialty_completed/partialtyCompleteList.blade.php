@@ -30,13 +30,13 @@
                         From
                     </label>
                         <!-- <input type="date" name="date[from]" class="form-control" id="formDate"> -->
-                        <input type="text" class="form-control" id="formDate" name="date[from]" placeholder="DD/MM/YYYY" data-provide="datepicker" autocomplete="off">
+                        <input type="text" class="form-control formDate datepicker" id="formDate" name="date[from]" placeholder="dd-mm-yyyy" data-provide="datepicker" autocomplete="off" data-date-format="dd-mm-yyyy">
                 </div>
 
                 <div class="form-group col-sm-4" id="error_4">
                     <label class="col-sm-4 control-label">To</label>
                         <!-- <input type="date" name="date[to]" class="form-control" id="toDate"> -->
-                        <input type="text" class="form-control" id="toDate" name="date[to]" placeholder="DD/MM/YYYY" data-provide="datepicker" autocomplete="off">
+                        <input type="text" class="form-control toDate datepicker" id="toDate" name="date[to]" placeholder="dd-mm-yyyy" data-provide="datepicker" autocomplete="off" data-date-format="dd-mm-yyyy">
                 </div>
 
             </div>
