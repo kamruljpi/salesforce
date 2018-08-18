@@ -339,7 +339,7 @@
             </div>
             <div class='container'>
                 <div class='single_heading wow fadeInDown'>
-                    <h1>IFA Registration</h1>
+                    <h1>SALES FORCE </h1>
                 </div>
             </div>
         </section>
