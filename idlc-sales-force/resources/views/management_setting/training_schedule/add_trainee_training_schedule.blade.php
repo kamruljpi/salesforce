@@ -49,7 +49,7 @@
                                     </td>
                                     <td>{{ $applicant->mobile_no}}</td>
                                     <td>{{ $applicant->email}}</td>
-                                    <td>{{ $applicant->pre_addr_ps_id }}</td>
+                                    <td>{{ $applicant->thana_name }}</td>
                                     <td>
                                         <input class="trainint_applicant_no" type="checkbox" value="1" name="training_status[{{ $applicant->application_no }}]">
                                     </td>
