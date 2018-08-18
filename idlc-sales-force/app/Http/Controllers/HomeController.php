@@ -141,7 +141,7 @@ class HomeController extends Controller {
 		$converted = $this->converted();
 		$conversion_ratio = $this->conversionRatio();
 		$might_invest = $this->mightInvest();
-		$interested = $this->interested();
+		$interested = $this->notInterested();
 		return view('dashboard',
 			compact(
 				"totalLeadValue", 'highly_interested', 'unassigned', 'converted', 'conversion_ratio', 'might_invest', 'interested'));
@@ -171,8 +171,8 @@ class HomeController extends Controller {
 
 		return $value;
 	}
-	protected function interested() {
-		$value = CreateLead::where('interest_label', 'interested')->count();
+	protected function notInterested() {
+		$value = CreateLead::where('interest_label', 'not_interested')->count();
 
 		return $value;
 	}
