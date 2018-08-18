@@ -374,5 +374,34 @@ Route::group(['middleware' => 'auth'], function () {
 				'as' => 'update_occupation',
 				'uses' => 'ManagementSetting\NewOccupation@updateOccupation'
 			]);
+
+		/** thana route here **/
+
+		Route::get('management/thanas', [
+				'as' => 'thana_list_view',
+				'uses' => 'ManagementSetting\Thana\ThanaController@index'
+			]);
+
+		Route::get('management/thanas/create', [
+				'as' => 'thanas_create_view',
+				'uses' => 'ManagementSetting\Thana\ThanaController@create'
+			]);
+
+		Route::post('management/thanas/store', [
+				'as' => 'thanas_store',
+				'uses' => 'ManagementSetting\Thana\ThanaController@store'
+			]);
+		Route::get('management/thanas/edit/{id?}', [
+				'as' => 'thanas_edit_view',
+				'uses' => 'ManagementSetting\Thana\ThanaController@edit'
+			]);
+		Route::any('management/thanas/update/{id?}', [
+				'as' => 'thanas_update',
+				'uses' => 'ManagementSetting\Thana\ThanaController@update'
+			]);
+		Route::post('management/thanas/destroy/{id?}', [
+				'as' => 'thanas_destroy',
+				'uses' => 'ManagementSetting\Thana\ThanaController@destroy'
+			]);
 	});
 });

@@ -154,7 +154,10 @@
                                         @endif
                                     </div>                                    
                                 </div>
-                                @if($application_details->application_status == 'Submitted')
+                                @if($application_details->application_status == 'Submitted' ||
+                                $application_details->application_status == 'InProgress' ||
+                                $application_details->application_status == 'PartiallyCompleted'
+                                )
                                 <div class="col-sm-3">
                                     <div class="form-group" style="padding-top: 25px">
                                         <button type="button" class="btn btn-primary" id="update_nid">Change NID</button>

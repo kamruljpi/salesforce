@@ -53,14 +53,14 @@
                     <!-- <td>{{ $sche->start_date }}</td> -->
                     <td>
                         @if(!empty($sche->start_date))
-                        {{Carbon\Carbon::parse($sche->start_date)->format('m/d/Y g:i A')}}
+                        {{Carbon\Carbon::parse($sche->start_date)->format('d-m-Y g:i A')}}
                         @else
                         {{ $sche->start_date }}
                         @endif
                     </td>
                     <td>
                         @if(!empty($sche->end_date))
-                        {{Carbon\Carbon::parse($sche->end_date)->format('m/d/Y g:i A')}}
+                        {{Carbon\Carbon::parse($sche->end_date)->format('d-m-Y g:i A')}}
                         @else
                         {{ $sche->end_date }}
                         @endif

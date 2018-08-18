@@ -3,6 +3,7 @@ var ifaManagementFilterSearch = (function(){
 
 	return {
 		init: function(){
+
 			var menuValue 	= '';
 			var sortbyValue = '';
 				
@@ -157,12 +158,13 @@ function addRowIfa(results, start)
     		);
     }else{
 	    for (var i = start; i < end; i++)
-	    {
+	    {	
+	    	
 	        $('#ifa_list_tbody').append('<tr class="ifa_list_tbody"><td>'+sl+
 	            '</td><td>'+ emptyCheckss(rows[i].first_name)+" "+emptyCheckss(rows[i].middle_name)+" "+emptyCheckss(rows[i].last_name)+
 	            '</td><td>'+ emptyCheckss(rows[i].mobile_no) +
 	            '</td><td>'+ emptyCheckss(rows[i].email) +
-	            '</td><td>'+ dateFormater(rows[i].date_of_birth) +
+	            '</td><td>'+ dateEmptyCheck(rows[i].date_of_birth) +
 	            '<td><a href="/SalesForce/applicant/details/'+rows[i].application_no+'" class="btn btn-primary">View</a></td>'+
 	            '</td></tr>');
 	        sl++;
@@ -177,7 +179,20 @@ function addRowIfa(results, start)
     }));
 
 }
-
+function dateEmptyCheck(value){
+	var abcdate = '';
+	if( value == '0000-00-00' ||
+		value == '00-00-0000' ||
+		value == '0000/00/00' ||
+	 	value == '00/00/0000' ||
+	 	value == null ||
+	  	value == ''){
+		abcdate = '';
+	}else{
+		abcdate = dateFormater(value);
+	}
+	return abcdate;
+}
 function dateFormater(value){
 	var data = [];
 	if(value){

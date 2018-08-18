@@ -93,7 +93,7 @@
                               </p>
 
                               <div class="progress-group">
-                                <span class="progress-text">Interested</span>
+                                <span class="progress-text">Not Interested</span>
                                 <span class="progress-number"><b>{{ $interested }}</b>/{{ $totalLeadValue }}</span>
 
                                 <div class="progress sm">
@@ -138,5 +138,13 @@
                       <!-- /.box -->
                     </div>
         </div>
-
+        <?php 
+          $object = new App\Http\Controllers\Dashboard\MonthlyReportController();
+          print_r("<pre>");
+          // print_r($object->totalLeadbyMonthCount());
+          // print_r($object->highlyInterestedbyMonthCount());
+          // print_r($object->notInterestedbyMonthCount());
+          // print_r($object->mightInterestedbyMonthCount());
+          print_r("</pre>");
+        ?>
 @stop

@@ -35,8 +35,31 @@
             @if(isset($schedule))
             <tr>
                 <td>{{ $schedule->examName['name'] }}</td>
-                <td>{{ $schedule->date }}</td>
-                <td>{{ $schedule->start_time }} - {{ $schedule->end_time }}</td>
+                <!-- <td>{{ $schedule->date }}</td> -->
+
+                <td>
+                    @if(!empty($schedule->date))
+                        {{Carbon\Carbon::parse($schedule->date)->format('d-m-Y')}}
+                        @else
+                        {{ $schedule->date }}
+                        @endif
+                </td>
+
+                <!-- <td>{{ $schedule->start_time }} - {{ $schedule->end_time }}</td> -->
+                <td>
+                    @if(isset($schedule->start_time) && !empty($schedule->start_time))
+                        {{Carbon\Carbon::parse($schedule->start_time)->format('h:i a')
+                     }}
+                    @endif
+
+                    {{(!empty($schedule->start_time) && !empty($schedule->end_time) ? '-':'')}}
+
+                    @if(isset($schedule->end_time) && !empty($schedule->end_time))
+                            {{Carbon\Carbon::parse($schedule->end_time)->format('h:i a')
+                         }}
+                    @endif
+
+                </td>
                 <td>{{ $schedule->examName['description'] }}</td>
             </tr>
             @endif

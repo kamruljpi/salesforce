@@ -85,7 +85,8 @@ class PartiallyCompleted extends Controller
     }
 
     public function getIfaAllValue(Request $request){
-        return json_encode(DB::table('tbl_ifa_registrations')->orderBy('application_no','DESC')->get());
+        return json_encode('');
+        // return json_encode(DB::table('tbl_ifa_registrations')->orderBy('application_no','DESC')->get());
 
 
     }

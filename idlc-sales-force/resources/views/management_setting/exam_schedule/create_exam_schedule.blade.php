@@ -68,7 +68,9 @@
                                 <span class="pull-right">Date</span>
                             </label>
                             <div class="col-md-6">
-                                <input type="date" name="date" class="form-control">
+                                <!-- <input type="date" name="date" class="form-control"> -->
+
+                                <input type="text" class="form-control" name="date" placeholder="dd-mm-yyyy" data-provide="datepicker" autocomplete="off" data-date-format="dd-mm-yyyy">
                             </div>
                         </div>
 

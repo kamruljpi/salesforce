@@ -1,13 +1,49 @@
+$('#division_id_2').on('change', function(ev){
+	var selectedValue = $.trim($("#division_id_2").find(":selected").val());
+				// alert(selectedValue);
+				$.ajax({
+		          type: "GET",
+		          url: baseURL+"/get/division",
+		          data: "district_id="+selectedValue,
+		          datatype: 'json',
+		          cache: false,
+		          async: false,
+		          success: function(result) {
+		          	var data = JSON.parse(result);
+		          	if(data.length === 0)
+		              {
+		              	$('#district_id').html($('<option>', {
+		                      value: '',
+		                      text : 'Choose District'
+		                  }));
 
+		              }else{
+		              	$('#district_id').html($('<option>', {
+		                    value: "",
+		                    text : "Select District"
+		                }));
+		              	for(ik in data){
+		                  $('#district_id').append($('<option>', {
+		                      value: data[ik].district_id,
+		                      text : data[ik].district_name
+		                  }));
+		                }
+		              }
+		          },
+		          error:function(result){
+		            alert("Some thing is Wrong");
+		          }
+		          });
+});
 var thanasDistrict = (function(){
 	return {
         init: function () {
-        	$('#division_id').on('change',function(){
+        	$('#division_id_2').on('change',function(){
 				var selectedValue = $.trim($("#division_id").find(":selected").val());
-				
+				alert("Sssss");
 				$.ajax({
 		          type: "GET",
-		          url: "/get/division",
+		          url: baseURL+"/get/division",
 		          data: "district_id="+selectedValue,
 		          datatype: 'json',
 		          cache: false,
@@ -56,7 +92,7 @@ var divDisThanas = (function(){
 				var districtValue = $.trim($("#district_id").find(":selected").val());
 				$.ajax({
 		          type: "GET",
-		          url: "/thanas/getThanaByDivisionAndDistrictId",
+		          url: baseURL+"/thanas/getThanaByDivisionAndDistrictId",
 		          data: {division_id:divisionValue,district_id:districtValue},
 		          datatype: 'json',
 		          cache: false,
@@ -64,25 +100,25 @@ var divDisThanas = (function(){
 		          success: function(result) {
 		          	var data = JSON.parse(result);
 		          	console.log(data);
-		          	// if(data.length === 0)
-		           //    {
-		           //    	$('#district_id').html($('<option>', {
-		           //            value: '',
-		           //            text : 'Choose District'
-		           //        }));
+		          	if(data.length === 0)
+		              {
+		              	$('#district_id').html($('<option>', {
+		                      value: '',
+		                      text : 'Choose District'
+		                  }));
 
-		           //    }else{
-		           //    	$('#district_id').html($('<option>', {
-		           //          value: "",
-		           //          text : "Select District"
-		           //      }));
-		           //    	for(ik in data){
-		           //        $('#district_id').append($('<option>', {
-		           //            value: data[ik].district_id,
-		           //            text : data[ik].district_name
-		           //        }));
-		           //      }
-		           //    }
+		              }else{
+		              	$('#district_id').html($('<option>', {
+		                    value: "",
+		                    text : "Select District"
+		                }));
+		              	for(ik in data){
+		                  $('#district_id').append($('<option>', {
+		                      value: data[ik].district_id,
+		                      text : data[ik].district_name
+		                  }));
+		                }
+		              }
 		          },
 		          error:function(result){
 		            alert("Some thing is Wrong");
@@ -102,7 +138,7 @@ var getBankBranch = (function(){
 
 				$.ajax({
 		          type: "GET",
-		          url: "/branchs/getBranch",
+		          url: baseURL+"/branchs/getBranch",
 		          data: {bank_id:bankValue},
 		          datatype: 'json',
 		          cache: false,
@@ -110,25 +146,25 @@ var getBankBranch = (function(){
 		          success: function(result) {
 		          	var data = JSON.parse(result);
 		          	console.log(data);
-		          	// if(data.length === 0)
-		           //    {
-		           //    	$('#district_id').html($('<option>', {
-		           //            value: '',
-		           //            text : 'Choose District'
-		           //        }));
+		          	if(data.length === 0)
+		              {
+		              	$('#district_id').html($('<option>', {
+		                      value: '',
+		                      text : 'Choose District'
+		                  }));
 
-		           //    }else{
-		           //    	$('#district_id').html($('<option>', {
-		           //          value: "",
-		           //          text : "Select District"
-		           //      }));
-		           //    	for(ik in data){
-		           //        $('#district_id').append($('<option>', {
-		           //            value: data[ik].district_id,
-		           //            text : data[ik].district_name
-		           //        }));
-		           //      }
-		           //    }
+		              }else{
+		              	$('#district_id').html($('<option>', {
+		                    value: "",
+		                    text : "Select District"
+		                }));
+		              	for(ik in data){
+		                  $('#district_id').append($('<option>', {
+		                      value: data[ik].district_id,
+		                      text : data[ik].district_name
+		                  }));
+		                }
+		              }
 		          },
 		          error:function(result){
 		            alert("Some thing is Wrong");
@@ -141,6 +177,6 @@ var getBankBranch = (function(){
 
 $(document).ready(function(){
 	thanasDistrict.init();
-	// divDisThanas.init();
-	// getBankBranch.init();
+	divDisThanas.init();
+	getBankBranch.init();
 });
