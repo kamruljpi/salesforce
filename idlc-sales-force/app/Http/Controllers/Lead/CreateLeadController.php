@@ -18,62 +18,62 @@ class CreateLeadController extends Controller
 
     public function leadUpdateRedirect(){
         $getCreateLead = DB::table('tbl_create_lead as tcl')
-                            ->select('tcl.*','tia.name')
-                            ->Leftjoin('tbl_investment_action as tia','tcl.investment_action_id','tia.id_investment_action')
-                            ->orderBy('tcl.id_create_lead','DESC')
-                            ->paginate(15);
+            ->select('tcl.*','tia.name')
+            ->Leftjoin('tbl_investment_action as tia','tcl.investment_action_id','tia.id_investment_action')
+            ->orderBy('tcl.id_create_lead','DESC')
+            ->paginate(15);
         return view('lead.create_lead.createLeadList',compact('getCreateLead'));
     }
 
     public function viewCreateLeadList(){
-                                    
+
         $getCreateLead = DB::table('tbl_create_lead as tcl')
-                            ->select('tcl.*','tia.name')
-                            ->Leftjoin('tbl_investment_action as tia','tcl.investment_action_id','tia.id_investment_action')
-                            ->orderBy('tcl.id_create_lead','DESC')
-                            ->paginate(15);                  
-    	return view('lead.create_lead.createLeadList',compact('getCreateLead'));
+            ->select('tcl.*','tia.name')
+            ->Leftjoin('tbl_investment_action as tia','tcl.investment_action_id','tia.id_investment_action')
+            ->orderBy('tcl.id_create_lead','DESC')
+            ->paginate(15);
+        return view('lead.create_lead.createLeadList',compact('getCreateLead'));
     }
 
     public function addLeadview(){
-    	$getOccupation = Occupation::get();
-    	$getInvestmentAction = InvestmentActionCreateLead::get();
-    	return view('lead.create_lead.add_create_lead',compact('getOccupation','getInvestmentAction'));
+        $getOccupation = Occupation::get();
+        $getInvestmentAction = InvestmentActionCreateLead::get();
+        return view('lead.create_lead.add_create_lead',compact('getOccupation','getInvestmentAction'));
     }
 
     public function editLeadView(InvestmentActionCreateLead $object,$id){
         $getOccupation = Occupation::get();
         $getInvestmentAction = InvestmentActionCreateLead::get();
-        
+
         // $getLeadValue = $object->select('tcl.*','name')
         //                 ->join('tbl_create_lead as tcl','tcl.investment_action_id','id_investment_action')
         //                 ->where('tcl.id_create_lead',$id)             
         //                 ->get();
         $getLeadValue = DB::table('tbl_create_lead')->select('tbl_create_lead.*')
-        ->where('id_create_lead',$id)             
-        ->get();
+            ->where('id_create_lead',$id)
+            ->get();
         // return $getLeadValue;
-    	return view('lead.create_lead.edit_create_lead',compact('getOccupation','getInvestmentAction','getLeadValue'));
+        return view('lead.create_lead.edit_create_lead',compact('getOccupation','getInvestmentAction','getLeadValue'));
     }
 
     public function storeLead(Request $request){
         $datas = $request->all();
         // $this->print_me($request->lead_type);
-    	$validMessages = [
+        $validMessages = [
             'personal_name.required' => 'Name field is required.',
             'contact_no.required' => 'Contact no field is required.',
             'contact_no.numeric' => 'Invalid contact number.',
             'contact_no.min' => 'Minimum 11 digit.',
-            'contact_no.regex' => 'Invalid Contact number (01).',
+            'contact_no.regex' => 'Invalid Contact number (1).',
             'area.required' => 'Contact no field is required.',
             'investment_date.required' => 'Date field is required.',
             'investment_action.required' => 'Action field is required.',
             'lead_assign.required' => 'Lead Assign field is required.',
-            ];
-        $validator = Validator::make($datas, 
+        ];
+        $validator = Validator::make($datas,
             [
                 'personal_name' => 'required',
-                'contact_no' => 'required|numeric|min:11|regex:/(01)[0-9]{9}/',
+                'contact_no' => 'required|numeric|min:11|regex:/(1)[0-9]{9}/',
                 'area' => 'required',
                 'investment_date' => 'required',
                 'investment_action' => 'required',
@@ -118,16 +118,16 @@ class CreateLeadController extends Controller
             'contact_no.required' => 'Contact no field is required.',
             'contact_no.numeric' => 'Invalid contact number.',
             'contact_no.min' => 'Minimum 11 digit.',
-            'contact_no.regex' => 'Invalid Contact number (01).',
+            'contact_no.regex' => 'Invalid Contact number (1).',
             'area.required' => 'Contact no field is required.',
             'investment_date.required' => 'Date field is required.',
             'investment_action.required' => 'Action field is required.',
             'lead_assign.required' => 'Lead Assign field is required.',
-            ];
-        $validator = Validator::make($datas, 
+        ];
+        $validator = Validator::make($datas,
             [
                 'personal_name' => 'required',
-                'contact_no' => 'required|numeric|min:11|regex:/(01)[0-9]{9}/',
+                'contact_no' => 'required|numeric|min:11|regex:/(1)[0-9]{9}/',
                 'area' => 'required',
                 'investment_date' => 'required',
                 'investment_action' => 'required',

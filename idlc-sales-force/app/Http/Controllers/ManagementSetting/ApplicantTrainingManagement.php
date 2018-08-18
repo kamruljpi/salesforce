@@ -22,14 +22,25 @@ class ApplicantTrainingManagement extends Controller
     }
 
     public function scheduledPassTraineeList(Request $req){
-        $allPassTraineList =  ApprovedTrainee::with('pass_trainee')->where('training_schedule_id', $req->schedule_id)->where('training_status', 'TrainingPass')->get();
+        $datas = explode('_', $req->schedule_id);
+        $allPassTraineList =  ApprovedTrainee::with('pass_trainee')->where('training_schedule_id', $datas[0] /*$req->schedule_id*/)->where('training_status', 'TrainingPass')->get();
         $traineeList = [];
         foreach ($allPassTraineList as $allPassTraine){
             $exist = ApprovedExameen::where('applicant_no', $allPassTraine->applicant_no)->get();
             if(count($exist) == 0 || $exist == ''){
                 array_push($traineeList, $allPassTraine);
             }
-//            return $traineeList;
+            else{
+                $check = true;
+                if( count($datas) > 1){
+                    foreach ($exist as $ext){
+                        if( $ext->exam_schedule_id == $datas[1])
+                            $check = false;
+                    }
+                }
+                if($check == true && $exist[0]->exam_status == 'Fail')
+                    array_push($traineeList, $allPassTraine);
+            }
         }
 
 //        return ApprovedTrainee::with('pass_trainee')->where('training_schedule_id', $req->schedule_id)->get();

@@ -169,7 +169,7 @@ function addRowLead(results, start)
     });
     if( end == 0){
         $('#lead_list_tbody').append(
-            '<tr class="lead_list_tbody"><td colspan="8" > <center><span style="padding:50px;">Empty Value</span></center> </td> </tr>'
+            '<tr class="lead_list_tbody"><td colspan="9" > <center><span style="padding:50px;">Empty Value</span></center> </td> </tr>'
         );
     }else{
         for (var i = start; i < end; i++)

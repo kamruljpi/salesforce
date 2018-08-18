@@ -12,10 +12,7 @@ use DB;
 class RejectedApplication extends Controller
 {
     public function viewRejectedApplication(){
-//    	$getListValue = DB::table('tbl_ifa_registrations')
-//    						->where('application_status',5)
-//                            // ->orderBy('id_organization','DESC')
-//                            ->paginate(25);
-    	return view('ifa.ifa_bulk_upload.bulk_upload_view');
+    	$institutions = DB::table('tbl_new_organization')->where('is_active', 1)->get();
+    	return view('ifa.ifa_bulk_upload.bulk_upload_view',['institutions' => $institutions]);
     }
 }

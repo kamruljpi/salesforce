@@ -41,23 +41,24 @@
                 <!-- <th class="">Description</th> -->
                 <th class="">Mobile No</th>
                 <th class="">Email</th>
-                <th class="">Area</th>
-                <th class="">Approved</th>
-                <th class="">Reject</th>
+                <th class="">Thana</th>
+                <th class="">Action</th>
             </tr>
             </thead>
             <tbody>
             @php($i=1)
             @foreach($examines as  $examine)
-
                 <tr>
                     <td>{{$i++}}</td>
                     <td>{{ $examine->first_name }} {{ $examine->middle_name }} {{ $examine->last_name }}</td>
                     <td>{{ $examine->mobile_no }}</td>
                     <td>{{ $examine->email }}</td>
-                    <td>{{ $examine->application_no }}</td>
-                    <td><a class="btn btn-success" href="{{ route('approved_pass_examine', $examine->application_no) }}">Approved</a></td>
-                    <td><a class="btn btn-danger" href="{{ route('reject_pass_examine', $examine->application_no) }}">Reject</a></td>
+                    <td>{{ (count($examine->pre_thana)>0)? $examine->pre_thana->thana_name:''}}</td>
+                    <td>
+                        <a class="btn btn-success" href="{{ route('approved_pass_examine', $examine->application_no) }}">Approved</a>
+                        <a class="btn btn-danger" href="{{ route('reject_pass_examine', $examine->application_no) }}">Reject</a>
+                    </td>
+                    {{--<td><a class="btn btn-danger" href="{{ route('reject_pass_examine', $examine->application_no) }}">Reject</a></td>--}}
                 </tr>
             @endforeach
             </tbody>

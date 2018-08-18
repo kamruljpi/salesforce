@@ -89,6 +89,7 @@ class ExameenManagement extends Controller
 //                    ApplicantTraining::where('application_no', $applicant_no)->update(['application_status' => 'InProgress']);
 //                }
 
+                    ApprovedExameen::where('applicant_no', $applicant_no)->update(['exam_status' => $resStatus]);
 
                     $applicantDetails = ApplicantTraining::where('application_no', $applicant_no)->first();
 //                $mailPerInfo = [
