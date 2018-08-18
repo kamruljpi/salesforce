@@ -19,7 +19,11 @@ $(document).ready(function(){
               window.location.reload(true);
 
           },
-          error: function(data) {
+          error: function(jqXHR, textStatus, errorThrown){
+              if(jqXHR.status == 401)
+                  location.reload();
+              else
+                  alert("Some thing is Wrong");
           },
 
       });

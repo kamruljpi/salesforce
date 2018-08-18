@@ -90,6 +90,15 @@ Route::group(['middleware' => 'auth'], function () {
 				'uses' => 'ifa\RejectedApplication@viewRejectedApplication'
 			]);
 
+
+//		Route::get('/getMenuFilterValue', [
+//				'as' => 'ifa_bulk_upload_pr',
+//				'uses' => 'ifa\PartiallyCompleted@getIfaFilterValue'
+//			]);
+
+
+//        Route::get('/getMenuFilterValue','ifa\PartiallyCompleted@getIfaFilterValue');
+
 });
 
 		/** Ajax route **/

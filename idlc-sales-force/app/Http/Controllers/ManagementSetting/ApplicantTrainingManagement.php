@@ -97,7 +97,7 @@ class ApplicantTrainingManagement extends Controller
 
     public function traineeRemove(Request $req){
         ApprovedTrainee::where('applicant_no', $req->application_no)->where('training_schedule_id', $req->schedule_id)->delete();
-        ApplicantTraining::where('application_no', $req->application_no)->update(['training_status' => 'Pass', 'application_status' => 'Approved']);
+        ApplicantTraining::where('application_no', $req->application_no)->update(['training_status' => 'Pass'/*, 'application_status' => 'Approved'*/]);
 
         \Session::flash('exam_status','Trainee approved successfully.');
         \Session::flash('alert-class','alert-success');

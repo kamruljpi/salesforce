@@ -32,8 +32,11 @@ var open_update_nid_field = (function(){
 			          		$('.set_open_body').removeClass('hidden');
 			          	}		          	
 			          },
-			          error:function(result){
-			            alert("Some thing is Wrong");
+			          error:function(jqXHR, textStatus, errorThrown){
+                          if(jqXHR.status == 401)
+                              location.reload();
+                          else
+                              alert("Some thing is Wrong");
 			          }
 			          });
 				}else{
@@ -103,8 +106,11 @@ var update_nid_request = (function(){
 	    	          	$('.set_hide_body').empty();
 	    	          	$('.set_open_body').removeClass('hidden');
 	    	          },
-	    	          error:function(result){
-	    	            alert("Some thing is Wrong");
+	    	          error:function(jqXHR, textStatus, errorThrown){
+                          if(jqXHR.status == 401)
+                              location.reload();
+                          else
+                              alert("Some thing is Wrong");
 	    	          }
 	    	          });
 			    }
