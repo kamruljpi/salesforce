@@ -753,3 +753,7 @@ body{
     background-color: #f8f8f8;
     border: none !important;
 }
+.nav-tabs li a:hover{
+  color: white;
+  background-color: black;
+}
