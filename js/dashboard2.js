@@ -17,27 +17,48 @@ $(function () {
   var salesChart       = new Chart(salesChartCanvas);
 
   var salesChartData = {
-    labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 
+                'September', 'October', 'November', 'December'],
     datasets: [
       {
-        label               : 'Electronics',
+        label               : 'All Lead',
         fillColor           : 'rgb(210, 214, 222)',
         strokeColor         : 'rgb(210, 214, 222)',
         pointColor          : 'rgb(210, 214, 222)',
         pointStrokeColor    : '#c1c7d1',
         pointHighlightFill  : '#fff',
         pointHighlightStroke: 'rgb(220,220,220)',
-        data                : [65, 59, 80, 81, 56, 55, 40]
+        data                : [65, 59, 80, 81, 56, 55, 40, 10, 80, 60 ,40 ,30]
       },
       {
-        label               : 'Digital Goods',
+        label               : 'Not Interested',
         fillColor           : 'rgba(60,141,188,0.9)',
         strokeColor         : 'rgba(60,141,188,0.8)',
         pointColor          : '#3b8bba',
         pointStrokeColor    : 'rgba(60,141,188,1)',
         pointHighlightFill  : '#fff',
         pointHighlightStroke: 'rgba(60,141,188,1)',
-        data                : [28, 48, 40, 19, 86, 27, 90]
+        data                : [28, 48, 40, 19, 86, 27, 90, 20, 40, 80 ,30, 20]
+      },
+      {
+        label               : 'Highly Interested',
+        fillColor           : 'rgba(255,0,0,0)',
+        strokeColor         : 'rgba(255,0,0,0)',
+        pointColor          : '#3b8bba',
+        pointStrokeColor    : 'rgba(255,0,0,0)',
+        pointHighlightFill  : '#fff',
+        pointHighlightStroke: 'rgba(255,0,0,0)',
+        data                : [29, 50, 20, 50, 86, 30, 90, 30, 50, 40, 50, 90]
+      },
+      {
+        label               : 'Might Invest',
+        fillColor           : 'rgba(288,0,0,0)',
+        strokeColor         : 'rgba(288,0,0,0)',
+        pointColor          : '#3b8bba',
+        pointStrokeColor    : 'rgba(288,0,0,0)',
+        pointHighlightFill  : '#fff',
+        pointHighlightStroke: 'rgba(288,0,0,0)',
+        data                : [29, 50, 20, 50, 86, 30, 90, 30, 50, 40, 50, 90]
       }
     ]
   };
