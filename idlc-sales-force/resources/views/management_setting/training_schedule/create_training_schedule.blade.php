@@ -195,7 +195,11 @@
 @endsection
 @section("LoadScript")
     <script type="text/javascript">
-        $("#start_date").datetimepicker();
-        $("#end_date").datetimepicker();
+        $('#start_date').datetimepicker({
+           format:'DD-MM-YYYY hh:mm a'
+        });
+        $('#end_date').datetimepicker({
+           format:'DD-MM-YYYY hh:mm a'
+        });
     </script>
 @endsection
