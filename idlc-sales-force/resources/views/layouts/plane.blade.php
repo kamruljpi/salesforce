@@ -58,11 +58,13 @@
 	<script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/all_product_table.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/journal.js') }}"></script>
-	<script src="{{ asset("assets/scripts/moment.min.js") }}"></script>
-	<script src="{{ asset("assets/scripts/bootstrap-datetimepicker.min.js") }}"></script>
+	<script src="{{ asset('assets/scripts/moment.min.js') }}"></script>
+	<script src="{{ asset('assets/scripts/bootstrap-datetimepicker.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/new_saleforces.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/new_saleforces_extended.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/dashboard2.js') }}"></script>
+	<script src="{{ asset('division/js/divisionDelete.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('division/js/thana.js') }}" type="text/javascript"></script>
 	@yield('LoadScript')
 </body>
 </html>
