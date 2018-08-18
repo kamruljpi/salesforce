@@ -64,25 +64,25 @@ var divDisThanas = (function(){
 		          success: function(result) {
 		          	var data = JSON.parse(result);
 		          	console.log(data);
-		          	// if(data.length === 0)
-		           //    {
-		           //    	$('#district_id').html($('<option>', {
-		           //            value: '',
-		           //            text : 'Choose District'
-		           //        }));
+		          	if(data.length === 0)
+		              {
+		              	$('#district_id').html($('<option>', {
+		                      value: '',
+		                      text : 'Choose District'
+		                  }));
 
-		           //    }else{
-		           //    	$('#district_id').html($('<option>', {
-		           //          value: "",
-		           //          text : "Select District"
-		           //      }));
-		           //    	for(ik in data){
-		           //        $('#district_id').append($('<option>', {
-		           //            value: data[ik].district_id,
-		           //            text : data[ik].district_name
-		           //        }));
-		           //      }
-		           //    }
+		              }else{
+		              	$('#district_id').html($('<option>', {
+		                    value: "",
+		                    text : "Select District"
+		                }));
+		              	for(ik in data){
+		                  $('#district_id').append($('<option>', {
+		                      value: data[ik].district_id,
+		                      text : data[ik].district_name
+		                  }));
+		                }
+		              }
 		          },
 		          error:function(result){
 		            alert("Some thing is Wrong");
@@ -110,25 +110,25 @@ var getBankBranch = (function(){
 		          success: function(result) {
 		          	var data = JSON.parse(result);
 		          	console.log(data);
-		          	// if(data.length === 0)
-		           //    {
-		           //    	$('#district_id').html($('<option>', {
-		           //            value: '',
-		           //            text : 'Choose District'
-		           //        }));
+		          	if(data.length === 0)
+		              {
+		              	$('#district_id').html($('<option>', {
+		                      value: '',
+		                      text : 'Choose District'
+		                  }));
 
-		           //    }else{
-		           //    	$('#district_id').html($('<option>', {
-		           //          value: "",
-		           //          text : "Select District"
-		           //      }));
-		           //    	for(ik in data){
-		           //        $('#district_id').append($('<option>', {
-		           //            value: data[ik].district_id,
-		           //            text : data[ik].district_name
-		           //        }));
-		           //      }
-		           //    }
+		              }else{
+		              	$('#district_id').html($('<option>', {
+		                    value: "",
+		                    text : "Select District"
+		                }));
+		              	for(ik in data){
+		                  $('#district_id').append($('<option>', {
+		                      value: data[ik].district_id,
+		                      text : data[ik].district_name
+		                  }));
+		                }
+		              }
 		          },
 		          error:function(result){
 		            alert("Some thing is Wrong");
@@ -141,6 +141,6 @@ var getBankBranch = (function(){
 
 $(document).ready(function(){
 	thanasDistrict.init();
-	// divDisThanas.init();
-	// getBankBranch.init();
+	divDisThanas.init();
+	getBankBranch.init();
 });
