@@ -48,8 +48,11 @@ $('select[name=training_name]').on('change', function(){
                 }
             });
         },
-        error: function(){
-            alert(ERROR);
+        error: function(jqXHR, textStatus, errorThrown){
+            if(jqXHR.status == 401)
+                location.reload();
+            else
+                alert("Some thing is Wrong");
         },
     });
 });
