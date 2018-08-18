@@ -57,14 +57,24 @@
                     <!-- <td>{{ $exam->date }}</td> -->
                     <td>@if(!empty($exam->date))
                         {{Carbon\Carbon::parse($exam->date)->format('d-m-Y')}}
-                        @else
-                        {{ $exam->date }}
                         @endif
 
                     </td>
 
-                    <td>{{ $exam->start_time }}</td>
-                    <td>{{ $exam->end_time }}</td>
+                    <!-- <td>{{ $exam->start_time }}</td> -->
+                    <td>
+                        @if(isset($exam->start_time) && !empty($exam->start_time))
+                            {{Carbon\Carbon::parse($exam->start_time)->format('h:i a')
+                             }}
+                        @endif
+                    </td>
+                    <!-- <td>{{ $exam->end_time }}</td> -->
+                    <td>
+                        @if(isset($exam->end_time) && !empty($exam->end_time))
+                            {{Carbon\Carbon::parse($exam->end_time)->format('h:i a')
+                         }}
+                        @endif
+                    </td>
                     <td><a href="{{ route('schedule_exameen_view', $exam->id) }}">Examinee</a></td>
                     <td><a href="{{ route('update_exam_schedule_view', $exam->id) }}">Update</a></td>
                 </tr>
