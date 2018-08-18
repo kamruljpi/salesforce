@@ -120,7 +120,7 @@
                                     <th class="">Name</th>
                                     <th class="">Mobile No.</th>
                                     <th class="">Email</th>
-                                    <th class="">Area</th>
+                                    <th class="">Thana</th>
                                     <th class="">As Participant</th>
                                     {{--<th class="">Training Required</th>--}}
                                 </tr>
