@@ -48,7 +48,17 @@
     </table>
 
     <div class="col-sm-12" style="padding-left: 0px;">
-        <h3 style="float: left;">{{ $schedule->trainingName->name }} ({{ $schedule->start_date }} - {{ $schedule->end_date }})<!-- Trainee List --></h3>
+        <h3 style="float: left;">{{ $schedule->trainingName->name }} (
+            @if(isset($schedule->start_date) && !empty($schedule->start_date))
+                    {{Carbon\Carbon::parse($schedule->start_date)->format('d-m-Y')
+                 }}
+            @endif
+            {{(!empty($schedule->start_time) && !empty($schedule->end_time) ? '-':'')}}
+            @if(isset($schedule->end_time) && !empty($schedule->end_time))
+                    {{Carbon\Carbon::parse($schedule->end_time)->format('d-m-Y')
+                 }}
+            @endif
+            )<!-- Trainee List --></h3>
             <div class="col-sm-3" style="  padding: 0px;  padding-left: 20px; margin-top: 20px;">
                 <div class="pull-left">
                     <a href="{{ route('schedule_trainee_add_view', $schedule->id)}}" class="btn btn-primary"><i class="fa fa-plus"></i> Add Trainee</a>
