@@ -10,6 +10,7 @@ use App\ManagementSetting\ExamSchedule;
 use App\Model\ManagementSetting\ApplicantTraining;
 use App\Model\ManagementSetting\TrainingSchedule;
 use Session;
+use Mail;
 
 class ExameenManagement extends Controller
 {
@@ -77,9 +78,11 @@ class ExameenManagement extends Controller
 
     public function examStatus(Request $req){
 
-        foreach ($req->exam_status as $applicant_no => $resStatus){
-            if($resStatus != 'exam') {
-                ApplicantTraining::where('application_no', $applicant_no)->update(['training_status' => $resStatus]);
+//        $this->print_me($req->exam_status);
+        if(isset($req->exam_status) && !empty($req->exam_status)){
+            foreach ($req->exam_status as $applicant_no => $resStatus){
+                if($resStatus != 'exam') {
+                    ApplicantTraining::where('application_no', $applicant_no)->update(['training_status' => $resStatus]);
 //                if ($resStatus == 'Pass') {
 //                    ApplicantTraining::where('application_no', $applicant_no)->update(['application_status' => 'Approved']);
 //                } else if ($resStatus == 'Fail') {
@@ -87,23 +90,40 @@ class ExameenManagement extends Controller
 //                }
 
 
-                $applicantDetails = ApplicantTraining::where('application_no', $applicant_no)->first();
-                $mailPerInfo = [
-                    'email' => $applicantDetails->email,
-                    'name' => $applicantDetails->first_name . ' ' . $applicantDetails->middle_name . ' ' . $applicantDetails->last_name,
-                    'subject' => 'Application Rejecttion',
-                    'mobile_no' => $applicantDetails->mobile_no,
-                    'application_number' => mt_rand(100000, 999999),
-                ];
-                // SendingEmail::Send('emails.ifa_registration', $mailPerInfo);
+                    $applicantDetails = ApplicantTraining::where('application_no', $applicant_no)->first();
+//                $mailPerInfo = [
+//                    'email' => $applicantDetails->email,
+//                    'name' => $applicantDetails->first_name . ' ' . $applicantDetails->middle_name . ' ' . $applicantDetails->last_name,
+//                    'subject' => 'Application Rejecttion',
+//                    'mobile_no' => $applicantDetails->mobile_no,
+//                    'application_number' => mt_rand(100000, 999999),
+//                ];
+                    // SendingEmail::Send('emails.ifa_registration', $mailPerInfo);
+                    try {
+                        $mailArr = [
+                            'receiver_email' => $applicantDetails->email,
+                            'receiver_full_name' => $applicantDetails->first_name . ' ' . $applicantDetails->middle_name . ' ' . $applicantDetails->last_name,
+//                            'sender_email' => 'idlc_1@gmail.com',
+                            'sender_email' => $this->senderMail,
+                            'sender_full_name' => 'IDLC',
+                            'subject' => 'Exam Result',
+                        ];
+
+                        Mail::send('emails.exam_status', ['exam_status' => $resStatus, 'applicant_name' => $applicantDetails->first_name . ' ' . $applicantDetails->middle_name . ' ' . $applicantDetails->last_name], function ($m) use ($mailArr) {
+                            $m->from($mailArr['sender_email'], $mailArr['sender_full_name']);
+                            $m->to($mailArr['receiver_email'], $mailArr['receiver_full_name'])->subject($mailArr['subject']);
+                        });
+
+                    }catch (\Exception $ex) {
+                        Session::flash('exam_status','Mail Sending Fails. But The User Has Been Passed.');
+                    }
+                }
             }
+            Session::flash('exam_status','Exam status successfully changed.');
+            Session::flash('alert-class','alert-success');
+        }else{
+            Session::flash('exam_status','you can not save with blank data.');
         }
-
-        
-
-        Session::flash('exam_status','Exam status successfully changed.');
-        Session::flash('alert-class','alert-success');
-
         return redirect()->back();
     }
 }

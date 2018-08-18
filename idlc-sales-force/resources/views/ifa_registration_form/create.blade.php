@@ -16,8 +16,8 @@
         .nav-pills > li.active > a:hover {
             color: #fff;
             background-color: maroon;
-        }    
-        
+        }
+
         .nav > li > a:focus,
         .nav > li > a:hover {
             text-decoration: none;
@@ -214,7 +214,7 @@
                                 </div>
                                     </div>
                                 </div>
-                                
+
                             </div>
                             <div class="col-sm-6">
                                 <div class="panel panel-default">

@@ -117,7 +117,7 @@
                                     <th class="">Name</th>
                                     <th class="">Mobile No.</th>
                                     <th class="">Email</th>
-                                    <th class="">Area</th>
+                                    <th class="">Thana</th>
                                     <th class="">As Participant</th>
                                     {{--<th class="">Training Required</th>--}}
                                 </tr>
@@ -133,7 +133,7 @@
                                     </td>
                                     <td>{{ $applicant->mobile_no}}</td>
                                     <td>{{ $applicant->email}}</td>
-                                    <td>{{ $applicant->pre_addr_ps_id }}</td>
+                                    <td>{{ (count($applicant->pre_thana) >0)? $applicant->pre_thana->thana_name:''}}</td>
                                     <td>
                                         <input class="trainint_applicant_no" type="checkbox" value="1" name="training_status[{{ $applicant->application_no }}]">
                                     </td>

@@ -102,7 +102,7 @@
                         <td>{{ $exameen->exameen->first_name }} {{ $exameen->exameen->last_name }}</td>
                         <td>{{ $exameen->exameen->mobile_no }}</td>
                         <td>{{ $exameen->exameen->email }}</td>
-                        <td>{{ $exameen->exameen->pre_addr_ps_id }}</td>
+                        <td>{{ (count($exameen->exameen->pre_thana)>0)? $exameen->exameen->pre_thana->thana_name:'' }}</td>
                         {{--<td>--}}
                             @if($exameen->exameen->training_status == 'Pass')
                                 <td>

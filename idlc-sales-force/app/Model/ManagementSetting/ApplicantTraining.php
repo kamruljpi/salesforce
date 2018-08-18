@@ -5,6 +5,7 @@ namespace App\Model\ManagementSetting;
 use Illuminate\Database\Eloquent\Model;
 use App\Model\Bank;
 use App\Model\Branch;
+use App\Model\Thana;
 use App\Model\District;
 use App\Model\Divisions;
 use App\Model\Nationality;
@@ -25,6 +26,10 @@ class ApplicantTraining extends Model
 
     public function nationality_info(){
         return $this->hasOne(Nationality::class, 'id_nationality','nationality');
+    }
+
+    public function pre_thana(){
+        return $this->hasOne(Thana::class, 'thana_id','pre_addr_ps_id');
     }
 
     public function pre_district(){

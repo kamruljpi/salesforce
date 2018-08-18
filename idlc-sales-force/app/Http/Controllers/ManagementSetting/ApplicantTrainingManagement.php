@@ -14,7 +14,7 @@ use DB;
 class ApplicantTrainingManagement extends Controller
 {
     public function applicantList($appStatus){
-        return ApplicantTraining::orderBy('pre_addr_ps_id', 'ASC')->where(strtolower('application_status'), strtolower($appStatus))->where('application_status', 'InProgress')->get();
+        return ApplicantTraining::with('pre_thana')->orderBy('pre_addr_ps_id', 'ASC')->where(strtolower('application_status'), strtolower($appStatus))->where('application_status', 'InProgress')->get();
     }
 
     public function scheduledTraineeList(Request $req){
@@ -43,7 +43,7 @@ class ApplicantTrainingManagement extends Controller
         $applicantIdList = [];
         $matchAppIds = [];
 
-        $applicantList = DB::select("SELECT ir.*, atr.* FROM tbl_ifa_registrations ir left join approved_trainees atr on(atr.applicant_no = ir.application_no ) where ir.application_status = 'InProgress'");
+        $applicantList = DB::select("SELECT ir.*, atr.*, thana.* FROM tbl_ifa_registrations ir left join approved_trainees atr on(atr.applicant_no = ir.application_no ) left join tbl_bangladesh_thanas thana on(thana.thana_id = ir.pre_addr_ps_id) where ir.application_status = 'InProgress'");
 
         foreach ($applicantList as $key => $value) {
             if($value->training_schedule_id == $scheduleId)

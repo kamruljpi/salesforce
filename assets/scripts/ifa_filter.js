@@ -1,110 +1,124 @@
 
 var ifaManagementFilterSearch = (function(){
 
-	return {
-		init: function(){
+    return {
+        init: function(){
+            var menuValue 	= '';
+            var sortbyValue = '';
 
-			var menuValue 	= '';
-			var sortbyValue = '';
-				
-			$('#selectSortbyValue').on('change',function(e){
-				sortbyValue = $.trim($("#selectSortbyValue").find(":selected").val());
-			});
-			$('#selectMenuOption').on('change',function(e){
-				menuValue = $.trim($("#selectMenuOption").find(":selected").val());
-				e.preventDefault();
-				$('.pagination_body').addClass('hidden');
-				var formDateValue 	= $("input[name='date[from]']").val();
-				var toDateValue 	= $("input[name='date[to]']").val();
+            $('#selectSortbyValue').on('change',function(e){
+                sortbyValue = $.trim($("#selectSortbyValue").find(":selected").val());
+            });
+            $('#selectMenuOption').on('change',function(e){
+                menuValue = $.trim($("#selectMenuOption").find(":selected").val());
+                e.preventDefault();
+                $('.pagination_body').addClass('hidden');
+                var formDateValue 	= $("input[name='date[from]']").val();
+                var toDateValue 	= $("input[name='date[to]']").val();
 
-				var data = 
-					{
-					selectedOptionValues : menuValue,
-					sortbyValues 	:sortbyValue,
-					formDateValues  :formDateValue,
-					toDateValues    :toDateValue
-				};
-				var sss = {
-					a:inputValidate(menuValue,'error_1'),
-					b:inputValidate(sortbyValue,'error_2'),
-					c:inputValidate(formDateValue,'error_3'),
-					d:inputValidate(toDateValue,'error_4')};
-				var id = {a:'error_1',b:'error_2',c:'error_3',d:'error_4'};			
-				
-				var inputValidates = checkOneTrueValue(sss,id);
-				if(inputValidates == false){
-					return false;
-				}
-				$.ajax({
-		          type: "GET",
-		          url: baseURL+"/getMenuFilterValue",
-		          data: data,
-		          datatype: 'json',
-		          cache: false,
-		          async: false,
-		          success: function(result) {
-		          	var data = JSON.parse(result);
-		          	// console.log(data);
-		          	addRowIfa(data,0);
-		          },
-		          error:function(jqXHR, textStatus, errorThrown){
-		          	if(jqXHR.status == 401)
-		            	location.reload();
-		          	else
-                        alert("Some thing is Wrong");
-		          }
-		          });
-			});
+                var data =
+                    {
+                        selectedOptionValues : menuValue,
+                        sortbyValues 	:sortbyValue,
+                        formDateValues  :formDateValue,
+                        toDateValues    :toDateValue
+                    };
+                var sss = {
+                    a:inputValidate(menuValue,'error_1'),
+                    b:inputValidate(sortbyValue,'error_2'),
+                    c:inputValidate(formDateValue,'error_3'),
+                    d:inputValidate(toDateValue,'error_4')};
+                var id = {a:'error_1',b:'error_2',c:'error_3',d:'error_4'};
 
-			$('#searchIfaMangment').on('click',function(e){
-				e.preventDefault();
-				$('.pagination_body').addClass('hidden');
-				var formDateValue 	= $("input[name='date[from]']").val();
-				var toDateValue 	= $("input[name='date[to]']").val();
+                var inputValidates = checkOneTrueValue(sss,id);
+                if(inputValidates == false){
+                    return false;
+                }
+                $.ajax({
+                    type: "GET",
+                    url: baseURL+"/getMenuFilterValue",
+                    data: data,
+                    datatype: 'json',
+                    cache: false,
+                    async: false,
+                    success: function(result) {
+                        var data = JSON.parse(result);
+                        // console.log(data);
+                        addRowIfa(data,0);
 
-				var data = 
-					{
-					selectedOptionValues : menuValue,
-					sortbyValues 	:sortbyValue,
-					formDateValues  :formDateValue,
-					toDateValues    :toDateValue
-				};
-				var sss = {
-					a:inputValidate(menuValue,'error_1'),
-					b:inputValidate(sortbyValue,'error_2'),
-					c:inputValidate(formDateValue,'error_3'),
-					d:inputValidate(toDateValue,'error_4')};
-				var id = {a:'error_1',b:'error_2',c:'error_3',d:'error_4'};			
-				
-				var inputValidates = checkOneTrueValue(sss,id);
-				if(inputValidates == false){
-					return false;
-				}
-				$.ajax({
-		          type: "GET",
-		          url: baseURL+"/getMenuFilterValue",
-		          data: data,
-		          datatype: 'json',
-		          cache: false,
-		          async: false,
-		          success: function(result) {
-		          	var data = JSON.parse(result);
-		          	console.log(data);
-		          	addRowIfa(data,0);
-		          },
+                        var $rows = $('body #wrapper #tblSearch tr');
+
+                        $('#user_search').on('keyup', function(){
+
+                            var string = $(this).val().toLowerCase();
+
+                            $rows.show().filter(function() {
+                                var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+                                return !~text.indexOf(string);
+                            }).hide();
+
+                            $rows.first().show();
+                        });
+                    },
+
                     error:function(jqXHR, textStatus, errorThrown){
                         if(jqXHR.status == 401)
                             location.reload();
                         else
                             alert("Some thing is Wrong");
                     }
-		          // error:function(result){
-		          //   alert("Some thing is Wrong");
-		          // }
-		          });
-			});
-		}
-	}
+                });
+            });
+
+            $('#searchIfaMangment').on('click',function(e){
+                e.preventDefault();
+                $('.pagination_body').addClass('hidden');
+                var formDateValue 	= $("input[name='date[from]']").val();
+                var toDateValue 	= $("input[name='date[to]']").val();
+
+                var data =
+                    {
+                        selectedOptionValues : menuValue,
+                        sortbyValues 	:sortbyValue,
+                        formDateValues  :formDateValue,
+                        toDateValues    :toDateValue
+                    };
+                var sss = {
+                    a:inputValidate(menuValue,'error_1'),
+                    b:inputValidate(sortbyValue,'error_2'),
+                    c:inputValidate(formDateValue,'error_3'),
+                    d:inputValidate(toDateValue,'error_4')};
+                var id = {a:'error_1',b:'error_2',c:'error_3',d:'error_4'};
+
+                var inputValidates = checkOneTrueValue(sss,id);
+                if(inputValidates == false){
+                    return false;
+                }
+                $.ajax({
+                    type: "GET",
+                    url: baseURL+"/getMenuFilterValue",
+                    data: data,
+                    datatype: 'json',
+                    cache: false,
+                    async: false,
+                    success: function(result) {
+                        var data = JSON.parse(result);
+                        console.log(data);
+                        addRowIfa(data,0);
+                    },
+                    error:function(jqXHR, textStatus, errorThrown){
+                        if(jqXHR.status == 401)
+                            location.reload();
+                        else
+                            alert("Some thing is Wrong");
+                    }
+                    // error:function(result){
+                    //   alert("Some thing is Wrong");
+                    // }
+                });
+            });
+        }
+    }
 })();
 
 // function inputValidate(value = null ,id){
@@ -119,22 +133,22 @@ var ifaManagementFilterSearch = (function(){
 // }
 
 function checkOneTrueValue(value = {},id = {}){
-	var boolen = false;
-	if(value.a || value.b || value.c || value.d == true ){
-		$('#'+id.a+'').removeClass('has-error');
-		$('#'+id.b+'').removeClass('has-error');
-		$('#'+id.c+'').removeClass('has-error');
-		$('#'+id.d+'').removeClass('has-error');
-		boolen = true;
-	}
-	return boolen ;
+    var boolen = false;
+    if(value.a || value.b || value.c || value.d == true ){
+        $('#'+id.a+'').removeClass('has-error');
+        $('#'+id.b+'').removeClass('has-error');
+        $('#'+id.c+'').removeClass('has-error');
+        $('#'+id.d+'').removeClass('has-error');
+        boolen = true;
+    }
+    return boolen ;
 }
 
 function addRowIfa(results, start)
-{	
-	var root_url = window.location.protocol + "//" + window.location.host + "/";
+{
+    var root_url = window.location.protocol + "//" + window.location.host + "/";
 
-	$('.pagination').empty();
+    $('.pagination').empty();
     $('#ifa_list_tbody').empty();
 
     var sl = 1;
@@ -153,9 +167,9 @@ function addRowIfa(results, start)
         return [value];
     });
     if( end == 0){
-    	$('#ifa_list_tbody').append(
-    		'<tr class="ifa_list_tbody"><td colspan="6" > <center><span style="padding:50px;">Empty Value</span></center> </td> </tr>'
-    		);
+        $('#ifa_list_tbody').append(
+            '<tr class="ifa_list_tbody"><td colspan="6" > <center><span style="padding:50px;">Empty Value</span></center> </td> </tr>'
+        );
     }else{
 	    for (var i = start; i < end; i++)
 	    {	
@@ -194,22 +208,22 @@ function dateEmptyCheck(value){
 	return abcdate;
 }
 function dateFormater(value){
-	var data = [];
-	if(value){
-		var date =  new Date(value);
-			var month_ = 1 + date.getMonth();
-			data =  ('0'+date.getDate()).substr(-2,2)+
-					'-'+('0'+month_).substr(-2,2)+
-					'-'+('0'+date.getFullYear()).substr(-4,4);
-		return data;
-	}else{
-		return data = "";
-	}
-	return data;
+    var data = [];
+    if(value){
+        var date =  new Date(value);
+        var month_ = 1 + date.getMonth();
+        data =  ('0'+date.getDate()).substr(-2,2)+
+            '-'+('0'+month_).substr(-2,2)+
+            '-'+('0'+date.getFullYear()).substr(-4,4);
+        return data;
+    }else{
+        return data = "";
+    }
+    return data;
 }
 
 function emptyCheckss(value){
-	return ((value == null ) ? "" : value) ;
+    return ((value == null ) ? "" : value) ;
 }
 
 
@@ -240,43 +254,43 @@ function setPaginationss(results, position) {
 
 var ifaManagementReset = (function(){
 
-	return {
-		init: function(){
-			$('#ifa_reset_btn').on('click',function () {
-				$('.pagination_body').addClass('hidden');
-				$('#selectMenuOption').val("");
-				$('#selectSortbyValue').val("");
-				$('#formDate').val("");
-				$('#toDate').val("");
+    return {
+        init: function(){
+            $('#ifa_reset_btn').on('click',function () {
+                $('.pagination_body').addClass('hidden');
+                $('#selectMenuOption').val("");
+                $('#selectSortbyValue').val("");
+                $('#formDate').val("");
+                $('#toDate').val("");
 
-				$('#error_1').removeClass('has-error');
-				$('#error_2').removeClass('has-error');
-				$('#error_3').removeClass('has-error');
-				$('#error_4').removeClass('has-error');
+                $('#error_1').removeClass('has-error');
+                $('#error_2').removeClass('has-error');
+                $('#error_3').removeClass('has-error');
+                $('#error_4').removeClass('has-error');
 
-				$.ajax({
-		          type: "GET",
-		          url: baseURL+"/ifa/management/all/value",
-		          datatype: 'json',
-		          cache: false,
-		          async: false,
-		          success: function(result) {
-		          	var data = JSON.parse(result);
-		          	addRowIfa(data,0)		          	
-		          },
+                $.ajax({
+                    type: "GET",
+                    url: baseURL+"/ifa/management/all/value",
+                    datatype: 'json',
+                    cache: false,
+                    async: false,
+                    success: function(result) {
+                        var data = JSON.parse(result);
+                        addRowIfa(data,0)
+                    },
                     error:function(jqXHR, textStatus, errorThrown){
                         if(jqXHR.status == 401)
                             location.reload();
                         else
                             alert("Some thing is Wrong");
                     }
-		          // error:function(result){
-		          //   alert("Some thing is Wrong");
-		          // }
-		          });
-			});
-		}
-	}
+                    // error:function(result){
+                    //   alert("Some thing is Wrong");
+                    // }
+                });
+            });
+        }
+    }
 })();
 
 
@@ -384,7 +398,7 @@ function addRowBulkList(results, start)
             cache: false,
             async: false,
             success: function(result) {
-            	alert(result);
+                alert(result);
                 // var data = JSON.parse(result);
                 // addRowBulkList(result, 0)
             },
@@ -423,6 +437,6 @@ function readURL(input) {
 
 
 $(document).ready(function(){
-	ifaManagementFilterSearch.init();
-	ifaManagementReset.init();
+    ifaManagementFilterSearch.init();
+    ifaManagementReset.init();
 });

@@ -39,7 +39,7 @@ $('select[name=training_name]').on('change', function(){
                                 '<td>'+((value.pass_trainee.first_name == null)? '':value.pass_trainee.first_name)+' '+((value.pass_trainee.middle_name == null)? '':value.pass_trainee.middle_name)+' '+((value.pass_trainee.last_name == null)? '':value.pass_trainee.last_name)+'</td>'+
                                 '<td>'+((value.pass_trainee.mobile_no == null)? '':value.pass_trainee.mobile_no)+'</td>'+
                                 '<td>'+((value.pass_trainee.email == null)? '':value.pass_trainee.email)+'</td>'+
-                                '<td>'+((value.pass_trainee.pre_addr_ps_id == null)? '':value.pass_trainee.pre_addr_ps_id)+'</td>'+
+                                '<td>'+((value.pass_trainee.pre_addr_ps_id == null)? '':value.pass_trainee.pre_thana.thana_name)+'</td>'+
                                 '<td>' +
                                     '<input class="trainint_applicant_no" type="checkbox" value="1" name="exam_status['+value.pass_trainee.application_no+']">' +
                                     '<input type="hidden" name="applicant_no[]" value="'+value.pass_trainee.application_no+'">'+
