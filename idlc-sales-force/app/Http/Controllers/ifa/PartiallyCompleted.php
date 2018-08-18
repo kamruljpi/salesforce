@@ -15,17 +15,18 @@ use Carbon\Carbon;
 use Validator;
 use Auth;
 use DB;
+use Mail;
 
 class PartiallyCompleted extends Controller
 {
     public function viewPartiallyCompleted(){
 
-    	$getFilterOptionValue = FilterOption::get();
+        $getFilterOptionValue = FilterOption::get();
 
-    	$getListValue = DB::table('tbl_ifa_registrations')
-                            ->orderBy('application_no','DESC')
-                            ->paginate(15);                            
-    	return view('ifa.partialty_completed.partialtyCompleteList',compact('getListValue','getFilterOptionValue'));
+        $getListValue = DB::table('tbl_ifa_registrations')
+            ->orderBy('application_no','DESC')
+            ->paginate(15);
+        return view('ifa.partialty_completed.partialtyCompleteList',compact('getListValue','getFilterOptionValue'));
     }
 
     public function viewApplicationDetails(Request $req){
@@ -35,29 +36,37 @@ class PartiallyCompleted extends Controller
             ->where('application_no', $req->application_no)->first();
 
         $applicantTrainingDetails = DB::table('approved_trainees as atr')
-                                    ->select('tn.name', 'ts.start_date', 'ts.end_date', 'atr.training_status')
-                                    ->join('training_schedules as ts','atr.training_schedule_id','ts.id')
-                                    ->join('tbl_training_name as tn','ts.training_name_id','tn.id_training_name')
-                                    ->where('atr.applicant_no',$req->application_no)
-                                    ->get();
+            ->select('tn.name', 'ts.start_date', 'ts.end_date', 'atr.training_status')
+            ->join('training_schedules as ts','atr.training_schedule_id','ts.id')
+            ->join('tbl_training_name as tn','ts.training_name_id','tn.id_training_name')
+            ->where('atr.applicant_no',$req->application_no)
+            ->get();
 
 
         $applicantExamDetails = DB::table('approved_exameens as aex')
-                                    ->select('exn.name','exs.date','exs.start_time','exs.end_time','aex.*')
-                                    ->join('exam_schedules as exs','aex.exam_schedule_id','exs.id')
-                                    ->join('tbl_exam_names as exn','exs.exam_name_id','exn.id_exam_name')
-                                    ->where('aex.applicant_no',$req->application_no)
-                                    ->get();
+            ->select('exn.name','exs.date','exs.start_time','exs.end_time','aex.*')
+            ->join('exam_schedules as exs','aex.exam_schedule_id','exs.id')
+            ->join('tbl_exam_names as exn','exs.exam_name_id','exn.id_exam_name')
+            ->where('aex.applicant_no',$req->application_no)
+            ->get();
         $rejectionRemarksValue = RejectionRemarksModel::get();
         return view('ifa.application_deatils',compact('application_details', 'applicantTrainingDetails','applicantExamDetails','rejectionRemarksValue'));
     }
 
     public function nidVaidate(Request $req){
-
-        // $this->print_me($req->all());
+        $agentCode = NULL;
         if($req->status == 'Valid'){
             $appStatus = 'InProgress';
             $rejection_remarks_id = $req->rejection_remarks;
+
+            $institutionCode = ApplicantTraining::select('institution')->where('application_no', $req->application_no)->first();
+
+            if($institutionCode->institution != NULL || $institutionCode->institution != ''){
+                $agentCode = $institutionCode->institution.sprintf("%05d", $req->application_no);
+            }else{
+                $agentCode = '888'.sprintf("%05d", $req->application_no);
+            }
+
         }
         else if($req->status == 'InValid'){
             $appStatus = 'Rejected';
@@ -65,21 +74,49 @@ class PartiallyCompleted extends Controller
         }else{}
 
         ApplicantTraining::where('application_no', $req->application_no)
-                           ->update([
-                            'nid_validation_status' => $req->status,
-                            'application_status'    => $appStatus,
-                            'rejection_remarks_id'  => $rejection_remarks_id
-                        ]);
+            ->update([
+                'nid_validation_status' => $req->status,
+                'application_status'    => $appStatus,
+                'rejection_remarks_id'  => $rejection_remarks_id,
+                'agent_code'            => $agentCode
+            ]);
 
-        $applicantDetails = ApplicantTraining::where('application_no', $req->application_no)->first();
-        $mailPerInfo = [
-            'email' => $applicantDetails->email,
-            'name' => $applicantDetails->first_name.' '.$applicantDetails->middle_name.' '.$applicantDetails->last_name,
-            'subject' => 'Application Rejecttion',
-            'mobile_no' => $applicantDetails->mobile_no,
-            'application_number' => mt_rand(100000, 999999),
-        ];        
-        // SendingEmail::Send('emails.ifa_registration', $mailPerInfo);
+        if(isset($req->rejection_remarks)){
+
+            $reject = RejectionRemarksModel::find($req->rejection_remarks);
+            $applicantDetails = ApplicantTraining::where('application_no', $req->application_no)->first();
+
+            try {
+                $mailArr = [
+                    'receiver_email' => $applicantDetails->email,
+                    'receiver_full_name' => $applicantDetails->first_name . ' ' . $applicantDetails->middle_name . ' ' . $applicantDetails->last_name,
+//                    'sender_email' => 'idlc_1@gmail.com',
+                    'sender_email' => $this->senderMail,
+                    'sender_full_name' => 'IDLC',
+                    'subject' => 'Application Rejection',
+                ];
+
+                Mail::send('emails.application_rejection', ['reject_reason' => $reject->remarks, 'applicant_name' => $applicantDetails->first_name . ' ' . $applicantDetails->middle_name . ' ' . $applicantDetails->last_name], function ($m) use ($mailArr) {
+                    $m->from($mailArr['sender_email'], $mailArr['sender_full_name']);
+                    $m->to($mailArr['receiver_email'], $mailArr['receiver_full_name'])->subject($mailArr['subject']);
+                });
+            }catch (\Exception $ex){
+            }
+        }
+
+
+//        $applicantDetails = ApplicantTraining::where('application_no', $req->application_no)->first();
+//        $mailPerInfo = [
+//            'email' => $applicantDetails->email,
+//            'name' => $applicantDetails->first_name.' '.$applicantDetails->middle_name.' '.$applicantDetails->last_name,
+//            'subject' => 'Application Rejecttion',
+//            'mobile_no' => $applicantDetails->mobile_no,
+//            'application_number' => mt_rand(100000, 999999),
+//        ];
+
+//        $this->print_me($mailPerInfo);
+//         SendingEmail::Send('emails.ifa_registration', $mailPerInfo);
+
 
         return redirect()->back();
     }
