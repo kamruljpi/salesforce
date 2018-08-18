@@ -8,12 +8,15 @@
 				<div class="">
 					@if (count($errors) > 0)
 						<div class="alert alert-danger">
-							<strong>{{ trans('others.validationerror_there_were_some_problems_with_your_input') }}<br><br>
 							<ul>
 								@foreach ($errors->all() as $error)
-									<li>{{ $error }}</li>
+									<!-- <li>User email and Password doesn't match.</li> -->
+
+									<center><h4>Email or Password isn't correct.</h4></center>
+									<!-- <p>
+										It looks like you entered a slight misspelling of your email or username. We've corrected it for you, but ask that you re-enter your password for added security.
+									</p> -->
 								@endforeach
-								<li>{{ trans('others.validationerror_or_you_are_not_active_yet') }}</li>
 							</ul>
 						</div>
 					@endif
