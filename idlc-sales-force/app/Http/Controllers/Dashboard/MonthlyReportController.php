@@ -43,7 +43,7 @@ class MonthlyReportController extends Controller
     	}
     	return $data;
     }
-    public static function mightInterestedbyMonthCount(){
+    public static function mightInvestbyMonthCount(){
     	$curentYear = Carbon::now()->format('Y');
     	$data =[];
     	for ($i=1; $i <= 12 ; $i++) { 

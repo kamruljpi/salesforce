@@ -181,5 +181,6 @@ return [
 'mxp_menu_bulk_upload_list' => ' IFA Bulk Upload List',
 'mxp_menu_update_nid_list_view' => ' Update NID',
 'mxp_menu_ifa_bulk_upload' => ' ifa Bulk upload',
+'mxp_menu_thana' => ' Thana',
 
 ];

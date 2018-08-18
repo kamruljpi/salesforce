@@ -28,38 +28,39 @@ $(function () {
         pointStrokeColor    : '#c1c7d1',
         pointHighlightFill  : '#fff',
         pointHighlightStroke: 'rgb(220,220,220)',
-        data                : [65, 59, 80, 81, 56, 55, 40, 10, 80, 60 ,40 ,30]
-      },
-      {
-        label               : 'Not Interested',
-        fillColor           : 'rgba(60,141,188,0.9)',
-        strokeColor         : 'rgba(60,141,188,0.8)',
-        pointColor          : '#3b8bba',
-        pointStrokeColor    : 'rgba(60,141,188,1)',
-        pointHighlightFill  : '#fff',
-        pointHighlightStroke: 'rgba(60,141,188,1)',
-        data                : [28, 48, 40, 19, 86, 27, 90, 20, 40, 80 ,30, 20]
-      },
-      {
-        label               : 'Highly Interested',
-        fillColor           : 'rgba(255,0,0,0)',
-        strokeColor         : 'rgba(255,0,0,0)',
-        pointColor          : '#3b8bba',
-        pointStrokeColor    : 'rgba(255,0,0,0)',
-        pointHighlightFill  : '#fff',
-        pointHighlightStroke: 'rgba(255,0,0,0)',
-        data                : [29, 50, 20, 50, 86, 30, 90, 30, 50, 40, 50, 90]
+        data                : lead
       },
       {
         label               : 'Might Invest',
-        fillColor           : 'rgba(288,0,0,0)',
-        strokeColor         : 'rgba(288,0,0,0)',
-        pointColor          : '#3b8bba',
-        pointStrokeColor    : 'rgba(288,0,0,0)',
+        fillColor           : 'rgb(168, 57, 168, 3.9)',
+        strokeColor         : 'rgb(168, 57, 168, 3.8)',
+        pointColor          : '#a839a8',
+        pointStrokeColor    : 'rgb(168, 57, 168, 3)',
         pointHighlightFill  : '#fff',
-        pointHighlightStroke: 'rgba(288,0,0,0)',
-        data                : [29, 50, 20, 50, 86, 30, 90, 30, 50, 40, 50, 90]
+        pointHighlightStroke: 'rgb(168, 57, 168, 3)',
+        data                : might_invest
+      },
+      {
+        label               : 'Not Interested',
+        fillColor           : 'rgba(60,141,188,1.5)',
+        strokeColor         : 'rgba(60,141,188,1.3)',
+        pointColor          : '#3b8bba',
+        pointStrokeColor    : 'rgba(60,141,188,1.7)',
+        pointHighlightFill  : '#fff',
+        pointHighlightStroke: 'rgba(60,141,188,1.3)',
+        data                : not_interested
+      },
+      {
+        label               : 'Highly Interested',
+        fillColor           : 'rgb(15, 224, 186, 1.9)',
+        strokeColor         : 'rgb(15, 224, 186, 1.8)',
+        pointColor          : '#0fe0ba',
+        pointStrokeColor    : 'rgb(15, 224, 186, 2)',
+        pointHighlightFill  : '#fff',
+        pointHighlightStroke: 'rgb(15, 224, 186, 1.9)',
+        data                : highly_interested
       }
+      
     ]
   };
 
