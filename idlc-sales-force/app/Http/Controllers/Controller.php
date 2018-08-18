@@ -8,6 +8,9 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController {
+
+    public $senderMail = 'idlc_1@gmail.com';
+
 	use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 	public function getRandomGroupId() {
