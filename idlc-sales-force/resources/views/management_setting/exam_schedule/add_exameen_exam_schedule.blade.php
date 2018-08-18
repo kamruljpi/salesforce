@@ -37,7 +37,7 @@
                                         <option value="">Select a Schedule</option>
                                         @foreach($trainingList as $training)
                                             @if(isset($training->trainingName))
-                                                <option value="{{ $training->id }}">{{ $training->trainingName->name }} ({{ $training->start_date }} - {{ $training->end_date }}) </option>
+                                                <option value="{{ $training->id.'_'.$schedule_id }}">{{ $training->trainingName->name }} ({{ $training->start_date }} - {{ $training->end_date }}) </option>
                                             @endif
                                         @endforeach
                                     </select>

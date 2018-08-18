@@ -25,11 +25,505 @@ class BulkUploadController extends Controller
         $institutions = $ocupations_ = DB::table('tbl_new_organization')->where('is_active', 1)->get();
         return view('sales_agent.bulk_upload.viewBulkUpload',['institutions' => $institutions]);
     }
+    public function uploadactionview(Request $request){
+
+        $this->validate($request, array(
+            'bulk'      => 'required'
+        ));
+
+        if($request->hasFile('bulk')){
+            $extension = File::extension($request->file('bulk')->getClientOriginalName());
+            if ($extension == "xlsx" || $extension == "xls") {
+
+                $getNationality = $this->getNationality();
+                $getPremiseOwnership = $this->getPremiseOwnership();
+                $getDivisions = $this->getDivisions();
+                $getDistrict = $this->getDistrict();
+                $getUserType = $this->getUserType();
+                $getBanks = $this->getBanks();
+                $getBankBranchs = $this->getBankBranchs();
+                $getAllBranchs = $this->getAllBranchs();
+                $path = $request->file('bulk')->getRealPath();
+                $data = Excel::load($path, function($reader) {
+                })->get();
+                $insert = [];
+                $err_insert = [];
+                $temp_insert = [];
+                if(!empty($data) && $data->count()){
+                    $i = 0;
+                    foreach ($data as $ykey => $yvalue) {
+                        $temp_insert[] = self::generateArray($yvalue);
+                    }
+                }
+                Session::flash('err_ifa_list', $temp_insert);
+                $members_ifa_list  = json_encode($data);
+                return view('ifa.ifa_bulk_upload.bulk_upload_sview',['err_ifa_list'=>$err_insert,'members_ifa_list'=>$members_ifa_list]);
+                return back();
+            }else {
+                Session::flash('bulkerror', 'File is a '.$extension.' file.!! Please upload a valid xls file..!!');
+                return back();
+            }
+        }
+    }
+    public function bulkUploadActionfinal(Request $request){
+
+                $getNationality = $this->getNationality();
+                $getPremiseOwnership = $this->getPremiseOwnership();
+                $getDivisions = $this->getDivisions();
+                $getDistrict = $this->getDistrict();
+                $getUserType = $this->getUserType();
+                $getBanks = $this->getBanks();
+                $getBankBranchs = $this->getBankBranchs();
+                $getAllBranchs = $this->getAllBranchs();
+                $data_temp = $request->input('upload_ifa_members');
+                if(!empty($data_temp)){
+                    $data = json_decode($data_temp);
+                }else{
+                     $data  = [];
+                }
+                // self::print_me($data);
+                $insert = [];
+                $err_insert = [];
+                if(!empty($data) && count($data) > 0){
+                    $i = 0;
+                    foreach ($data as $ykey => $yvalue) {
+
+                        $temp_insert[] =  self::generateArray($yvalue);
+
+                    }
+                }
+                $filters_array = self::unique_multidim_array($temp_insert,'mobile_number');
+                $filters_array = self::unique_multidim_array($filters_array,'email_id');
+                $filters_array = self::unique_multidim_array($filters_array,'nid');
+                if(count($filters_array) == count($temp_insert)){
+                    if(!empty($data) && count($data) > 0){
+                        $i = 0;
+                        foreach ($data as $xkey => $xvalue) {
+
+                            // if($xvalue->name !== null){
+
+                                if(isset($xvalue->mobile_number) && !empty($xvalue->mobile_number)){
+                                    if(!$this->mobileNoValidate(self::formatMobileNumber($xvalue->mobile_number))){
+                                        $err_insert[] = self::generateArray($xvalue,"Already exist or Mobile number is Invalid.");
+                                        continue;
+                                    }
+                                }else{
+                                    $err_insert[] = self::generateArray($xvalue,"Already exist or Mobile number is Invalid.");
+                                    continue;
+                                }
+                                if(isset($xvalue->email_id) && !empty($xvalue->email_id)){
+                                    if(!$this->emailValidate($xvalue->email_id)){
+                                        $err_insert[] = self::generateArray($xvalue,"Already exist or Email is Invalid.");
+                                        continue;
+                                    }
+                                }else{
+                                    $err_insert[] = self::generateArray($xvalue,"Already exist or Email is Invalid.");
+                                    continue;
+                                }
+                                if(isset($xvalue->nid) && !empty($xvalue->nid)){
+                                    if(!$this->nidValidate($xvalue->nid)){
+                                        $err_insert[] = self::generateArray($xvalue,"Already exist or NID is Invalid.");
+                                        continue;
+                                    }
+                                }else{
+                                    $err_insert[] = self::generateArray($xvalue,"Already exist or NID is Invalid.");
+                                    continue;
+                                }
+                                if(isset($xvalue->dob) && !empty($xvalue->dob)){
+                                    if(!self::CheckAdultAge($xvalue->dob->format('m/d/Y'))){
+                                        $err_insert[] = self::generateArray($xvalue,"DOB Is not Valid or Must Be 18+ years Old.");
+                                        continue;
+                                    }
+                                }else{
+                                    $err_insert[] = self::generateArray($xvalue,"DOB Is not Valid or Must Be 18+ years Old.");
+                                    continue;
+                                }
+                                $insert[$i]['application_status'] = "InProgress";
+                                $insert[$i]['button_presses'] = "";
+                                if(!empty($request->input('institution'))){
+                                    $insert[$i]['institution'] = $request->input('institution');
+                                }
+                                $insert[$i]['user_name'] = "";
+                                $insert[$i]['student_department'] = "";
+                                $insert[$i]['training_status'] = "";
+                                $insert[$i]['is_active'] = 1;
+                                $insert[$i]['is_delete'] = 0;
+                                $insert[$i]['pre_addr_premise_ownership'] = 4;
+                                $insert[$i]['per_addr_premise_ownership'] = 4;
+                                $password = rand(pow(10, 5 - 1), pow(10, 5) - 1);
+                                $insert[$i]['password'] = Hash::make($password);
+                                if(isset($xvalue->name)){
+                                    $name_var = $xvalue->name;
+                                    $name_ = explode(" ", strtolower($name_var));
+                                    if((in_array('md', $name_)) || (in_array('mst', $name_)) || (in_array('md.', $name_)) || (in_array('mst.', $name_))){
+                                        if(count($name_) == 3){
+                                            $insert[$i]['first_name'] = $name_[0].' '.$name_[1];
+                                            $insert[$i]['last_name'] = $name_[2];
+                                        }elseif (count($name_) == 2) {
+                                            $insert[$i]['first_name'] = $name_[0].' '.$name_[1];
+                                            $insert[$i]['last_name'] = $name_[1];
+                                        }elseif (count($name_) == 1) {
+                                            $insert[$i]['first_name'] = $name_[0];
+                                            $insert[$i]['last_name'] = $name_[0];
+                                        }elseif (count($name_) > 3) {
+                                            $insert[$i]['first_name'] = $name_[0].' '.$name_[1];
+                                            $insert[$i]['middle_name'] = $name_[2];
+                                            $FulllastName = '';
+                                            for($fi = 3;$fi < count($name_);$fi++){
+                                                if(isset($name_[$fi])){
+                                                    $FulllastName .= $name_[$fi].' ';
+                                                }
+                                            }
+                                            $insert[$i]['last_name'] = $FulllastName;
+                                        }
+                                    }else{
+                                        if(count($name_) == 3){
+                                            $insert[$i]['first_name'] = $name_[0];
+                                            $insert[$i]['middle_name'] = $name_[1];
+                                            $insert[$i]['last_name'] = $name_[2];
+                                        }elseif (count($name_) == 2) {
+                                            $insert[$i]['first_name'] = $name_[0];
+                                            $insert[$i]['last_name'] = $name_[1];
+                                        }elseif (count($name_) == 1) {
+                                            $insert[$i]['first_name'] = $name_[0];
+                                            $insert[$i]['last_name'] = $name_[0];
+                                        }elseif (count($name_) > 3) {
+                                            $insert[$i]['first_name'] = $name_[0];
+                                            $insert[$i]['middle_name'] = $name_[1];
+                                            $FulllastName = '';
+                                            for($fi = 2;$fi < count($name_);$fi++){
+                                                if(isset($name_[$fi])){
+                                                    $FulllastName .= $name_[$fi].' ';
+                                                }
+                                            }
+                                            $insert[$i]['last_name'] = $FulllastName;
+                                        }
+                                    }
+                                }
+                                if(empty($insert[$i]['first_name'])){
+                                    $insert[$i]['first_name'] = '';
+                                }
+                                if(empty($insert[$i]['last_name'])){
+                                    $insert[$i]['last_name'] = '';
+                                }
+                                if(empty($insert[$i]['middle_name'])){
+                                    $insert[$i]['middle_name'] = '';
+                                }
+                                if(isset($xvalue->mobile_number)){
+                                    $insert[$i]['mobile_no'] = self::formatMobileNumber($xvalue->mobile_number);
+                                }else{
+                                    $insert[$i]['mobile_no'] = '';
+                                }
+                                if(isset($xvalue->email_id)){
+                                    $insert[$i]['email'] = $xvalue->email_id;
+                                }else{
+                                    $insert[$i]['email'] = '';
+                                }
+                                if(isset($xvalue->father)){
+                                    $insert[$i]['father_name'] = $xvalue->father;
+                                }else{
+                                    $insert[$i]['father_name'] = '';
+                                }
+                                if(isset($xvalue->mother)){
+                                    $insert[$i]['mother_name'] = $xvalue->mother;
+                                }else{
+                                    $insert[$i]['mother_name'] = '';
+                                }
+                                if(isset($xvalue->nationality)){
+                                    $nationality = strtolower($xvalue->nationality);
+                                    if(isset($getNationality[$nationality])){
+                                        $insert[$i]['nationality'] = $getNationality[$nationality];
+                                    }else{
+                                        $insert[$i]['nationality'] = -1;
+                                        $insert[$i]['others_nationality'] = $xvalue->nationality;
+                                    }
+                                }else{
+                                    $insert[$i]['nationality'] = -1;
+                                    $insert[$i]['others_nationality'] = '';
+
+                                }
+                                if(isset($xvalue->dob) && !empty($xvalue->dob)){
+                                    $insert[$i]['date_of_birth'] = $xvalue->dob->format('m/d/Y');
+                                }else{
+                                    $insert[$i]['date_of_birth'] = date("m/d/Y");;
+                                }
+                                if(isset($xvalue->nid)){
+                                    $insert[$i]['national_id_card_no'] = $xvalue->nid;
+                                }else{
+                                    $insert[$i]['national_id_card_no'] = '';
+                                }
+                                if(isset($xvalue->user_type) && !empty($xvalue->user_type)){
+                                    $user_type = strtolower($xvalue->user_type);
+                                    if(isset($getUserType[$user_type])){
+                                        $insert[$i]['user_type_id'] = $getUserType[$user_type];
+                                    }else{
+                                        $insert[$i]['user_type_id'] = -1;
+                                        $insert[$i]['others_user_type'] = $user_type;
+                                    }
+                                }else{
+                                    $insert[$i]['user_type_id'] = -1;
+                                    $insert[$i]['others_user_type'] = 'N/A';
+                                }
+
+                                if(isset($xvalue->permanent_address) && !empty($xvalue->permanent_address)){
+                                    $insert[$i]['is_same_as_present_address'] = 0;
+                                }else{
+                                    $insert[$i]['is_same_as_present_address'] = 1;
+                                }
+                                if(isset($xvalue->present_address)){
+                                    $present_address = $xvalue->present_address;
+                                    $present_address_temp = strtolower($present_address);
+                                    if(isset($present_address_temp) && !empty($present_address_temp)){
+                                        $preAddress = explode(",", $present_address_temp);
+                                        foreach ($preAddress as $pre => $address) {
+                                            if (strpos($address, "div:") !== false) {
+                                                $div = str_replace("div:","",$address);
+                                                if(isset($getDivisions[$div])){
+                                                    $insert[$i]['pre_addr_division_id'] = $getDivisions[$div];
+                                                }
+                                            }elseif (strpos($address, "dist:") !== false) {
+                                                $dist = str_replace("dist:","",$address);
+                                                if(isset($getDistrict[$dist])){
+                                                    $insert[$i]['pre_addr_district_id'] = $getDistrict[$dist];
+                                                }
+                                            }elseif (strpos($address, "thana:") !== false) {
+                                                $thana = str_replace("thana:","",$address);
+                                                $insert[$i]['pre_addr_ps_id'] = $thana;
+                                            }elseif (strpos($address, "road:") !== false) {
+                                                $road = str_replace("road:","",$address);
+                                                $insert[$i]['pre_addr_road_no'] = $road;
+                                            }elseif (strpos($address, "house:") !== false) {
+                                                $house = str_replace("house:","",$address);
+                                                $insert[$i]['pre_addr_house_no'] = $house;
+                                            }elseif (strpos($address, "flat:") !== false) {
+                                                $flat = str_replace("flat:","",$address);
+                                                $insert[$i]['pre_addr_flat_no'] = $flat;
+                                            }
+                                        }
+                                    }
+                                }
+                                if(!isset($insert[$i]['pre_addr_division_id']) || empty($insert[$i]['pre_addr_division_id'])){
+                                    $insert[$i]['pre_addr_division_id'] = '';
+                                }
+                                if(!isset($insert[$i]['pre_addr_district_id']) || empty($insert[$i]['pre_addr_district_id'])){
+                                    $insert[$i]['pre_addr_district_id'] = '';
+                                }
+                                if(!isset($insert[$i]['pre_addr_ps_id']) || empty($insert[$i]['pre_addr_ps_id'])){
+                                    $insert[$i]['pre_addr_ps_id'] = '';
+                                }
+                                if(!isset($insert[$i]['pre_addr_house_no']) || empty($insert[$i]['pre_addr_house_no'])){
+                                    $insert[$i]['pre_addr_house_no'] = '';
+                                }
+                                if(!isset($insert[$i]['pre_addr_road_no']) || empty($insert[$i]['pre_addr_road_no'])){
+                                    $insert[$i]['pre_addr_road_no'] = '';
+                                }
+                                if(!isset($insert[$i]['pre_addr_flat_no']) || empty($insert[$i]['pre_addr_flat_no'])){
+                                    $insert[$i]['pre_addr_flat_no'] = '';
+                                }
+                                if(isset($xvalue->permanent_address)){
+                                    $permanent_address = $xvalue->permanent_address;
+                                    $permanent_address_temp = strtolower($permanent_address);
+                                    if(isset($permanent_address_temp) && !empty($permanent_address_temp)){
+                                        $parAddress = explode(",", $permanent_address_temp);
+                                        foreach ($parAddress as $par => $praddress) {
+                                            if (strpos($praddress, "div:") !== false) {
+                                                $div = str_replace("div:","",$praddress);
+                                                if(isset($getDivisions[$div])){
+                                                    $insert[$i]['per_addr_division_id'] = $getDivisions[$div];
+                                                }
+                                            }elseif (strpos($praddress, "dist:") !== false) {
+                                                $dist = str_replace("dist:","",$praddress);
+                                                if(isset($getDistrict[$dist])){
+                                                    $insert[$i]['per_addr_district_id'] = $getDistrict[$dist];
+                                                }
+                                            }elseif (strpos($praddress, "thana:") !== false) {
+                                                $thana = str_replace("thana:","",$praddress);
+                                                $insert[$i]['per_addr_ps_id'] = $thana;
+                                            }elseif (strpos($praddress, "road:") !== false) {
+                                                $road = str_replace("road:","",$praddress);
+                                                $insert[$i]['per_addr_road_no'] = $road;
+                                            }elseif (strpos($praddress, "house:") !== false) {
+                                                $house = str_replace("house:","",$praddress);
+                                                $insert[$i]['per_addr_house_no'] = $house;
+                                            }elseif (strpos($praddress, "flat:") !== false) {
+                                                $flat = str_replace("flat:","",$praddress);
+                                                $insert[$i]['per_addr_flat_no'] = $flat;
+                                            }
+                                        }
+                                    }
+                                }
+                                if(!isset($insert[$i]['per_addr_division_id']) || empty($insert[$i]['per_addr_division_id'])){
+                                    $insert[$i]['per_addr_division_id'] = '';
+                                }
+                                if(!isset($insert[$i]['per_addr_district_id']) || empty($insert[$i]['per_addr_district_id'])){
+                                    $insert[$i]['per_addr_district_id'] = '';
+                                }
+                                if(!isset($insert[$i]['per_addr_ps_id']) || empty($insert[$i]['per_addr_ps_id'])){
+                                    $insert[$i]['per_addr_ps_id'] = '';
+                                }
+                                if(!isset($insert[$i]['per_addr_road_no']) || empty($insert[$i]['per_addr_road_no'])){
+                                    $insert[$i]['per_addr_road_no'] = '';
+                                }
+                                if(!isset($insert[$i]['per_addr_house_no']) || empty($insert[$i]['per_addr_house_no'])){
+                                    $insert[$i]['per_addr_house_no'] = '';
+                                }
+                                if(!isset($insert[$i]['per_addr_flat_no']) || empty($insert[$i]['per_addr_flat_no'])){
+                                    $insert[$i]['per_addr_flat_no'] = '';
+                                }
+                                if(isset($xvalue->latest_degree)){
+                                    $insert[$i]['latest_degree'] = $xvalue->latest_degree;
+                                }else{
+                                    $insert[$i]['latest_degree'] = '';
+                                }
+                                if(isset($xvalue->last_educational_institution)){
+                                    $insert[$i]['last_educational_institution'] = $xvalue->last_educational_institution;
+                                }else{
+                                    $insert[$i]['last_educational_institution'] = '';
+                                }
+                                if(isset($xvalue->job_holder)){
+                                    if($xvalue->job_holder == 'yes' || $xvalue->job_holder == 1){
+                                        $insert[$i]['is_job_holder'] = 1;
+                                    }else{
+                                        $insert[$i]['is_job_holder'] = 0;
+                                    }
+                                }else{
+                                    $insert[$i]['is_job_holder'] = 0;
+                                }
+                                if(isset($xvalue->organization)){
+                                    $insert[$i]['organization_name'] = $xvalue->organization;
+                                }else{
+                                    $insert[$i]['organization_name'] = '';
+                                }
+                                if(isset($xvalue->name)){
+                                    $insert[$i]['employee_id_no'] = $xvalue->employee_id_no;
+                                }else{
+                                    $insert[$i]['employee_id_no'] = '';
+                                }
+                                if(isset($xvalue->designation)){
+                                    $insert[$i]['designation'] = $xvalue->designation;
+                                }else{
+                                    $insert[$i]['designation'] = '';
+                                }
+                                if(isset($xvalue->name)){
+                                    $insert[$i]['job_holder_department'] = $xvalue->department;
+                                }else{
+                                    $insert[$i]['job_holder_department'] = '';
+                                }
+                                if(isset($xvalue->student)){
+                                    if($xvalue->student == 'yes' || $xvalue->student == 1){
+                                        $insert[$i]['is_student'] = 1;
+                                    }else{
+                                        $insert[$i]['is_student'] = 0;
+                                    }
+                                }else{
+                                    $insert[$i]['is_student'] = 0;
+                                }
+                                if(isset($xvalue->institution)){
+                                    $insert[$i]['institution_name'] = $xvalue->institution;
+                                }else{
+                                    $insert[$i]['institution_name'] = '';
+                                }
+                                if(isset($xvalue->student_id_card_no)){
+                                    $insert[$i]['student_id_card_no'] = $xvalue->student_id_card_no;
+                                }else{
+                                    $insert[$i]['student_id_card_no'] = '';
+                                }
+                                if(isset($xvalue->bank_name) && !empty($xvalue->bank_name)){
+                                    $insert[$i]['receive_sales_commission_by'] = 'Bank';
+                                }elseif (isset($xvalue->bkash_no) && !empty($xvalue->bkash_no)) {
+                                    $insert[$i]['receive_sales_commission_by'] = 'bKash';
+                                }else{
+                                    $insert[$i]['receive_sales_commission_by'] = '';
+                                }
+                                if(isset($xvalue->bank_name)){
+                                    $bank_name = strtolower($xvalue->bank_name);
+                                    if(isset($getBanks[$bank_name]) && !empty($getBanks[$bank_name])){
+                                        $insert[$i]['bank_id'] = $getBanks[$bank_name];
+                                    }else{
+                                        $insert[$i]['bank_id'] = '';
+                                    }
+                                }else{
+                                    $insert[$i]['bank_id'] = '';
+                                }
+                                if(isset($xvalue->branch_name)){
+                                    if(isset($insert[$i]['bank_name']) && !empty($insert[$i]['bank_name'])){
+                                        $bank_id = $insert[$i]['bank_name'];
+                                        $branch_name = strtolower($xvalue->branch_name);
+                                        if(isset($getBankBranchs[$bank_id][$branch_name]) && !empty($getBankBranchs[$bank_id][$branch_name])){
+                                            $insert[$i]['bank_branch_id'] = $getBankBranchs[$bank_id][$branch_name];
+                                        }else{
+                                            $insert[$i]['bank_branch_id'] = '';
+                                        }
+                                    }else{
+                                        $branch_name = strtolower($xvalue->branch_name);
+                                        if(isset($getAllBranchs[$branch_name]) && !empty($getAllBranchs[$branch_name])){
+                                            $insert[$i]['bank_branch_id'] = $getAllBranchs[$branch_name];
+                                        }else{
+                                            $insert[$i]['bank_branch_id'] = '';
+                                        }
+                                    }
+                                }else{
+                                    $insert[$i]['bank_branch_id'] = '';
+                                }
+                                if(isset($xvalue->ac_no)){
+                                    $insert[$i]['bank_account_no'] = $xvalue->ac_no;
+                                }else{
+                                    $insert[$i]['bank_account_no'] = '';
+                                }
+                                if(isset($xvalue->bkash_no)){
+                                    $insert[$i]['bKash_mobile_no'] = self::formatMobileNumber($xvalue->bkash_no);
+                                }else{
+                                    $insert[$i]['bKash_mobile_no'] = '';
+                                }
+                                if(isset($xvalue->bkash_account_type)){
+                                    $insert[$i]['bKash_acc_type'] = strtolower($xvalue->bkash_account_type);
+                                }else{
+                                    $insert[$i]['bKash_acc_type'] = '';
+                                }
+                                $i = $i+1;
+                            }
+                        // }
+                        // self::print_me($insert);
+                        // die();
+                        // return Redirect::route('ifa_bulk_upload')->with(['err_ifa_list', $err_insert]);
+                            
+                        if(isset($insert) && !empty($insert)){
+                            if(DB::table('tbl_ifa_registrations')->insert($insert)){
+                                if(isset($err_insert) && !empty($err_insert)){
+                                    Session::flash('bulkerror', 'Successfully Inserted Partial data');
+                                    Session::flash('err_ifa_list', $err_insert);
+                                    return Redirect::route('ifa_bulk_upload')->with(['err_ifa_list', $err_insert]);
+                                }else{
+                                    Session::flash('bulksuccess', 'Successfully Inserted All Data');
+                                    return Redirect::route('ifa_bulk_upload');
+                                }
+                            }else{
+                                Session::flash('bulkerror', 'Somethings Wrong !!');
+                                if(isset($err_insert) && !empty($err_insert)){
+                                    Session::flash('err_ifa_list', $err_insert);
+                                    return Redirect::route('ifa_bulk_upload')->with(['err_ifa_list', $err_insert]);
+                                }else{
+                                    return Redirect::route('ifa_bulk_upload')->with(['bulkerror', "Something Wrong!!!"]);
+                                }
+                            }
+                        }elseif (isset($err_insert) && !empty($err_insert)) {
+                            Session::flash('bulkerror', 'Somethings Wrong !!');
+                            Session::flash('err_ifa_list', $err_insert);
+                            return Redirect::route('ifa_bulk_upload')->with(['err_ifa_list', $err_insert]);
+                        }
+                    }
+                }else{
+                    Session::flash('bulkerror', 'There It Has Some Of Duplicate Mobile or Email or NID..!!');
+                }
+                return Redirect::route('ifa_bulk_upload');
+            
+    }
     public function bulkUploadAction(Request $request){
 
         $this->validate($request, array(
             'bulk'      => 'required'
         ));
+
 
         if($request->hasFile('bulk')){
             $extension = File::extension($request->file('bulk')->getClientOriginalName());
@@ -105,6 +599,9 @@ class BulkUploadController extends Controller
                                 }
                                 $insert[$i]['application_status'] = "InProgress";
                                 $insert[$i]['button_presses'] = "";
+                                if(!empty($request->input('institution'))){
+                                    $insert[$i]['institution'] = $request->input('institution');
+                                }
                                 $insert[$i]['user_name'] = "";
                                 $insert[$i]['student_department'] = "";
                                 $insert[$i]['training_status'] = "";
@@ -482,7 +979,7 @@ class BulkUploadController extends Controller
             }
         }
     }
-    public function leadBulkUploadAction(Request $request){
+    public function leadBulkUploadConfirmation(Request $request){
         $this->validate($request, array(
             'bulk'      => 'required'
         ));
@@ -612,25 +1109,11 @@ class BulkUploadController extends Controller
                                 $i = $i+1;
                             }
                         }
+
                         if(isset($insert) && !empty($insert)){
-                            if(DB::table('tbl_create_lead')->insert($insert)){
-                                if(isset($err_insert) && !empty($err_insert)){
-                                    Session::flash('bulkerror', 'Successfully Inserted Partial data');
-                                    Session::flash('err_ifa_list', $err_insert);
-                                    return Redirect::back()->with(['err_ifa_list', $err_insert]);
-                                }else{
-                                    Session::flash('bulksuccess', 'Successfully Inserted All Data');
-                                    return Redirect::back();
-                                }
-                            }else{
-                                Session::flash('bulkerror', 'Somethings Wrong !!');
-                                if(isset($err_insert) && !empty($err_insert)){
-                                    Session::flash('err_ifa_list', $err_insert);
-                                    return Redirect::back()->with(['err_ifa_list', $err_insert]);
-                                }else{
-                                    return Redirect::back()->with(['bulkerror', "Something Wrong!!!!"]);
-                                }
-                            }
+
+                            return view('lead.bulk_upload.bulk_upload_confirmation',['values' => $insert]);
+
                         }elseif (isset($err_insert) && !empty($err_insert)) {
                             Session::flash('bulkerror', 'Somethings Wrong !!');
                             Session::flash('err_ifa_list', $err_insert);
@@ -647,6 +1130,48 @@ class BulkUploadController extends Controller
                 return back();
             }
         }
+    }
+
+    public function leadBulkUploadAction(Request $request){
+
+        // return count($request->contact_no);
+        $insTime = 0;
+        for($i=0; $i<count($request->contact_no); $i++){
+
+            if(DB::table('tbl_create_lead')->insert([
+                'personal_name' => $request->personal_name[$i],
+                'contact_no' => $request->contact_no[$i],
+                'email' => $request->email[$i],
+                'area' => $request->area[$i],
+                'interest_label' => 'not_updated',
+            ])){
+                $insTime++;
+            }else{
+
+            }
+        }
+
+        if($insTime == count($request->contact_no)){
+            if(isset($err_insert) && !empty($err_insert)){
+                Session::flash('bulkerror', 'Successfully Inserted Partial data');
+                Session::flash('err_ifa_list', $err_insert);
+                return Redirect::route('sales_bulk_upload_view')->with(['err_ifa_list', $err_insert]);
+            }else{
+                Session::flash('bulksuccess', 'Successfully Inserted All Data');
+                return Redirect::route('sales_bulk_upload_view');
+            }
+        }else{
+            Session::flash('bulkerror', 'Somethings Wrong !!');
+            if(isset($err_insert) && !empty($err_insert)){
+                Session::flash('err_ifa_list', $err_insert);
+                return Redirect::route('sales_bulk_upload_view')->with(['err_ifa_list', $err_insert]);
+            }else{
+                return Redirect::route('sales_bulk_upload_view')->with(['bulkerror', "Something Wrong!!!!"]);
+            }
+        }
+
+        return Redirect::route('sales_bulk_upload_view');
+
     }
 
     public function storeBulk(){

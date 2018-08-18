@@ -1,7 +1,22 @@
 @extends('layouts.dashboard')
 @section('page_heading','Ifa bulk upload')
 @section('section')
+
 <div class="col-sm-8 col-sm-offset-2">
+    <div class="row">
+        <div class="col-sm-12">
+            @if(session()->has('bulkerror'))
+                <div class="alert alert-danger">
+                    {!! session('bulkerror') !!}
+                </div>
+            @endif
+            @if(session()->has('bulksuccess'))
+                <div class="alert alert-success">
+                    {!! session('bulksuccess') !!}
+                </div>
+            @endif
+        </div>
+    </div>
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3>
@@ -9,7 +24,7 @@
             </h3>
         </div>
         <div class="panel-body">
-            <form action="{{ route('sales_bulk_upload_action')}}" method="POST" role="form" enctype="multipart/form-data">
+            <form action="{{ route('sales_bulk_upload_faction')}}" method="POST" role="form" enctype="multipart/form-data">
                 {{csrf_field()}}
                     <div class="form-group row">
                         <label class="col-sm-3 control-label" for="bulkupload"> <span class="pull-right">Institution</span></label>
@@ -53,4 +68,56 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-sm-12">
+        <table class="table table-bordered table-striped">
+            <thead>
+
+            <tr>
+                <?php
+                $title_key = ['name','mobile_number','email','nationality','error'];
+
+                if(session('err_ifa_list')){
+                    foreach(session('err_ifa_list') as $xkey => $xval){
+                        foreach($xval as $xxkey => $xxval){
+                            if(in_array($xxkey, $title_key)){
+                                print '<th class="tablehead_'.$xxkey.'">'.str_replace("_"," ", $xxkey).'</th>';
+                            }
+                        }
+                        break;
+                    }
+                }
+                ?>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            $title_key = ['name','mobile_number','email','nationality','error'];
+
+            if(session('err_ifa_list')){
+            foreach(session('err_ifa_list') as $xkey => $xval){
+            ?>
+            <tr>
+                <?php
+                foreach($xval as $xxkey => $xxval){
+                    if(in_array($xxkey, $title_key)){
+                        print '<td class="table_data_'.$xxkey.'">'.$xxval.'</td>';
+                    }
+                }
+                // die();
+                ?>
+            </tr>
+            <?php
+            }
+            }
+            ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+<style type="text/css">
+    .alert-danger,.alert-success {
+        color: #fff !important;
+    }
+</style>
 @endsection

@@ -746,3 +746,10 @@
     border-color: #d2d6de;
     height: 35px;
 }
+.btn-danger{
+  border-radius: 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  border-width: 1px;
+}
