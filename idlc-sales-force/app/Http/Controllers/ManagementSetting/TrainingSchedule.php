@@ -27,9 +27,13 @@ class TrainingSchedule extends Controller
 
         $applicantList = new ApplicantTrainingManagement();
         $applicants = $applicantList->applicantList('InProgress');
+//        $applicants = ApplicantTrainingManagement::with('');
+//        $trainees = ApprovedTrainee::with('trainee')->where('training_schedule_id', $req->schedule_id)->get();
 
         $trainingNames = TrainingName::where('is_active', '1')->get();
 
+//        $this->print_me($applicants[1]->pre_thana);
+//        return $applicants;
 
         return view('management_setting.training_schedule.create_training_schedule', compact('trainingNames','applicants'));
     }
