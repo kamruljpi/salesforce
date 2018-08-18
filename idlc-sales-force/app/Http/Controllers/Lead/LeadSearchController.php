@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Model\Lead\CreateLead;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use Validator;
 use Auth;
 use DB;
@@ -16,7 +17,7 @@ use DB;
 class LeadSearchController extends Controller
 {
 
-	public function getLeadAllValue(Request $request){
+    public function getLeadAllValue(Request $request){
 
         $object = new InvestmentActionCreateLead();
         $data = $this->getALLValue($object);
@@ -36,11 +37,11 @@ class LeadSearchController extends Controller
             }
         }
 
-      return json_encode($results);
+        return json_encode($results);
     }
 
     public function getLeadSearchValue(Request $request){
-    	$values = $request->all();
+        $values = $request->all();
 
         $object = new CreateLead();
 
@@ -52,20 +53,20 @@ class LeadSearchController extends Controller
         else if(!empty($request->selectedOptionValues) && empty($request->formDateValues) && empty($request->toDateValues))
         {
             $data = $this->searchByFirstOption($values,$object);
-                
+
         }else if(!empty($request->selectedOptionValues) && !empty($request->formDateValues) && empty($request->toDateValues)){
 
             $data = $this->searchByFristAndFrom($values,$object);
 
         }else if(empty($request->selectedOptionValues) && !empty($request->formDateValues) && empty($request->toDateValues)){
 
-        	$data = $this->searchByFromCurrentDate($values,$object);
+            $data = $this->searchByFromCurrentDate($values,$object);
         }
         else if(empty($request->selectedOptionValues) && !empty($request->formDateValues) && !empty($request->toDateValues)){
 
-        	$data = $this->searchByFromAndTo($values,$object);
+            $data = $this->searchByFromAndTo($values,$object);
 
-            
+
         }else{
 
             $data = $this->searchByALl($values,$object);
@@ -77,67 +78,68 @@ class LeadSearchController extends Controller
     private function getALLValue($object){
         // $data = $object->orderBy('id_create_lead','DESC')
         //             ->select('*')
-        //             ->join('tbl_create_lead as tcl','investment_action_id','id_investment_action')                  
+        //             ->join('tbl_create_lead as tcl','investment_action_id','id_investment_action')
         //             ->get();
         $data = DB::table('tbl_create_lead')->select('tbl_create_lead.*')
             ->orderBy('created_at',"DESC")
             ->get();
-            return $data;
+        return $data;
     }
 
     private function searchByAscDsc($value = [],$object){
-    	$data = DB::table('tbl_create_lead')->select('tbl_create_lead.*')
-                    ->orderBy('id_create_lead',$value['sortbyValues'])          
-                    ->get();
+        $data = DB::table('tbl_create_lead')->select('tbl_create_lead.*')
+            ->orderBy('id_create_lead',$value['sortbyValues'])
+            ->get();
         return $data;
     }
 
     private function searchByFirstOption($value = [],$object){
 
-    	$data = DB::table('tbl_create_lead')->select('tbl_create_lead.*')
-            		->where('interest_label',$value['selectedOptionValues'])
-            		->orWhere('lead_assign',$value['selectedOptionValues'])
-                    ->orderBy('id_create_lead',(!empty($value['sortbyValues']) ? $value['sortbyValues'] : "ASC"))
-                    ->get();
+        $data = DB::table('tbl_create_lead')->select('tbl_create_lead.*')
+            ->where('interest_label',$value['selectedOptionValues'])
+            ->orWhere('lead_assign',$value['selectedOptionValues'])
+            ->orderBy('id_create_lead',(!empty($value['sortbyValues']) ? $value['sortbyValues'] : "ASC"))
+            ->get();
         return $data;
     }
 
     private function searchByFristAndFrom($value = [],$object){
-    	$data = DB::table('tbl_create_lead')->select('tbl_create_lead.*')
-            		->whereDate('created_at','>=',date($value['formDateValues']))
-                    ->whereDate('created_at','<=',Carbon::now()->format('Ymd'))
-                    ->where('interest_label',$value['selectedOptionValues'])
-                    ->orderBy('id_create_lead',(!empty($value['sortbyValues']) ? $value['sortbyValues'] : "ASC"))
-                    ->get();
-    	return $data;
+        $data = DB::table('tbl_create_lead')->select('tbl_create_lead.*')
+            ->whereDate('created_at','>=',date($value['formDateValues']))
+            ->whereDate('created_at','<=',Carbon::now()->format('Ymd'))
+            ->where('interest_label',$value['selectedOptionValues'])
+            ->orderBy('id_create_lead',(!empty($value['sortbyValues']) ? $value['sortbyValues'] : "ASC"))
+            ->get();
+        return $data;
     }
 
     private function searchByFromCurrentDate($value = [],$object){
-    	$data = DB::table('tbl_create_lead')->select('tbl_create_lead.*')
-            		->whereDate('created_at','>=',date($value['formDateValues']))
-                    ->whereDate('created_at','<=',Carbon::now()->format('Ymd'))
-                    ->orderBy('id_create_lead',(!empty($value['sortbyValues']) ? $value['sortbyValues'] : "ASC"))
-                    ->get();
-    	return $data;
+
+        $data = DB::table('tbl_create_lead')->select('tbl_create_lead.*')
+            ->whereDate('created_at','>=',date('Y-m-d', strtotime($value['formDateValues'])))
+            ->whereDate('created_at','<=',Carbon::now()->format('Y-m-d'))
+            ->orderBy('id_create_lead',(!empty($value['sortbyValues']) ? $value['sortbyValues'] : "ASC"))
+            ->get();
+        return $data;
     }
 
     private function searchByFromAndTo($value = [],$object){
-    	$data = DB::table('tbl_create_lead')->select('tbl_create_lead.*')
-            		->whereDate('created_at','>=',date($value['formDateValues']))
-                    ->whereDate('created_at','<=',date($value['toDateValues']))
-                    ->orderBy('id_create_lead',(!empty($value['sortbyValues']) ? $value['sortbyValues'] : "ASC"))
-                    ->get();
+        $data = DB::table('tbl_create_lead')->select('tbl_create_lead.*')
+            ->whereDate('created_at','>=',date('Y-m-d', strtotime($value['formDateValues'])))
+            ->whereDate('created_at','<=',date('Y-m-d', strtotime($value['toDateValues'])))
+            ->orderBy('id_create_lead',(!empty($value['sortbyValues']) ? $value['sortbyValues'] : "ASC"))
+            ->get();
 
-    	return $data;
+        return $data;
     }
 
     private function searchByALl($value = [],$object){
-    	$data = DB::table('tbl_create_lead')->select('tbl_create_lead.*')
-            		->whereDate('created_at','>=',date($value['formDateValues']))
-                    ->whereDate('created_at','<=',date($value['toDateValues']))
-                    ->where('interest_label',$value['selectedOptionValues'])
-                    ->orderBy('id_create_lead',(!empty($value['sortbyValues']) ? $value['sortbyValues'] : "ASC"))
-                    ->get();
+        $data = DB::table('tbl_create_lead')->select('tbl_create_lead.*')
+            ->whereDate('created_at','>=',date('Y-m-d', strtotime($value['formDateValues'])))
+            ->whereDate('created_at','<=',date('Y-m-d', strtotime($value['toDateValues'])))
+            ->where('interest_label',$value['selectedOptionValues'])
+            ->orderBy('id_create_lead',(!empty($value['sortbyValues']) ? $value['sortbyValues'] : "ASC"))
+            ->get();
         return $data;
     }
 }

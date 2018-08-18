@@ -139,9 +139,40 @@ var _reject_ifa = (function(){
 		}
 	}
 })();
-
 $(document).ready(function(){
-	open_update_nid_field.init();
-	update_nid_request.init();
-	_reject_ifa.init();
+    $('.update_nid_h').hide();
+    // open_update_nid_field.init();
+    update_nid_request.init();
+    _reject_ifa.init();
+});
+
+$('#update_nid').click(function(){
+    $('.update_nid_h').toggle();
+
+    var national_ids = $('#national_id_card_no').val();
+    var application_nos = $('#application_no_').val();
+
+    var datass = {
+        oldnid : national_ids,
+        ifaid 	:application_nos
+    };
+
+    $.ajax({
+        type: "GET",
+        url: baseURL+"/get/update/nid/value",
+        data: datass,
+        datatype: 'json',
+        cache: false,
+        async: false,
+        success: function(result) {
+            var data = JSON.parse(result);
+            if(data.length >= 1){
+                $('.set_hide_body').empty();
+                $('.set_open_body').removeClass('hidden');
+            }
+        },
+        error:function(result){
+            alert("Some thing is Wrong");
+        }
+    });
 });

@@ -91,41 +91,41 @@ class PartiallyCompleted extends Controller
     }
     public function getIfaFilterValue(Request $request){
         // return json_encode($request->all());
-		$object = new IfaRegistration();
+        $object = new IfaRegistration();
         $data = [];
         if(!empty($request->sortbyValues) && empty($request->selectedOptionValues) && empty($request->formDateValues) && empty($request->toDateValues)){
             $data = DB::table('tbl_ifa_registrations')->orderBy('application_no',$request->sortbyValues)
-                    ->get();
+                ->get();
         }
-	 	else if(!empty($request->selectedOptionValues) && empty($request->formDateValues) && empty($request->toDateValues))
+        else if(!empty($request->selectedOptionValues) && empty($request->formDateValues) && empty($request->toDateValues))
         {
             $data = DB::table('tbl_ifa_registrations')->where('application_status',$request->selectedOptionValues)
-                    ->orderBy('application_no',(!empty($request->sortbyValues) ? $request->sortbyValues : "ASC"))
-                    ->get();
-                
+                ->orderBy('application_no',(!empty($request->sortbyValues) ? $request->sortbyValues : "ASC"))
+                ->get();
+
         }else if(!empty($request->selectedOptionValues) && !empty($request->formDateValues) && empty($request->toDateValues)){
 
-            $data = DB::table('tbl_ifa_registrations')->whereDate('created_at','>=',date($request->formDateValues))
-                    ->whereDate('created_at','<=',Carbon::now()->format('Ymd'))
-                    ->where('application_status',$request->selectedOptionValues)
-                    ->orderBy('application_no',(!empty($request->sortbyValues) ? $request->sortbyValues : "ASC"))
-                    ->get();
+            $data = DB::table('tbl_ifa_registrations')->whereDate('created_at','>=',date('Y-m-d', strtotime($request->formDateValues)))
+                ->whereDate('created_at','<=',Carbon::now()->format('Y-m-d'))
+                ->where('application_status',$request->selectedOptionValues)
+                ->orderBy('application_no',(!empty($request->sortbyValues) ? $request->sortbyValues : "ASC"))
+                ->get();
 
         }else if(empty($request->selectedOptionValues) && !empty($request->formDateValues) && !empty($request->toDateValues)){
 
-            $data = DB::table('tbl_ifa_registrations')->whereDate('created_at','>=',date($request->formDateValues))
-                    ->whereDate('created_at','<=',date($request->toDateValues))
-                    ->orderBy('application_no',(!empty($request->sortbyValues) ? $request->sortbyValues : "ASC"))
-                    ->get();
+            $data = DB::table('tbl_ifa_registrations')->whereDate('created_at','>=',date('Y-m-d', strtotime($request->formDateValues)))
+                ->whereDate('created_at','<=',date('Y-m-d', strtotime($request->toDateValues)))
+                ->orderBy('application_no',(!empty($request->sortbyValues) ? $request->sortbyValues : "ASC"))
+                ->get();
         }else{
 
-    	 	$data = DB::table('tbl_ifa_registrations')->whereDate('created_at','>=',date($request->formDateValues))
-    	 			->whereDate('created_at','<=',date($request->toDateValues))
-    	 			->where('application_status',$request->selectedOptionValues)
-    	 			->orderBy('application_no',(!empty($request->sortbyValues) ? $request->sortbyValues : "ASC"))
-    	 			->get();
+            $data = DB::table('tbl_ifa_registrations')->whereDate('created_at','>=',date('Y-m-d', strtotime($request->formDateValues)))
+                ->whereDate('created_at','<=',date('Y-m-d', strtotime($request->toDateValues)))
+                ->where('application_status',$request->selectedOptionValues)
+                ->orderBy('application_no',(!empty($request->sortbyValues) ? $request->sortbyValues : "ASC"))
+                ->get();
         }
 
-    	return json_encode($data);
+        return json_encode($data);
     }
 }
