@@ -77,29 +77,37 @@ class BulkUploadController extends Controller
                 $getAllBranchs = $this->getAllBranchs();
                 $data_temp = $request->input('upload_ifa_members');
                 if(!empty($data_temp)){
-                    $data = json_decode($data_temp);
+                    $data__ = json_decode($data_temp);
                 }else{
-                     $data  = [];
+                     $data__  = [];
                 }
-                // self::print_me($data);
+                $data = [];
+                if(isset($data__) && !empty($data__)){
+                    foreach ($data__ as $dkey => $dvalue) {
+                        if(!empty($dvalue->name)){
+                            $data[] = $dvalue;
+                        }
+                    }
+                }
+
                 $insert = [];
                 $err_insert = [];
                 if(!empty($data) && count($data) > 0){
                     $i = 0;
                     foreach ($data as $ykey => $yvalue) {
-
-                        $temp_insert[] =  self::generateArray($yvalue);
-
+                        if(!empty(self::generateArray($yvalue))){
+                            $temp_insert[] =  self::generateArray($yvalue);
+                        }
                     }
                 }
                 $filters_array = self::unique_multidim_array($temp_insert,'mobile_number');
                 $filters_array = self::unique_multidim_array($filters_array,'email_id');
                 $filters_array = self::unique_multidim_array($filters_array,'nid');
+                // self::print_me($temp_insert);
                 if(count($filters_array) == count($temp_insert)){
                     if(!empty($data) && count($data) > 0){
                         $i = 0;
                         foreach ($data as $xkey => $xvalue) {
-
                             // if($xvalue->name !== null){
 
                                 if(isset($xvalue->mobile_number) && !empty($xvalue->mobile_number)){
@@ -130,13 +138,14 @@ class BulkUploadController extends Controller
                                     continue;
                                 }
                                 if(isset($xvalue->dob) && !empty($xvalue->dob)){
-                                    if(!self::CheckAdultAge($xvalue->dob->format('m/d/Y'))){
-                                        $err_insert[] = self::generateArray($xvalue,"DOB Is not Valid or Must Be 18+ years Old.");
-                                        continue;
-                                    }
+                                    // self::print_me($xvalue->dob);
+                                    // if(!self::CheckAdultAge($xvalue->dob->format('m/d/Y'))){
+                                    //     $err_insert[] = self::generateArray($xvalue,"DOB Is not Valid or Must Be 18+ years Old.");
+                                    //     continue;
+                                    // }
                                 }else{
-                                    $err_insert[] = self::generateArray($xvalue,"DOB Is not Valid or Must Be 18+ years Old.");
-                                    continue;
+                                    // $err_insert[] = self::generateArray($xvalue,"DOB Is not Valid or Must Be 18+ years Old.");
+                                    // continue;
                                 }
                                 $insert[$i]['application_status'] = "InProgress";
                                 $insert[$i]['button_presses'] = "";
@@ -243,9 +252,9 @@ class BulkUploadController extends Controller
 
                                 }
                                 if(isset($xvalue->dob) && !empty($xvalue->dob)){
-                                    $insert[$i]['date_of_birth'] = $xvalue->dob->format('m/d/Y');
+                                    // $insert[$i]['date_of_birth'] = $xvalue->dob->format('m/d/Y');
                                 }else{
-                                    $insert[$i]['date_of_birth'] = date("m/d/Y");;
+                                    // $insert[$i]['date_of_birth'] = date("m/d/Y");;
                                 }
                                 if(isset($xvalue->nid)){
                                     $insert[$i]['national_id_card_no'] = $xvalue->nid;
@@ -1382,7 +1391,9 @@ class BulkUploadController extends Controller
         }
         if(isset($values) && !empty($values)){
             foreach ($values as $key => $value) {
-                $results[$key] = $value;
+                if(!empty($value)){
+                    $results[$key] = $value;
+                }
             }
         }
         if(isset($error) && !empty($error)){
@@ -1396,11 +1407,13 @@ class BulkUploadController extends Controller
         $key_array = array();
 
         foreach($array as $val) {
-            if (!in_array($val[$key], $key_array)) {
-                $key_array[$i] = $val[$key];
-                $temp_array[$i] = $val;
+            if(isset($val[$key])){
+                if (!in_array($val[$key], $key_array)) {
+                    $key_array[$i] = $val[$key];
+                    $temp_array[$i] = $val;
+                }
+                $i++;
             }
-            $i++;
         }
         return $temp_array;
     }
